@@ -1,0 +1,54 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Author {
+  firstName: String
+  id: Int!
+  lastName: String
+  posts: [Post!]!
+}
+
+type Comment {
+  content: String!
+  id: Int!
+  post: Post!
+}
+
+input CommentInput {
+  content: String!
+}
+
+type Mutation {
+  addComment(comment: CommentInput!, postId: Int!): Post!
+  upvotePost(upvotePostData: UpvotePostInput!): Post!
+}
+
+type Post {
+  author: Author!
+  authorId: Int!
+  comments: [Comment!]!
+  content: String!
+  id: Int!
+  title: String!
+  votes: Int
+}
+
+type Query {
+  author(id: Int!): Author!
+  authors(firstName: String, lastName: String = "", limit: Int = 10, offset: Int = 0): Author!
+  findAllRecipe: [Recipe!]!
+}
+
+type Recipe {
+  id: Int!
+  name: String!
+}
+
+type Subscription {
+  commentAdded: Comment!
+}
+
+input UpvotePostInput {
+  postId: Int!
+}
