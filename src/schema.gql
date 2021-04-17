@@ -2,13 +2,6 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type Author {
-  firstName: String
-  id: Int!
-  lastName: String
-  posts: [Post!]!
-}
-
 type Comment {
   content: String!
   id: Int!
@@ -25,8 +18,7 @@ type Mutation {
 }
 
 type Post {
-  author: Author!
-  authorId: Int!
+  author: User!
   comments: [Comment!]!
   content: String!
   id: Int!
@@ -35,14 +27,7 @@ type Post {
 }
 
 type Query {
-  author(id: Int!): Author!
-  authors(firstName: String, lastName: String = "", limit: Int = 10, offset: Int = 0): Author!
-  findAllRecipe: [Recipe!]!
-}
-
-type Recipe {
-  id: Int!
-  name: String!
+  author(id: Int!): User!
 }
 
 type Subscription {
@@ -51,4 +36,12 @@ type Subscription {
 
 input UpvotePostInput {
   postId: Int!
+}
+
+type User {
+  email: String!
+  firstName: String!
+  id: ID!
+  lastName: String!
+  posts: [Post!]!
 }

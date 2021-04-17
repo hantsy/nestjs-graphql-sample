@@ -1,11 +1,13 @@
-import { Args, Int, Mutation, Resolver, Subscription } from '@nestjs/graphql';
-import { UpvotePostInput } from './dto/upvote-post.input';
-import { Post } from './models/post.model';
-import { Comment } from './models/comment.model';
-import { PostsService } from './posts.service';
 import { PubSub } from 'graphql-subscriptions';
+
+import { Args, Int, Mutation, Resolver, Subscription } from '@nestjs/graphql';
+
 import { CommentInput } from './dto/comment.input';
-import { User } from 'src/common/user.decorator';
+import { UpvotePostInput } from './dto/upvote-post.input';
+import { Comment } from './models/comment.model';
+import { Post } from './models/post.model';
+import { PostsService } from './posts.service';
+
 const pubSub = new PubSub();
 
 @Resolver((of) => Post)
@@ -17,7 +19,7 @@ export class PostsResolver {
     @Args('upvotePostData') upvotePostData: UpvotePostInput,
     // @User() user: UserEntity,
   ) {
-    this.postsService.upvoteById({ id: upvotePostData.postId });
+    this.postsService.upvoteById(upvotePostData.postId);
   }
 
   @Mutation((returns) => Post)
@@ -25,14 +27,12 @@ export class PostsResolver {
     @Args('postId', { type: () => Int }) postId: number,
     @Args('comment') comment: CommentInput,
   ) {
-    const newComment = this.postsService.addComment({ id: postId, comment });
+    const newComment = this.postsService.addComment(postId, comment.content);
     pubSub.publish('commentAdded', { commentAdded: newComment });
     return newComment;
   }
 
-  @Subscription((returns) => Comment, {
-    name: 'commentAdded',
-  })
+  @Subscription((returns) => Comment, { name: 'commentAdded' })
   addCommentHandler() {
     return pubSub.asyncIterator('commentAdded');
   }

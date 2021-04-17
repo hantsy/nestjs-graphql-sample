@@ -7,7 +7,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { CommonModule } from './common/common.module';
 import { UpperCaseDirective } from './common/upper-case.directive';
-import plugin from 'apollo-server-plugin-operation-registry';
+// import plugin from 'apollo-server-plugin-operation-registry';
 import { loggerMiddleware } from './common/logger.middleware';
 import { PostsModule } from './posts/posts.module';
 import { UsersModule } from './users/users.module';
@@ -32,9 +32,9 @@ import { UsersModule } from './users/users.module';
         upper: UpperCaseDirective,
       },
       plugins: [
-        plugin({
-          /* options */
-        }),
+        // plugin({
+        //   /* options */
+        // }),
       ],
       fieldResolverEnhancers: ['interceptors'],
     }),

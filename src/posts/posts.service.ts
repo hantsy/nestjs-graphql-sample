@@ -6,13 +6,15 @@ export class PostsService {
   forAuthor(id: number): Post[] {
     throw new Error('Method not implemented.');
   }
-  addComment(arg0: { id: number; comment: any }) {
+
+  addComment(id: number, comment: string): Comment {
     throw new Error('Method not implemented.');
   }
-  upvoteById(arg0: { id: number }) {
+  upvoteById(id: number) {
     throw new Error('Method not implemented.');
   }
-  findAll(arg0: { authorId: number }) {
+
+  findAll(): Post[] {
     throw new Error('Method not implemented.');
   }
 }

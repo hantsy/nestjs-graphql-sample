@@ -1,5 +1,6 @@
 import { ForbiddenException } from '@nestjs/common';
 import { FieldMiddleware, MiddlewareContext, NextFn } from '@nestjs/graphql';
+
 import { Role } from './role.enum';
 
 export const checkRoleMiddleware: FieldMiddleware = async (
