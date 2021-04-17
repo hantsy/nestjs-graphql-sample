@@ -1,16 +1,5 @@
 {
   "collection": "@nestjs/schematics",
   "sourceRoot": "src",
-  "compilerOptions": {
-    "plugins": ["@nestjs/graphql"]
-    // "plugins": [
-    //   {
-    //     "name": "@nestjs/graphql",
-    //     "options": {
-    //       "typeFileNameSuffix": [".input.ts", ".args.ts"],
-    //       "introspectComments": true
-    //     }
-    //   }
-    // ]
-  }
+  "compilerOptions": {}
 }

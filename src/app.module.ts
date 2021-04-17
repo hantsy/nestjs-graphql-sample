@@ -1,24 +1,19 @@
+import { join } from 'path';
+
 import { Module } from '@nestjs/common';
+import { GraphQLModule } from '@nestjs/graphql';
+
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { GraphQLFederationModule, GraphQLModule } from '@nestjs/graphql';
-import { PostsModule } from './posts/posts.module';
 import { CommonModule } from './common/common.module';
-import { join } from 'path';
-import { AuthorsModule } from './authors/authors.module';
-import { RecipesModule } from './recipes/recipes.module';
 import { UpperCaseDirective } from './common/upper-case.directive';
-import ApolloServerOperationRegistry from 'apollo-server-plugin-operation-registry';
+import plugin from 'apollo-server-plugin-operation-registry';
 import { loggerMiddleware } from './common/logger.middleware';
-import { User } from './authors/models/user.entity';
+import { PostsModule } from './posts/posts.module';
+import { UsersModule } from './users/users.module';
+
 @Module({
   imports: [
-    GraphQLFederationModule.forRoot({
-      autoSchemaFile: true,
-      buildSchemaOptions: {
-        orphanedTypes: [User],
-      },
-    }),
     GraphQLModule.forRoot({
       installSubscriptionHandlers: true,
       debug: true,
@@ -37,16 +32,16 @@ import { User } from './authors/models/user.entity';
         upper: UpperCaseDirective,
       },
       plugins: [
-        ApolloServerOperationRegistry({
+        plugin({
           /* options */
         }),
       ],
       fieldResolverEnhancers: ['interceptors'],
     }),
-    PostsModule,
+
     CommonModule,
-    AuthorsModule,
-    RecipesModule,
+    PostsModule,
+    UsersModule,
   ],
   providers: [AppService],
   controllers: [AppController],

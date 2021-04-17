@@ -1,8 +1,6 @@
 import { Directive, Field, Int, ObjectType } from '@nestjs/graphql';
-import { Author } from '../../authors/models/author.model';
+import { User } from '../../users/models/user.model';
 import { Comment } from './comment.model';
-
-import { User } from '../../authors/models/user.entity';
 
 // @ObjectType()
 // @Directive('@key(fields: "id")')
@@ -38,8 +36,8 @@ export class Post {
   @Field((type) => [Comment])
   comments: Comment[];
 
-  @Field((type) => Author)
-  author: Author;
+  @Field((type) => User)
+  author: User;
 
   @Field((type) => Int)
   authorId: number;

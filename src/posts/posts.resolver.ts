@@ -17,7 +17,7 @@ export class PostsResolver {
     @Args('upvotePostData') upvotePostData: UpvotePostInput,
     // @User() user: UserEntity,
   ) {
-    //this.postsService.upvoteById(upvotePostData);
+    this.postsService.upvoteById({ id: upvotePostData.postId });
   }
 
   @Mutation((returns) => Post)
