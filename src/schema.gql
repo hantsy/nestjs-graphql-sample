@@ -1,0 +1,47 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Comment {
+  content: String!
+  id: Int!
+  post: Post!
+}
+
+input CommentInput {
+  content: String!
+}
+
+type Mutation {
+  addComment(comment: CommentInput!, postId: Int!): Post!
+  upvotePost(upvotePostData: UpvotePostInput!): Post!
+}
+
+type Post {
+  author: User!
+  comments: [Comment!]!
+  content: String!
+  id: Int!
+  title: String!
+  votes: Int
+}
+
+type Query {
+  author(id: Int!): User!
+}
+
+type Subscription {
+  commentAdded: Comment!
+}
+
+input UpvotePostInput {
+  postId: Int!
+}
+
+type User {
+  email: String!
+  firstName: String!
+  id: ID!
+  lastName: String!
+  posts: [Post!]!
+}
