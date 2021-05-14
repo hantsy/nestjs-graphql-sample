@@ -15,7 +15,6 @@ input CommentInput {
 type Mutation {
   addComment(comment: CommentInput!, postId: String!): Post!
   createPost: Post!
-  upvotePost(upvotePostData: UpvotePostInput!): Post!
 }
 
 type Post {
@@ -24,7 +23,6 @@ type Post {
   content: String!
   id: ID!
   title: String!
-  votes: Int
 }
 
 type Query {
@@ -35,10 +33,6 @@ type Query {
 
 type Subscription {
   commentAdded: Comment!
-}
-
-input UpvotePostInput {
-  postId: String!
 }
 
 type User {

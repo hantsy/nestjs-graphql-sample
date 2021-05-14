@@ -11,9 +11,19 @@ import { UpperCaseDirective } from './common/directives/upper-case.directive';
 import { loggerMiddleware } from './common/middlewares/logger.middleware';
 import { PostsModule } from './posts/posts.module';
 import { UsersModule } from './users/users.module';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { getConnectionOptions } from 'typeorm';
+import { DatabaseModule } from './database/database.module';
 
 @Module({
   imports: [
+    // TypeOrmModule.forRoot(),
+    TypeOrmModule.forRootAsync({
+      useFactory: async () =>
+        Object.assign(await getConnectionOptions(), {
+          autoLoadEntities: true,
+        }),
+    }),
     GraphQLModule.forRoot({
       installSubscriptionHandlers: true,
       debug: true,
@@ -42,6 +52,7 @@ import { UsersModule } from './users/users.module';
     CommonModule,
     PostsModule,
     UsersModule,
+    DatabaseModule,
   ],
   providers: [AppService],
   controllers: [AppController],

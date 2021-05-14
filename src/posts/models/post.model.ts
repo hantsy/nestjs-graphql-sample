@@ -1,4 +1,4 @@
-import { Directive, Field, Int, ObjectType, ID } from '@nestjs/graphql';
+import { Directive, Field, ID, ObjectType } from '@nestjs/graphql';
 import { User } from '../../users/models/user.model';
 import { Comment } from './comment.model';
 
@@ -21,7 +21,7 @@ import { Comment } from './comment.model';
 @ObjectType()
 export class Post {
   @Field((type) => ID)
-  id: string;
+  id?: string;
 
   @Directive('@upper')
   @Field()
@@ -30,12 +30,9 @@ export class Post {
   @Field()
   content: string;
 
-  @Field((type) => Int, { nullable: true })
-  votes?: number;
-
   @Field((type) => [Comment])
-  comments: Comment[];
+  comments?: Comment[];
 
   @Field((type) => User)
-  author: User;
+  author?: User;
 }

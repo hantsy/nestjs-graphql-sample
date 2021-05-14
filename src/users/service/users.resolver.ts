@@ -7,10 +7,11 @@ import {
   ResolveField,
   Resolver,
 } from '@nestjs/graphql';
-import { PostsService } from '../posts/posts.service';
-import { Post } from '../posts/models/post.model';
-import { User } from './models/user.model';
+import { PostsService } from '../../posts/service/posts.service';
+import { Post } from '../../posts/models/post.model';
+import { User } from '../models/user.model';
 import { UsersService } from './users.service';
+import { Observable } from 'rxjs';
 
 @Resolver((of) => User)
 export class UsersResolvers {
@@ -23,12 +24,12 @@ export class UsersResolvers {
     '@deprecated(reason: "This query will be removed in the next version")',
   )
   @Query((returns) => User, { name: 'author' })
-  async author(@Args('id', { type: () => Int }) id: number) {
+  author(@Args('id', { type: () => Int }) id: number): Observable<User> {
     return this.usersService.findOneById(id);
   }
 
   @ResolveField((of) => [Post])
-  public posts(@Parent() user: User): Promise<Post[]> {
+  public posts(@Parent() user: User): Observable<Post[]> {
     return this.postsService.findByAuthor(user.id);
   }
 }
