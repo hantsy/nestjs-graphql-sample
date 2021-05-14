@@ -1,4 +1,4 @@
-import { Directive, Field, Int, ObjectType } from '@nestjs/graphql';
+import { Directive, Field, Int, ObjectType, ID } from '@nestjs/graphql';
 import { User } from '../../users/models/user.model';
 import { Comment } from './comment.model';
 
@@ -20,8 +20,8 @@ import { Comment } from './comment.model';
 
 @ObjectType()
 export class Post {
-  @Field((type) => Int)
-  id: number;
+  @Field((type) => ID)
+  id: string;
 
   @Directive('@upper')
   @Field()

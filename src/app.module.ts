@@ -6,9 +6,9 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { CommonModule } from './common/common.module';
-import { UpperCaseDirective } from './common/upper-case.directive';
+import { UpperCaseDirective } from './common/directives/upper-case.directive';
 // import plugin from 'apollo-server-plugin-operation-registry';
-import { loggerMiddleware } from './common/logger.middleware';
+import { loggerMiddleware } from './common/middlewares/logger.middleware';
 import { PostsModule } from './posts/posts.module';
 import { UsersModule } from './users/users.module';
 

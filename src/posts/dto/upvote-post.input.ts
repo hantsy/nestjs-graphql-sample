@@ -1,7 +1,7 @@
-import { InputType, Field, Int } from '@nestjs/graphql';
+import { InputType, Field } from '@nestjs/graphql';
 
 @InputType()
 export class UpvotePostInput {
-  @Field((type) => Int)
-  postId: number;
+  @Field((type) => String)
+  postId: string;
 }

@@ -28,7 +28,7 @@ export class UsersResolvers {
   }
 
   @ResolveField((of) => [Post])
-  public posts(@Parent() user: User): Post[] {
-    return this.postsService.forAuthor(user.id);
+  public posts(@Parent() user: User): Promise<Post[]> {
+    return this.postsService.findByAuthor(user.id);
   }
 }

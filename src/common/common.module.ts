@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 
-import { LoggingPlugin } from './logging.plugin';
+import { LoggingPlugin } from './plugins/logging.plugin';
 
 @Module({
   providers: [
