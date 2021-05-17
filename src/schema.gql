@@ -8,13 +8,18 @@ type Comment {
   post: Post!
 }
 
+input CommentInput {
+  content: String!
+  postId: String!
+}
+
 input CreatePostInput {
   content: String!
   title: String!
 }
 
 type Mutation {
-  addComment(comment: String!, postId: String!): Post!
+  addComment(commentInput: CommentInput!): Comment!
   createPost(createPostInput: CreatePostInput!): Post!
 }
 
@@ -27,9 +32,9 @@ type Post {
 }
 
 type Query {
-  author(id: Int!): User!
+  author(userId: String!): User!
   getAllPosts(keyword: String = "", skip: Int = 0, take: Int = 25): [Post!]!
-  getPostById(id: String!): Post!
+  getPostById(postId: String!): Post!
 }
 
 type Subscription {

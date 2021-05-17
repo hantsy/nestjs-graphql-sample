@@ -24,7 +24,7 @@ export class UsersResolver {
     '@deprecated(reason: "This query will be removed in the next version")',
   )
   @Query((returns) => User, { name: 'author' })
-  getUserById(@Args('id', { type: () => Int }) id: string): Observable<User> {
+  getUserById(@Args('userId') id: string): Observable<User> {
     return this.usersService.findById(id);
   }
 

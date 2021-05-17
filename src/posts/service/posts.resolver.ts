@@ -10,6 +10,7 @@ import {
 import { PubSub } from 'graphql-subscriptions';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
+import { CommentInput } from '../dto/comment.input';
 import { CreatePostInput } from '../dto/create-post.input';
 import { PostsArgs } from '../dto/posts.arg';
 import { Comment } from '../models/comment.model';
@@ -23,7 +24,7 @@ export class PostsResolver {
   constructor(private postsService: PostsService) {}
 
   @Query((returns) => Post)
-  getPostById(@Args('id') id: string): Observable<Post> {
+  getPostById(@Args('postId') id: string): Observable<Post> {
     return this.postsService.findById(id);
   }
 
@@ -32,23 +33,22 @@ export class PostsResolver {
     return this.postsService.findAll(postsArg);
   }
 
-  @Mutation((returns) => Post)
-  createPost(@Args('createPostInput') data: CreatePostInput): Observable<Post> {
-    return this.postsService.createPost(data);
-  }
-
   @ResolveField((of) => [Comment])
   public comments(@Parent() post: Post): Observable<Comment[]> {
     return this.postsService.findCommentsOfPost(post.id);
   }
 
   @Mutation((returns) => Post)
+  createPost(@Args('createPostInput') data: CreatePostInput): Observable<Post> {
+    return this.postsService.createPost(data);
+  }
+
+  @Mutation((returns) => Comment)
   addComment(
-    @Args('postId', { type: () => String }) postId: string,
-    @Args('comment', { type: () => String }) comment: string,
+    @Args('commentInput') commentInput: CommentInput,
   ): Observable<Comment> {
     return this.postsService
-      .addComment(postId, comment)
+      .addComment(commentInput.postId, commentInput.content)
       .pipe(tap((c) => pubSub.publish('commentAdded', { commentAdded: c })));
   }
 

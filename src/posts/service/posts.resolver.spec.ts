@@ -90,7 +90,9 @@ describe('PostsResolver', () => {
     };
     jest.spyOn(posts, 'addComment').mockReturnValue(of(data));
 
-    const result = await resolver.addComment('1', 'test comment').toPromise();
+    const result = await resolver
+      .addComment({ postId: '1', content: 'test comment' })
+      .toPromise();
     expect(result).toBeDefined();
     expect(result.id).toBe('1');
   });
