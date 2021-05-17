@@ -22,6 +22,7 @@ describe('PostsService', () => {
             findOne: jest.fn(),
             save: jest.fn(),
             findAll: jest.fn(),
+            findByAuthor: jest.fn(),
           },
         },
         {
@@ -82,7 +83,36 @@ describe('PostsService', () => {
     expect(posts.findAll).toHaveBeenCalledTimes(1);
     expect(posts.findAll).toBeCalledWith('test', 0, 20);
   });
+  it('should find posts by author', async () => {
+    const data = [
+      {
+        id: '1',
+        title: 'post 1',
+        content: 'content 1',
+      },
+      {
+        id: '2',
+        title: 'post 2',
+        content: 'content 2',
+      },
+    ];
 
+    const entities = data.map((d) => {
+      const e = new PostEntity();
+      Object.assign(e, d);
+      return e;
+    });
+
+    jest.spyOn(posts, 'findByAuthor').mockImplementationOnce((autor: any) => {
+      return Promise.resolve(entities);
+    });
+    const result = await service.findByAuthor('test').toPromise();
+    console.log('result: ' + JSON.stringify(result));
+    expect(result).toBeDefined();
+    expect(result.length).toBe(2);
+    expect(posts.findByAuthor).toHaveBeenCalledTimes(1);
+    expect(posts.findByAuthor).toBeCalledWith('test');
+  });
   it('should find one post by id', async () => {
     const data = {
       id: '1',
