@@ -39,5 +39,25 @@ describe('AppController (e2e)', () => {
         expect(res.body.data.getAllPosts.length).toEqual(4);
       });
     });
+
+    describe('should create post', () => {
+      it('should get all posts', async () => {
+        const res = await request(app.getHttpServer())
+          .post(gql)
+          .send({
+            query:
+              'mutation($createPostInput:CreatePostInput!){createPost(createPostInput:$createPostInput){ id, title }}',
+            variables: {
+              createPostInput: {
+                title: 'test title',
+                content: 'test content of our title',
+              },
+            },
+          });
+
+        expect(res.status).toBe(200);
+        expect(res.body.data.id).not.toBeNull();
+      });
+    });
   });
 });
