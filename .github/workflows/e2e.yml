@@ -16,7 +16,13 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-
+    services:
+       db:
+         image: postgres
+         env:
+           POSTGRES_PASSWORD: password
+           POSTGRES_DB: blogdb
+           POSTGRES_USER: user
     steps:
       - uses: actions/checkout@v2
       - name: Setup NodeJS
@@ -34,13 +40,8 @@ jobs:
             ${{ runner.OS }}-node-
             ${{ runner.OS }}-
       - run: npm install  --registry=https://registry.npmjs.org
-      # - name: Running mongodb service
-      #   run: |
-      #     docker-compose up -d mongodb
-      #     docker ps -a
 
       # install dependencies and build the project
       - name: Running e2e testing
         run: |
-          export SENDGRID_API_KEY=${{ secrets.SENDGRID_API_KEY }}
           npm run test:e2e -- --runInBand --forceExit
