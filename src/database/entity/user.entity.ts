@@ -1,7 +1,7 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { PostEntity } from './post.entity';
 
-@Entity()
+@Entity({ name: 'users' })
 export class UserEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
@@ -12,7 +12,7 @@ export class UserEntity {
   @Column()
   lastName?: string;
 
-  @Column()
+  @Column({ unique: true })
   email: string;
 
   // @OneToMany((type) => PostEntity, (post) => post.author, {

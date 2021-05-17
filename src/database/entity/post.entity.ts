@@ -9,7 +9,7 @@ import {
 import { CommentEntity } from './comment.entity';
 import { UserEntity } from './user.entity';
 
-@Entity()
+@Entity({ name: 'posts' })
 export class PostEntity {
   @PrimaryGeneratedColumn('uuid')
   id?: string;
@@ -26,6 +26,6 @@ export class PostEntity {
   comments?: Promise<CommentEntity[]>;
 
   @ManyToOne((type) => UserEntity)
-  @JoinColumn()
+  @JoinColumn({ name: 'author' })
   author?: UserEntity;
 }

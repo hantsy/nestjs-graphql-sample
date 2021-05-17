@@ -7,7 +7,7 @@ import {
 } from 'typeorm';
 import { PostEntity } from './post.entity';
 
-@Entity()
+@Entity({ name: 'comments' })
 export class CommentEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
@@ -16,7 +16,7 @@ export class CommentEntity {
   content: string;
 
   @ManyToOne((type) => PostEntity, (p) => p.comments)
-  @JoinColumn()
+  @JoinColumn({ name: 'post_id' })
   post: PostEntity;
 
   public static of(comment: string): CommentEntity {
