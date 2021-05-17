@@ -8,7 +8,7 @@ import { map } from 'rxjs/operators';
 export class UsersService {
   constructor(private readonly userRepository: UserRepository) {}
 
-  findOneById(id: number): Observable<User> {
+  findById(id: string): Observable<User> {
     return from(this.userRepository.findOne(id)).pipe(
       map((e, idx) => {
         return {

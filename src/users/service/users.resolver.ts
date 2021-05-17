@@ -24,8 +24,8 @@ export class UsersResolvers {
     '@deprecated(reason: "This query will be removed in the next version")',
   )
   @Query((returns) => User, { name: 'author' })
-  author(@Args('id', { type: () => Int }) id: number): Observable<User> {
-    return this.usersService.findOneById(id);
+  author(@Args('id', { type: () => Int }) id: string): Observable<User> {
+    return this.usersService.findById(id);
   }
 
   @ResolveField((of) => [Post])
