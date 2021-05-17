@@ -14,7 +14,7 @@ import { UsersService } from './users.service';
 import { Observable } from 'rxjs';
 
 @Resolver((of) => User)
-export class UsersResolvers {
+export class UsersResolver {
   constructor(
     private readonly usersService: UsersService,
     private readonly postsService: PostsService,
@@ -24,7 +24,7 @@ export class UsersResolvers {
     '@deprecated(reason: "This query will be removed in the next version")',
   )
   @Query((returns) => User, { name: 'author' })
-  author(@Args('id', { type: () => Int }) id: string): Observable<User> {
+  getUserById(@Args('id', { type: () => Int }) id: string): Observable<User> {
     return this.usersService.findById(id);
   }
 
