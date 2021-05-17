@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { from, Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 import { PostEntity } from '../../database/entity/post.entity';
 import { CommentRepository } from '../../database/repository/comment.repository';
 import { PostRepository } from '../../database/repository/post.repository';
@@ -25,7 +25,10 @@ export class PostsService {
   findAll(args: PostsArgs): Observable<Post[]> {
     return from(
       this.postRepository.findAll(args.keyword, args.skip, args.take),
-    ).pipe(map((entities, idx) => this.mapAsModelArray(entities)));
+    ).pipe(
+      //tap((e) => console.log('tap:', JSON.stringify(e))),
+      map((entities, idx) => this.mapAsModelArray(entities)),
+    );
   }
 
   createPost(data: CreatePostInput): Observable<Post> {

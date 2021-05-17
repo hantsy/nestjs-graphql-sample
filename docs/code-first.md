@@ -32,3 +32,4 @@ $ curl http://localhost:3000/graphql \
 
 $ curl http://localhost:3000/graphql -H "Content-Type:application/json" -X POST -d '{"query": "{getAllPosts{id title content, comments{ content }}}" }'
 {"data":{"getAllPosts":[{"id":"c4a9830e-4544-4f4b-9b9a-56c767487a92","title":"GENERATE A NESTJS PROJECT","content":"content","comments":[]},{"id":"79fae7e0-1f34-473f-9d5d-6a538924d478","title":"CREATE GRAPQL APIS","content":"content","comments":[]},{"id":"8c1f7996-fbfc-4285-a99f-b791c03e187d","title":"CONNECT TO POSTGRES VIA TYPEORM","content":"content","comments":[]},{"id":"783b7f83-f8d4-46a8-9628-8ed41e0037be","title":"TEST TITLE","content":"test content","comments":[{"content":"test comment"}]}]}}
+
