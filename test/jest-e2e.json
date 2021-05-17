@@ -5,12 +5,5 @@
   "testRegex": ".e2e-spec.ts$",
   "transform": {
     "^.+\\.(t|j)s$": "ts-jest"
-  },
-  "globals": {
-    "ts-jest": {
-      "astTransformers": {
-        "before": ["./transformer.ts"]
-      }
-    }
   }
 }

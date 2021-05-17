@@ -29,12 +29,12 @@ export class PostsResolver {
   }
 
   @Query((returns) => [Post])
-  allPosts(@Args() postsArg: PostsArgs): Observable<Post[]> {
+  getAllPosts(@Args() postsArg: PostsArgs): Observable<Post[]> {
     return this.postsService.findAll(postsArg);
   }
 
   @Mutation((returns) => Post)
-  createPost(data: CreatePostInput): Observable<Post> {
+  createPost(@Args('createPostInput') data: CreatePostInput): Observable<Post> {
     return this.postsService.createPost(data);
   }
 
