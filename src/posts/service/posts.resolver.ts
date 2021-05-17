@@ -10,7 +10,6 @@ import {
 import { PubSub } from 'graphql-subscriptions';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import { CommentInput } from '../dto/comment.input';
 import { CreatePostInput } from '../dto/create-post.input';
 import { PostsArgs } from '../dto/posts.arg';
 import { Comment } from '../models/comment.model';
@@ -46,10 +45,10 @@ export class PostsResolver {
   @Mutation((returns) => Post)
   addComment(
     @Args('postId', { type: () => String }) postId: string,
-    @Args('comment') comment: CommentInput,
+    @Args('comment', { type: () => String }) comment: string,
   ): Observable<Comment> {
     return this.postsService
-      .addComment(postId, comment.content)
+      .addComment(postId, comment)
       .pipe(tap((c) => pubSub.publish('commentAdded', { commentAdded: c })));
   }
 

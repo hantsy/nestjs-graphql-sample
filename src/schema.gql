@@ -8,17 +8,13 @@ type Comment {
   post: Post!
 }
 
-input CommentInput {
-  content: String!
-}
-
 input CreatePostInput {
   content: String!
   title: String!
 }
 
 type Mutation {
-  addComment(comment: CommentInput!, postId: String!): Post!
+  addComment(comment: String!, postId: String!): Post!
   createPost(createPostInput: CreatePostInput!): Post!
 }
 
