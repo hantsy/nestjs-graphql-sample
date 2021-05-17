@@ -1,19 +1,14 @@
-import { join } from 'path';
-
 import { Module } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
-
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { join } from 'path';
+import { getConnectionOptions } from 'typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { CommonModule } from './common/common.module';
-import { UpperCaseDirective } from './common/directives/upper-case.directive';
+import { DatabaseModule } from './database/database.module';
 // import plugin from 'apollo-server-plugin-operation-registry';
-import { loggerMiddleware } from './common/middlewares/logger.middleware';
 import { PostsModule } from './posts/posts.module';
 import { UsersModule } from './users/users.module';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { getConnectionOptions } from 'typeorm';
-import { DatabaseModule } from './database/database.module';
 
 @Module({
   imports: [
@@ -27,7 +22,6 @@ import { DatabaseModule } from './database/database.module';
     GraphQLModule.forRoot({
       installSubscriptionHandlers: true,
       debug: true,
-      playground: true,
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
       // in memory
       //autoSchemaFile: true,
@@ -39,17 +33,11 @@ import { DatabaseModule } from './database/database.module';
         numberScalarMode: 'integer', //default, it is float.
       },
       schemaDirectives: {
-        upper: UpperCaseDirective,
+        //upper: UpperCaseDirective,
       },
-      plugins: [
-        // plugin({
-        //   /* options */
-        // }),
-      ],
       fieldResolverEnhancers: ['interceptors'],
     }),
 
-    CommonModule,
     PostsModule,
     UsersModule,
     DatabaseModule,
