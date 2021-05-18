@@ -49,20 +49,18 @@ export class PostsDataInitializer implements OnModuleInit {
         email: 'hantsy@gmail.com',
       });
 
-      const savedUser = await mgr.save(user);
-      console.log('saved user: ', JSON.stringify(savedUser));
-      this.data.forEach(async (d) => {
-        const p = new PostEntity();
-        Object.assign(p, d);
-        p.author = user;
+      await mgr.save(user);
+      await Promise.all(
+        this.data.map(async (d) => {
+          const p = new PostEntity();
+          Object.assign(p, d);
+          p.author = user;
 
-        const sp = await mgr.save(p);
-        console.log('saved post in tx: ', sp);
-        // const c = new CommentEntity();
-        // c.content = 'test comment at:' + new Date();
-        // c.post = p;
-        // await mgr.save(c);
-      });
+          const c = CommentEntity.of('test comment at:' + new Date());
+          p.comments = Promise.resolve([c]);
+          await mgr.save(p);
+        }),
+      );
     });
 
     const post = new PostEntity();
