@@ -17,11 +17,12 @@ import { Comment } from '../models/comment.model';
 import { Post } from '../models/post.model';
 import { PostsService } from './posts.service';
 
-const pubSub = new PubSub();
-
 @Resolver((of) => Post)
 export class PostsResolver {
-  constructor(private postsService: PostsService) {}
+  constructor(
+    private readonly postsService: PostsService,
+    private readonly pubSub: PubSub,
+  ) {}
 
   @Query((returns) => Post)
   getPostById(@Args('postId') id: string): Observable<Post> {
@@ -49,11 +50,13 @@ export class PostsResolver {
   ): Observable<Comment> {
     return this.postsService
       .addComment(commentInput.postId, commentInput.content)
-      .pipe(tap((c) => pubSub.publish('commentAdded', { commentAdded: c })));
+      .pipe(
+        tap((c) => this.pubSub.publish('commentAdded', { commentAdded: c })),
+      );
   }
 
   @Subscription((returns) => Comment, { name: 'commentAdded' })
   addCommentHandler() {
-    return pubSub.asyncIterator('commentAdded');
+    return this.pubSub.asyncIterator('commentAdded');
   }
 }

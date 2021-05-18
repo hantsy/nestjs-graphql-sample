@@ -1,4 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
+import { PubSub } from 'graphql-subscriptions';
 import { of } from 'rxjs';
 import { Comment } from '../models/comment.model';
 import { Post } from '../models/post.model';
@@ -8,6 +9,7 @@ import { PostsService } from './posts.service';
 describe('PostsResolver', () => {
   let resolver: PostsResolver;
   let posts: PostsService;
+  let pubSub: PubSub;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -26,11 +28,19 @@ describe('PostsResolver', () => {
             findCommentsOfPost: jest.fn(),
           },
         },
+        {
+          provide: PubSub,
+          useValue: {
+            publish: jest.fn(),
+            asyncIterator: jest.fn(),
+          },
+        },
       ],
     }).compile();
 
     resolver = module.get<PostsResolver>(PostsResolver);
     posts = module.get<PostsService>(PostsService);
+    pubSub = module.get<PubSub>(PubSub);
   });
 
   it('should be defined', () => {
@@ -88,16 +98,28 @@ describe('PostsResolver', () => {
         id: '1',
       } as Post,
     };
-    jest.spyOn(posts, 'addComment').mockReturnValue(of(data));
+    const postsAddCommentSpy = jest
+      .spyOn(posts, 'addComment')
+      .mockReturnValue(of(data));
+    const pubSubPublishSpy = jest.spyOn(pubSub, 'publish');
 
     const result = await resolver
       .addComment({ postId: '1', content: 'test comment' })
       .toPromise();
     expect(result).toBeDefined();
     expect(result.id).toBe('1');
+    expect(postsAddCommentSpy).toBeCalled();
+    expect(pubSubPublishSpy).toBeCalled();
   });
 
-  it('should find all comments of post', async () => {
+  it('should subscribe comment ', async () => {
+    const pubSubPublishSpy = jest.spyOn(pubSub, 'asyncIterator');
+
+    resolver.addCommentHandler();
+    expect(pubSubPublishSpy).toBeCalled();
+  });
+
+  it('should resolve all comments of post', async () => {
     const data = [
       {
         id: '1',
@@ -115,12 +137,14 @@ describe('PostsResolver', () => {
       },
     ] as Comment[];
 
-    jest.spyOn(posts, 'findCommentsOfPost').mockReturnValue(of(data));
+    const findCommentsOfPostSpy = jest
+      .spyOn(posts, 'findCommentsOfPost')
+      .mockReturnValue(of(data));
     const result = await resolver.comments({ id: '1' } as Post).toPromise();
     console.log('result: ' + JSON.stringify(result));
     expect(result).toBeDefined();
     expect(result.length).toBe(2);
-    expect(posts.findCommentsOfPost).toHaveBeenCalledTimes(1);
-    expect(posts.findCommentsOfPost).toBeCalledWith('1');
+    expect(findCommentsOfPostSpy).toHaveBeenCalledTimes(1);
+    expect(findCommentsOfPostSpy).toBeCalledWith('1');
   });
 });
