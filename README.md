@@ -47,4 +47,5 @@ $ npm run test:cov
 ## Resources
 * [NestJS GraphQL chapter](https://docs.nestjs.com/graphql/quick-start)
 * [The Anatomy of a GraphQL Query](https://www.apollographql.com/blog/the-anatomy-of-a-graphql-query-6dffa9e9e747/)
-* 
+* [Developing a Secure API with NestJS: Managing Identity](https://auth0.com/blog/developing-a-secure-api-with-nestjs-adding-authorization/)
+* [Developing a Secure API with NestJS: Managing Roles](https://auth0.com/blog/developing-a-secure-api-with-nestjs-adding-role-based-access-control/)

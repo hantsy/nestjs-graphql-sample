@@ -9,19 +9,29 @@ import { DatabaseModule } from './database/database.module';
 // import plugin from 'apollo-server-plugin-operation-registry';
 import { PostsModule } from './posts/posts.module';
 import { UsersModule } from './users/users.module';
+import { AuthzModule } from './authz/authz.module';
+import { ConfigModule, ConfigType } from '@nestjs/config';
+import dbConfig from './config/db.config';
 
 @Module({
   imports: [
+    ConfigModule.forRoot({ ignoreEnvFile: true }),
     // TypeOrmModule.forRoot(),
-    TypeOrmModule.forRootAsync({
-      useFactory: async () =>
-        Object.assign(await getConnectionOptions(), {
-          autoLoadEntities: true,
-        }),
-    }),
+    // TypeOrmModule.forRootAsync({
+    //   imports: [ConfigModule],
+    //   useFactory: (cfg: ConfigType<typeof dbConfig>) => {
+
+    //   },
+    //   inject: [dbConfig.KEY],
+    //   // useFactory: async () =>
+    //   //   Object.assign(await getConnectionOptions(), {
+    //   //     autoLoadEntities: true,
+    //   //   }),
+    // }),
     GraphQLModule.forRoot({
       installSubscriptionHandlers: true,
       debug: true,
+      playground: true, //show playgroud
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
       // in memory
       //autoSchemaFile: true,
@@ -41,6 +51,7 @@ import { UsersModule } from './users/users.module';
     PostsModule,
     UsersModule,
     DatabaseModule,
+    AuthzModule,
   ],
   providers: [AppService],
   controllers: [AppController],

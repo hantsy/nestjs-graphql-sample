@@ -1,3 +1,4 @@
+import { ParseUUIDPipe, UseGuards } from '@nestjs/common';
 import {
   Args,
   Mutation,
@@ -7,6 +8,7 @@ import {
   Resolver,
   Subscription,
 } from '@nestjs/graphql';
+import { AuthGuard } from '@nestjs/passport';
 import { PubSub } from 'graphql-subscriptions';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
@@ -25,7 +27,7 @@ export class PostsResolver {
   ) {}
 
   @Query((returns) => Post)
-  getPostById(@Args('postId') id: string): Observable<Post> {
+  getPostById(@Args('postId', ParseUUIDPipe) id: string): Observable<Post> {
     return this.postsService.findById(id);
   }
 
@@ -40,11 +42,13 @@ export class PostsResolver {
   }
 
   @Mutation((returns) => Post)
+  @UseGuards(AuthGuard('jwt'))
   createPost(@Args('createPostInput') data: CreatePostInput): Observable<Post> {
     return this.postsService.createPost(data);
   }
 
   @Mutation((returns) => Comment)
+  @UseGuards(AuthGuard('jwt'))
   addComment(
     @Args('commentInput') commentInput: CommentInput,
   ): Observable<Comment> {
