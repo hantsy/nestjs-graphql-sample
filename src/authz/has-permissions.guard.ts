@@ -1,6 +1,9 @@
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { Observable } from 'rxjs';
+import { AuthenticatedRequest } from './authenticated-request.interface';
+import { HAS_PERMISSIONS_KEY } from './authz.constants';
+import { PermissionType } from './permission-type.enum';
 
 @Injectable()
 export class HasPermissionsGuard implements CanActivate {
@@ -8,22 +11,19 @@ export class HasPermissionsGuard implements CanActivate {
   canActivate(
     context: ExecutionContext,
   ): boolean | Promise<boolean> | Observable<boolean> {
-    const routePermissions = this.reflector.get<string[]>(
-      'has-permissions',
+    const routePermissions = this.reflector.get<PermissionType[]>(
+      HAS_PERMISSIONS_KEY,
       context.getHandler(),
     );
-
-    const userPermissions = context.getArgs()[0].user.permissions;
-
-    if (!routePermissions) {
+    if (!routePermissions || routePermissions.length == 0) {
       return true;
     }
-
-    const hasPermission = () =>
-      routePermissions.every((routePermission) =>
-        userPermissions.includes(routePermission),
-      );
-
-    return hasPermission();
+    const { user } = context
+      .switchToHttp()
+      .getRequest() as AuthenticatedRequest;
+    return (
+      user.permissions &&
+      user.permissions.some((r) => routePermissions.includes(r))
+    );
   }
 }

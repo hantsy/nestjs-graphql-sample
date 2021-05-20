@@ -1,15 +1,11 @@
 import { ConfigType } from '@nestjs/config';
 import {
   Connection,
-  createConnection,
-  QueryRunner,
-  EntityManager,
   ConnectionOptions,
+  createConnection,
+  EntityManager,
 } from 'typeorm';
 import dbConfig from '../config/db.config';
-import { UserRepository } from './repository/user.repository';
-import { PostRepository } from './repository/post.repository';
-import { CommentRepository } from './repository/comment.repository';
 
 export const databaseConnectionProviders = [
   {
@@ -40,31 +36,10 @@ export const databaseConnectionProviders = [
     },
     inject: [dbConfig.KEY],
   },
-  {
-    provide: EntityManager,
-    useFactory: (conn: Connection) => conn.createEntityManager(),
-    inject: [Connection],
-  },
+
   //   {
   //     provide: 'QueryRunner',
   //     useFactory: (conn: Connection) => conn.createQueryRunner(),
   //     inject: [Connection],
   //   },
-  {
-    provide: UserRepository,
-    useFactory: (conn: Connection) => conn.getCustomRepository(UserRepository),
-    inject: [Connection],
-  },
-
-  {
-    provide: PostRepository,
-    useFactory: (conn: Connection) => conn.getCustomRepository(PostRepository),
-    inject: [Connection],
-  },
-  {
-    provide: CommentRepository,
-    useFactory: (conn: Connection) =>
-      conn.getCustomRepository(CommentRepository),
-    inject: [Connection],
-  },
 ];

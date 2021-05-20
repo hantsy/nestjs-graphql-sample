@@ -1,58 +1,60 @@
-// jest.mock('typeorm', () => ({
-//   createConnection: jest.fn(),
-//   getConnection: jest.fn(),
-//   Connection: jest.fn(),
-// }));
-
+import { createMock } from '@golevelup/nestjs-testing';
 import { Test, TestingModule } from '@nestjs/testing';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { createConnection, getConnection, Connection } from 'typeorm';
-import { User } from '../../users/models/user.model';
+import { mock, MockProxy } from 'jest-mock-extended';
+import { UserEntity } from '../entity/user.entity';
 import { UserRepository } from './user.repository';
-import { mock } from 'jest-mock-extended';
 
 // see: https://stackoverflow.com/questions/67580233/how-to-test-custom-repository-in-nestjs-typeorm-applications
-describe('UserRepository', () => {
-  let local;
-  let parentMock;
-  let users: UserRepository;
+describe('UserRepository with DI', () => {
+  let users: any;
 
   beforeEach(async () => {
-    local = Object.getPrototypeOf(UserRepository);
-    parentMock = {
-      new: jest.fn(),
-      construtor: jest.fn(),
-      findOne: jest.fn(),
-    };
-    Object.setPrototypeOf(UserRepository, parentMock);
-
-    // const app: TestingModule = await Test.createTestingModule({
-    //   imports: [TmModule.forFeature([User, UserRepository])],
-    //   providers: [
-    //     {
-    //       provide: Connection,
-    //       useFactory: () => {
-    //         transaction: jest.fn();
-    //       },
-    //     },
-    //   ],
-    // }).compile();
-
-    // users = app.get<UserRepository>(UserRepository);
+    const app: TestingModule = await Test.createTestingModule({
+      providers: [
+        {
+          provide: UserRepository,
+          useValue: createMock<UserRepository>({
+            //findOne: jest.fn(),
+          }),
+        },
+      ],
+    }).compile();
+    users = app.get<UserRepository>(UserRepository);
   });
 
-  afterEach(() => {
-    Object.setPrototypeOf(UserRepository, local);
-  });
+  it('should call findOne', async () => {
+    expect(typeof users.findOne).toBe('function');
+    expect(typeof users.findByEmail).toBe('function');
 
-  it('TODO: should call findOne', async () => {
-    const findByEmailSpy = jest.spyOn(parentMock, 'findOne');
-    // const users = new UserRepository();
-    // console.log('users :', JSON.stringify(users));
+    // TODO: how to verify the findByEmail called findOne???
+    //
     // await users.findByEmail('test@example.com');
-    // expect(parentMock.mock.calls.length).toBe(1);
-    // expect(findByEmailSpy).toBeCalledWith({
+    // expect(findOneSpy).toBeCalledWith({
     //   email: 'test@example.com',
     // });
+  });
+});
+
+describe('UserRepository without DI(with jest-mock-extended)', () => {
+  const users: MockProxy<UserRepository> = mock<UserRepository>();
+
+  it('should call findOne', async () => {
+    const findOneSpy = users.findOne.mockImplementation((options: any) =>
+      Promise.resolve({
+        firstName: 'test',
+        email: 'test@example.com',
+      } as UserEntity),
+    );
+
+    expect(await users.findOne({ email: 'test@example.com' })).toEqual({
+      firstName: 'test',
+      email: 'test@example.com',
+    });
+
+    users.findByEmail.mockRestore();
+    await users.findByEmail('test@example.com');
+    expect(findOneSpy).toBeCalledWith({
+      email: 'test@example.com',
+    });
   });
 });
