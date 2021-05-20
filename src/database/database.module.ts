@@ -6,14 +6,6 @@ import { databaseRepositoriesProviders } from './database-repositories.providers
 import { PostsDataInitializer } from './posts-data-initializer';
 
 @Module({
-  // imports: [
-  //   TypeOrmModule.forFeature([
-  //     PostRepository,
-  //     UserRepository,
-  //     CommentRepository,
-  //   ]),
-  // ],
-  // exports: [TypeOrmModule],
   imports: [ConfigModule.forFeature(dbConfig)],
   providers: [
     PostsDataInitializer,

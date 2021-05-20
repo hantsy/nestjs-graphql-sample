@@ -1,33 +1,19 @@
 import { Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
 import { GraphQLModule } from '@nestjs/graphql';
-import { TypeOrmModule } from '@nestjs/typeorm';
 import { join } from 'path';
-import { getConnectionOptions } from 'typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { AuthzModule } from './authz/authz.module';
 import { DatabaseModule } from './database/database.module';
 // import plugin from 'apollo-server-plugin-operation-registry';
 import { PostsModule } from './posts/posts.module';
 import { UsersModule } from './users/users.module';
-import { AuthzModule } from './authz/authz.module';
-import { ConfigModule, ConfigType } from '@nestjs/config';
-import dbConfig from './config/db.config';
 
 @Module({
   imports: [
     ConfigModule.forRoot({ ignoreEnvFile: true }),
-    // TypeOrmModule.forRoot(),
-    // TypeOrmModule.forRootAsync({
-    //   imports: [ConfigModule],
-    //   useFactory: (cfg: ConfigType<typeof dbConfig>) => {
-
-    //   },
-    //   inject: [dbConfig.KEY],
-    //   // useFactory: async () =>
-    //   //   Object.assign(await getConnectionOptions(), {
-    //   //     autoLoadEntities: true,
-    //   //   }),
-    // }),
+    DatabaseModule,
     GraphQLModule.forRoot({
       installSubscriptionHandlers: true,
       debug: true,
@@ -50,7 +36,6 @@ import dbConfig from './config/db.config';
 
     PostsModule,
     UsersModule,
-    DatabaseModule,
     AuthzModule,
   ],
   providers: [AppService],

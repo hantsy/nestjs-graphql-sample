@@ -28,7 +28,7 @@ export const databaseConnectionProviders = [
           };
 
       Object.assign(options, {
-        entities: ['dist/**/entity/*.js'],
+        entities: ['dist/**/*.entity{.ts,.js}'],
         autoLoadEntities: true,
         logging: true,
       });
