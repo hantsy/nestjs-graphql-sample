@@ -1,28 +1,24 @@
-import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
+import { Test, TestingModule } from '@nestjs/testing';
 import * as request from 'supertest';
 import { AppModule } from './../src/app.module';
-import { Connection } from 'typeorm';
+import { HttpExceptionFilter } from '../src/common/filters/http.exception.filter';
 const gql = '/graphql';
 
 describe('AppController (e2e)', () => {
   let app: INestApplication;
-  let conn: Connection;
 
   beforeAll(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [AppModule],
     }).compile();
 
-    conn = moduleFixture.get<Connection>(Connection);
-    await conn.connect();
-
     app = moduleFixture.createNestApplication();
+    app.useGlobalFilters(new HttpExceptionFilter());
     await app.init();
   });
 
   afterAll(async () => {
-    await conn.close();
     await app.close();
   });
 
@@ -35,8 +31,8 @@ describe('AppController (e2e)', () => {
 
   // GraphQL endpoints
   describe(gql, () => {
-    describe('posts ', () => {
-      it('should get all posts', async () => {
+    describe('posts operations(without token) ', () => {
+      it('query getAllPosts', async () => {
         const res = await request(app.getHttpServer())
           .post(gql)
           .send({
@@ -52,12 +48,36 @@ describe('AppController (e2e)', () => {
         expect(res.status).toBe(200);
         expect(res.body.data.getAllPosts.length).toEqual(4);
       });
-    });
 
-    describe('should create post and comment flow', () => {
-      it('should create post and comment', async () => {
+      it('mutation createPost', async () => {
         const res = await request(app.getHttpServer())
           .post(gql)
+          .send({
+            query: `mutation($createPostInput:CreatePostInput!){
+          createPost(createPostInput:$createPostInput){
+             id
+             title
+            }
+          }`,
+            variables: {
+              createPostInput: {
+                title: 'test title',
+                content: 'test content of our title',
+              },
+            },
+          });
+
+        expect(res.status).toBe(401);
+      });
+    });
+
+    describe('posts operations(with token)', () => {
+      const token = process.env.TOKEN;
+
+      it('mutation createPost', async () => {
+        const res = await request(app.getHttpServer())
+          .post(gql)
+          .set('Authorization', 'Bearer ' + token)
           .send({
             query: `mutation($createPostInput:CreatePostInput!){
               createPost(createPostInput:$createPostInput){
@@ -79,6 +99,7 @@ describe('AppController (e2e)', () => {
 
         const cres = await request(app.getHttpServer())
           .post(gql)
+          .set('Authorization', 'Bearer ' + token)
           .send({
             query: `mutation($commentInput:CommentInput!){
               addComment(commentInput:$commentInput){
@@ -101,6 +122,7 @@ describe('AppController (e2e)', () => {
 
         const pres = await request(app.getHttpServer())
           .post(gql)
+          .set('Authorization', 'Bearer ' + token)
           .send({
             query: `query($id:String!) {
               getPostById(postId: $id) {

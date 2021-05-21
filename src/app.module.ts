@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigType } from '@nestjs/config';
 import { GraphQLModule } from '@nestjs/graphql';
 import { join } from 'path';
 import { AppController } from './app.controller';
@@ -9,11 +9,48 @@ import { DatabaseModule } from './database/database.module';
 // import plugin from 'apollo-server-plugin-operation-registry';
 import { PostsModule } from './posts/posts.module';
 import { UsersModule } from './users/users.module';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { getConnectionOptions } from 'typeorm';
+import dbConfig from './config/db.config';
 
 @Module({
   imports: [
     ConfigModule.forRoot({ ignoreEnvFile: true }),
-    DatabaseModule,
+    TypeOrmModule.forRootAsync({
+      imports: [ConfigModule.forFeature(dbConfig)],
+      useFactory: async (cfg: ConfigType<typeof dbConfig>) =>
+        // getConnectionOptions is used to load config from ormconfig.json file.
+        //
+        // Object.assign(await getConnectionOptions(), {
+        //   autoLoadEntities: true,
+        //   logging: true,
+        // }),
+
+        {
+          const options = Boolean(cfg.url)
+            ? {
+                type: cfg.type,
+                url: cfg.url,
+              }
+            : {
+                type: cfg.type,
+                host: cfg.host,
+                port: cfg.port,
+                database: cfg.database,
+                username: cfg.username,
+                password: cfg.password,
+              };
+
+          return Object.assign(options, {
+            entities: ['dist/**/*.entity{.ts,.js}'],
+            autoLoadEntities: true,
+            synchronize: true,
+            logging: true,
+          }) as any;
+        },
+
+      inject: [dbConfig.KEY],
+    }),
     GraphQLModule.forRoot({
       installSubscriptionHandlers: true,
       debug: true,
@@ -33,7 +70,7 @@ import { UsersModule } from './users/users.module';
       },
       fieldResolverEnhancers: ['interceptors'],
     }),
-
+    DatabaseModule,
     PostsModule,
     UsersModule,
     AuthzModule,
