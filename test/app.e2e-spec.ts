@@ -66,8 +66,10 @@ describe('application (e2e)', () => {
               },
             },
           });
-
-        expect(res.status).toBe(401);
+        console.log('res: ', JSON.stringify(res.body));
+        expect(res.status).toBe(200);
+        expect(res.body.data).toBeDefined();
+        expect(res.body.errors[0].message).toBe('Unauthorized');
       });
     });
 
@@ -128,7 +130,6 @@ describe('application (e2e)', () => {
 
         const pres = await request(app.getHttpServer())
           .post(gql)
-          .set('authorization', 'Bearer ' + token)
           .send({
             query: `query($id:String!) {
               getPostById(postId: $id) {

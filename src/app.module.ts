@@ -12,6 +12,7 @@ import { UsersModule } from './users/users.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { getConnectionOptions } from 'typeorm';
 import dbConfig from './config/db.config';
+import { GraphQLError, GraphQLFormattedError } from 'graphql';
 
 @Module({
   imports: [
@@ -59,7 +60,6 @@ import dbConfig from './config/db.config';
       // in memory
       //autoSchemaFile: true,
       sortSchema: true,
-
       buildSchemaOptions: {
         //fieldMiddleware: [loggerMiddleware],
         //dateScalarMode: 'timestamp', // by default, GraphQLISODateTime (e.g. 2019-12-03T09:54:33Z)
@@ -68,7 +68,14 @@ import dbConfig from './config/db.config';
       schemaDirectives: {
         //upper: UpperCaseDirective,
       },
-      fieldResolverEnhancers: ['interceptors'],
+      // fieldResolverEnhancers: ['guards'],
+      context: ({ req, res }) => ({ req, res }),
+      formatError: (error: GraphQLError) => {
+        const graphQLFormattedError: GraphQLFormattedError = {
+          message: error.extensions.exception.response.message || error.message,
+        };
+        return graphQLFormattedError;
+      },
     }),
     DatabaseModule,
     PostsModule,

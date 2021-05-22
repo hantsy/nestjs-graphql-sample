@@ -1,5 +1,6 @@
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
+import { GqlExecutionContext } from '@nestjs/graphql';
 import { Observable } from 'rxjs';
 import { AuthenticatedRequest } from './authenticated-request.interface';
 import { HAS_PERMISSIONS_KEY } from './authz.constants';
@@ -18,9 +19,8 @@ export class HasPermissionsGuard implements CanActivate {
     if (!routePermissions || routePermissions.length == 0) {
       return true;
     }
-    const { user } = context
-      .switchToHttp()
-      .getRequest() as AuthenticatedRequest;
+    const { user } = GqlExecutionContext.create(context).getContext()
+      .req as AuthenticatedRequest;
     return (
       user.permissions &&
       user.permissions.some((r) => routePermissions.includes(r))
