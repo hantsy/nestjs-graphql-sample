@@ -83,7 +83,7 @@ describe('application (e2e)', () => {
       it('mutation createPost', async () => {
         const res = await request(app.getHttpServer())
           .post(gql)
-          .set('Authorization', 'Bearer ' + token)
+          .set('authorization', 'Bearer ' + token)
           .send({
             query: `mutation($createPostInput:CreatePostInput!){
               createPost(createPostInput:$createPostInput){
@@ -105,7 +105,7 @@ describe('application (e2e)', () => {
 
         const cres = await request(app.getHttpServer())
           .post(gql)
-          .set('Authorization', 'Bearer ' + token)
+          .set('authorization', 'Bearer ' + token)
           .send({
             query: `mutation($commentInput:CommentInput!){
               addComment(commentInput:$commentInput){
@@ -128,7 +128,7 @@ describe('application (e2e)', () => {
 
         const pres = await request(app.getHttpServer())
           .post(gql)
-          .set('Authorization', 'Bearer ' + token)
+          .set('authorization', 'Bearer ' + token)
           .send({
             query: `query($id:String!) {
               getPostById(postId: $id) {

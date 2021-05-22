@@ -13,10 +13,6 @@ export class PostRepository extends Repository<PostEntity> {
   }
 
   findByAuthor(id: string): Promise<PostEntity[]> {
-    return this.manager.find(PostEntity, {
-      where: {
-        author: { type: 'equal', value: id },
-      },
-    });
+    return this.manager.find(PostEntity, { author: { id: id } });
   }
 }
