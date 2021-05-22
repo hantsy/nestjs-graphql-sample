@@ -18,6 +18,10 @@ import { PostsArgs } from '../dto/posts.arg';
 import { Comment } from '../models/comment.model';
 import { Post } from '../models/post.model';
 import { PostsService } from './posts.service';
+import { JwtAuthGuard } from '../../authz/jwt-auth.guard';
+import { HasPermissionsGuard } from '../../authz/has-permissions.guard';
+import { HasPermissions } from '../../authz/has-permissions.decorator';
+import { PermissionType } from '../../authz/permission-type.enum';
 
 @Resolver((of) => Post)
 export class PostsResolver {
@@ -42,13 +46,15 @@ export class PostsResolver {
   }
 
   @Mutation((returns) => Post)
-  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(JwtAuthGuard, HasPermissionsGuard)
+  @HasPermissions(PermissionType.WRITE_POSTS)
   createPost(@Args('createPostInput') data: CreatePostInput): Observable<Post> {
     return this.postsService.createPost(data);
   }
 
   @Mutation((returns) => Comment)
-  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(JwtAuthGuard, HasPermissionsGuard)
+  @HasPermissions(PermissionType.WRITE_POSTS)
   addComment(
     @Args('commentInput') commentInput: CommentInput,
   ): Observable<Comment> {

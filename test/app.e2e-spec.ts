@@ -5,7 +5,7 @@ import { AppModule } from './../src/app.module';
 import { HttpExceptionFilter } from '../src/common/filters/http.exception.filter';
 const gql = '/graphql';
 
-describe('AppController (e2e)', () => {
+describe('application (e2e)', () => {
   let app: INestApplication;
 
   beforeAll(async () => {
@@ -72,7 +72,13 @@ describe('AppController (e2e)', () => {
     });
 
     describe('posts operations(with token)', () => {
-      const token = process.env.TOKEN;
+      const token =
+        process.env.TOKEN ||
+        'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IlYzM1lvNzk5cC1XeFI2NHpJZ29QMyJ9.eyJpc3MiOiJodHRwczovL2Rldi1lc2U4MjQxYi51cy5hdXRoMC5jb20vIiwic3ViIjoiSUVYVjJNYkFpdUVrVjBKN3VmSDBCcXEyYTJZSUYzaDFAY2xpZW50cyIsImF1ZCI6Imh0dHBzOi8vaGFudHN5LmdpdGh1Yi5pby9hcGkiLCJpYXQiOjE2MjE2NjI4NjAsImV4cCI6MTYyMTc0OTI2MCwiYXpwIjoiSUVYVjJNYkFpdUVrVjBKN3VmSDBCcXEyYTJZSUYzaDEiLCJzY29wZSI6InJlYWQ6cG9zdHMgd3JpdGU6cG9zdHMgZGVsZXRlOnBvc3RzIiwiZ3R5IjoiY2xpZW50LWNyZWRlbnRpYWxzIiwicGVybWlzc2lvbnMiOlsicmVhZDpwb3N0cyIsIndyaXRlOnBvc3RzIiwiZGVsZXRlOnBvc3RzIl19.VXwxVYKjyJ65F3phGs8D7L8vtZbJKNSKjO40L0yuF_LhA24CUOT29EYub3OedmRmMLPCrM829t3LH5UnQw8u3vpLx3TEOVWewqYVEp1cgcznxmD6jIRZEs4NQElDBeVb2SD2QYNgB4ffkhWLYoaOP1LQQCYo1zMek-ujTN2HLR-386-EzG8J0Cc1pEcIvwIrin8XvzedZMZhe9NKHAZIa4CY9muh4QjCb5KPcj-k5lG3Qrf3syztn_vZSCvtUbDWTIuLk68eAU3fWXRq-QEdG3pyloUpBZ_CQJ4fdj7QfR4W5xJE3UxkBTEtOExqkuS8FTf4OAY5IaXfyRH6zo8KuA';
+
+      beforeAll(() => {
+        console.log('token:', token);
+      });
 
       it('mutation createPost', async () => {
         const res = await request(app.getHttpServer())
