@@ -7,6 +7,9 @@ import { passportJwtSecret } from 'jwks-rsa';
 import { Inject } from '@nestjs/common';
 import { ConfigType } from '@nestjs/config';
 import auth0Config from '../config/auth0.config';
+import { JwtPayload } from './jwt-payload.interface';
+import { UserPrincipal } from './user-principal.interface';
+import { PermissionType } from './permission-type.enum';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
@@ -26,8 +29,13 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     });
   }
 
-  validate(payload: any): any {
+  validate(payload: JwtPayload): UserPrincipal {
     console.log('jwt payload:', JSON.stringify(payload));
-    return payload;
+    return {
+      userId: payload.sub,
+      email: payload.email,
+      name: payload.name,
+      permissions: payload.permissions.map((p) => PermissionType[p]),
+    };
   }
 }

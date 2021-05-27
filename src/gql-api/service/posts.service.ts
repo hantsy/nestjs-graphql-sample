@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import { from, Observable } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
+import { EMPTY, from, Observable, of } from 'rxjs';
+import { map, switchMap } from 'rxjs/operators';
 import { PostEntity } from '../../database/entity/post.entity';
 import { CommentRepository } from '../../database/repository/comment.repository';
 import { PostRepository } from '../../database/repository/post.repository';
-import { CreatePostInput } from '../dto/create-post.input';
+import { PostInput } from '../dto/post.input';
 import { PostsArgs } from '../dto/posts.arg';
 import { Comment } from '../models/comment.model';
 import { Post } from '../models/post.model';
@@ -18,6 +18,7 @@ export class PostsService {
 
   findById(id: string): Observable<Post> {
     return from(this.postRepository.findOne(id)).pipe(
+      switchMap((p) => (p ? of(p) : EMPTY)),
       map((e, idx) => this.mapAsModel(e)),
     );
   }
@@ -31,11 +32,14 @@ export class PostsService {
     );
   }
 
-  createPost(data: CreatePostInput): Observable<Post> {
+  createPost(authorId: string, data: PostInput): Observable<Post> {
     return from(
       this.postRepository.save({
         title: data.title,
         content: data.content,
+        author: {
+          id: authorId,
+        },
       }),
     ).pipe(map((e, idx) => this.mapAsModel(e)));
   }

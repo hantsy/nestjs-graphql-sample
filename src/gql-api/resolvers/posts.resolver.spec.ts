@@ -4,7 +4,7 @@ import { of } from 'rxjs';
 import { Comment } from '../models/comment.model';
 import { Post } from '../models/post.model';
 import { PostsResolver } from './posts.resolver';
-import { PostsService } from './posts.service';
+import { PostsService } from '../service/posts.service';
 
 describe('PostsResolver', () => {
   let resolver: PostsResolver;
@@ -85,7 +85,9 @@ describe('PostsResolver', () => {
     };
     jest.spyOn(posts, 'createPost').mockReturnValue(of(data));
 
-    const result = await resolver.createPost(data).toPromise();
+    const result = await resolver
+      .createPost({ userId: 'test' }, data)
+      .toPromise();
     expect(result).toBeDefined();
     expect(result.id).toBe('1');
   });

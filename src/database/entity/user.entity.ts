@@ -2,17 +2,21 @@ import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity({ name: 'users' })
 export class UserEntity {
-  @PrimaryGeneratedColumn('uuid')
+  //@PrimaryGeneratedColumn('uuid')
+  @Column({ nullable: false, primary: true })
   id: string;
 
-  @Column()
-  firstName: string;
+  @Column({ nullable: true })
+  firstName?: string;
 
-  @Column()
+  @Column({ nullable: true })
   lastName?: string;
 
   @Column({ unique: true })
   email: string;
+
+  @Column({ nullable: true, unique: true })
+  name?: string;
 
   // @OneToMany((type) => PostEntity, (post) => post.author, {
   //   cascade: false,

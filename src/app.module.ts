@@ -1,18 +1,13 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigType } from '@nestjs/config';
 import { GraphQLModule } from '@nestjs/graphql';
-import { join } from 'path';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
-import { AuthzModule } from './authz/authz.module';
-import { DatabaseModule } from './database/database.module';
-// import plugin from 'apollo-server-plugin-operation-registry';
-import { PostsModule } from './posts/posts.module';
-import { UsersModule } from './users/users.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { getConnectionOptions } from 'typeorm';
-import dbConfig from './config/db.config';
 import { GraphQLError, GraphQLFormattedError } from 'graphql';
+import { join } from 'path';
+import { AuthzModule } from './authz/authz.module';
+import dbConfig from './config/db.config';
+import { DatabaseModule } from './database/database.module';
+import { GqlApiModule } from './gql-api/gql-api.module';
 
 @Module({
   imports: [
@@ -71,18 +66,19 @@ import { GraphQLError, GraphQLFormattedError } from 'graphql';
       // fieldResolverEnhancers: ['guards'],
       context: ({ req, res }) => ({ req, res }),
       formatError: (error: GraphQLError) => {
+        //console.log('GraphQLError::', JSON.stringify(error));
         const graphQLFormattedError: GraphQLFormattedError = {
-          message: error.extensions.exception.response.message || error.message,
+          message:
+            error?.extensions?.exception?.message || error?.message || '',
         };
         return graphQLFormattedError;
       },
     }),
     DatabaseModule,
-    PostsModule,
-    UsersModule,
     AuthzModule,
+    GqlApiModule,
   ],
-  providers: [AppService],
-  controllers: [AppController],
+  providers: [],
+  controllers: [],
 })
 export class AppModule {}

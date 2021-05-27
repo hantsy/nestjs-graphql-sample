@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { from, Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { from, Observable, EMPTY, of } from 'rxjs';
+import { map, switchMap } from 'rxjs/operators';
 import { UserRepository } from '../../database/repository/user.repository';
 import { User } from '../models/user.model';
 
@@ -10,6 +10,7 @@ export class UsersService {
 
   findById(id: string): Observable<User> {
     return from(this.userRepository.findOne(id)).pipe(
+      switchMap((u) => (u ? of(u) : EMPTY)),
       map((e, idx) => {
         return {
           id: e.id,

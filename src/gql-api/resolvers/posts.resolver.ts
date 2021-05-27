@@ -1,6 +1,7 @@
 import { ParseUUIDPipe, UseGuards } from '@nestjs/common';
 import {
   Args,
+  Int,
   Mutation,
   Parent,
   Query,
@@ -8,20 +9,22 @@ import {
   Resolver,
   Subscription,
 } from '@nestjs/graphql';
-import { AuthGuard } from '@nestjs/passport';
 import { PubSub } from 'graphql-subscriptions';
-import { Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
+import { tap, throwIfEmpty } from 'rxjs/operators';
+import { GqlUser } from '../../authz/gql-user.decorator';
+import { HasPermissions } from '../../authz/has-permissions.decorator';
+import { HasPermissionsGuard } from '../../authz/has-permissions.guard';
+import { JwtAuthGuard } from '../../authz/jwt-auth.guard';
+import { PermissionType } from '../../authz/permission-type.enum';
+import { UserPrincipal } from '../../authz/user-principal.interface';
 import { CommentInput } from '../dto/comment.input';
-import { CreatePostInput } from '../dto/create-post.input';
+import { PostInput } from '../dto/post.input';
 import { PostsArgs } from '../dto/posts.arg';
 import { Comment } from '../models/comment.model';
 import { Post } from '../models/post.model';
-import { PostsService } from './posts.service';
-import { JwtAuthGuard } from '../../authz/jwt-auth.guard';
-import { HasPermissionsGuard } from '../../authz/has-permissions.guard';
-import { HasPermissions } from '../../authz/has-permissions.decorator';
-import { PermissionType } from '../../authz/permission-type.enum';
+import { PostNotFoundError } from './post-not-found.error';
+import { PostsService } from '../service/posts.service';
 
 @Resolver((of) => Post)
 export class PostsResolver {
@@ -32,7 +35,9 @@ export class PostsResolver {
 
   @Query((returns) => Post)
   getPostById(@Args('postId', ParseUUIDPipe) id: string): Observable<Post> {
-    return this.postsService.findById(id);
+    return this.postsService
+      .findById(id)
+      .pipe(throwIfEmpty(() => new PostNotFoundError(id)));
   }
 
   @Query((returns) => [Post])
@@ -48,15 +53,18 @@ export class PostsResolver {
   @Mutation((returns) => Post)
   @UseGuards(JwtAuthGuard, HasPermissionsGuard)
   @HasPermissions(PermissionType.WRITE_POSTS)
-  createPost(@Args('createPostInput') data: CreatePostInput): Observable<Post> {
-    return this.postsService.createPost(data);
+  createPost(
+    @GqlUser() user: UserPrincipal,
+    @Args('createPostInput') data: PostInput,
+  ): Observable<Post> {
+    return this.postsService.createPost(user.userId, data);
   }
 
   @Mutation((returns) => Comment)
   @UseGuards(JwtAuthGuard, HasPermissionsGuard)
   @HasPermissions(PermissionType.WRITE_POSTS)
   addComment(
-    @Args('commentInput') commentInput: CommentInput,
+    @Args('commentInput', ParseUUIDPipe) commentInput: CommentInput,
   ): Observable<Comment> {
     return this.postsService
       .addComment(commentInput.postId, commentInput.content)

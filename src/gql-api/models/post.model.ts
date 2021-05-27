@@ -1,5 +1,5 @@
 import { Directive, Field, ID, ObjectType } from '@nestjs/graphql';
-import { User } from '../../users/models/user.model';
+import { User } from './user.model';
 import { Comment } from './comment.model';
 
 // @ObjectType()
@@ -29,6 +29,12 @@ export class Post {
 
   @Field()
   content: string;
+
+  @Field()
+  upvoted?: boolean;
+
+  @Field()
+  upvotedCount?: number;
 
   @Field((type) => [Comment])
   comments?: Comment[];

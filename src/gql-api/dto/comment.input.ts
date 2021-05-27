@@ -1,4 +1,5 @@
 import { Field, InputType } from '@nestjs/graphql';
+import { IsNotEmpty, MinLength } from 'class-validator';
 
 @InputType()
 export class CommentInput {
@@ -6,5 +7,7 @@ export class CommentInput {
   postId: string;
 
   @Field()
+  @IsNotEmpty()
+  @MinLength(10)
   content: string;
 }

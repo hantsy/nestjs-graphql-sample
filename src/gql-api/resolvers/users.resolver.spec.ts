@@ -1,10 +1,10 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { of } from 'rxjs';
-import { Post } from '../../posts/models/post.model';
-import { PostsService } from '../../posts/service/posts.service';
+import { Post } from '../models/post.model';
+import { PostsService } from '../service/posts.service';
 import { User } from '../models/user.model';
 import { UsersResolver } from './users.resolver';
-import { UsersService } from './users.service';
+import { UsersService } from '../service/users.service';
 
 describe('UsersResolver', () => {
   let resolver: UsersResolver;

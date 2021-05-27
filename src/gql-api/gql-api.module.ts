@@ -1,19 +1,23 @@
 import { Module } from '@nestjs/common';
-import { PostsResolver } from './service/posts.resolver';
+import { PostsResolver } from '../gql-api/resolvers/posts.resolver';
 import { PostsService } from './service/posts.service';
 import { DatabaseModule } from '../database/database.module';
 import { PubSub } from 'graphql-subscriptions';
+import { UsersResolver } from './resolvers/users.resolver';
+import { UsersService } from './service/users.service';
 
 @Module({
   imports: [DatabaseModule],
   providers: [
-    PostsService,
-    PostsResolver,
     {
       provide: PubSub,
       useValue: new PubSub(),
     },
+    PostsResolver,
+    UsersResolver,
+    UsersService,
+    PostsService,
   ],
-  exports: [PostsService],
+  exports: [],
 })
-export class PostsModule {}
+export class GqlApiModule {}

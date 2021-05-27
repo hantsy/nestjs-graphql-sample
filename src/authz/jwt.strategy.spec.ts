@@ -3,6 +3,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { mock } from 'jest-mock-extended';
 import auth0Config from '../config/auth0.config';
 import { JwtStrategy } from './jwt.strategy';
+import { PermissionType } from './permission-type.enum';
 
 describe('JwtStrategy', () => {
   let strategy: JwtStrategy;
@@ -30,11 +31,12 @@ describe('JwtStrategy', () => {
       expect(config.audience).toBe('http://api');
       expect(config.issuerUri).toBe('http://test/');
       const user = await strategy.validate({
+        sub: 'testsub',
         email: 'test@example.com',
         permissions: ['write:posts'],
       });
       expect(user.email).toEqual('test@example.com');
-      expect(user.permissions).toEqual(['write:posts']);
+      expect(user.permissions).toEqual([PermissionType['write:posts']]);
     });
   });
 });

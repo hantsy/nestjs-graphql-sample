@@ -7,11 +7,13 @@ import {
   ResolveField,
   Resolver,
 } from '@nestjs/graphql';
-import { PostsService } from '../../posts/service/posts.service';
-import { Post } from '../../posts/models/post.model';
-import { User } from '../models/user.model';
-import { UsersService } from './users.service';
+import { PostsService } from '../service/posts.service';
+import { Post } from '../../gql-api/models/post.model';
+import { User } from '../../gql-api/models/user.model';
+import { UsersService } from '../service/users.service';
 import { Observable } from 'rxjs';
+import { throwIfEmpty } from 'rxjs/operators';
+import { UserNotFoundError } from './user-not-found.error';
 
 @Resolver((of) => User)
 export class UsersResolver {
@@ -25,7 +27,9 @@ export class UsersResolver {
   )
   @Query((returns) => User, { name: 'author' })
   getUserById(@Args('userId') id: string): Observable<User> {
-    return this.usersService.findById(id);
+    return this.usersService
+      .findById(id)
+      .pipe(throwIfEmpty(() => new UserNotFoundError(id)));
   }
 
   @ResolveField((of) => [Post])

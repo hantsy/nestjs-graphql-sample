@@ -1,10 +1,12 @@
 import {
   Column,
+  CreateDateColumn,
   Entity,
   JoinColumn,
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 import { CommentEntity } from './comment.entity';
 import { UserEntity } from './user.entity';
@@ -17,15 +19,21 @@ export class PostEntity {
   @Column()
   title: string;
 
-  @Column()
-  content: string;
+  @Column({ nullable: true })
+  content?: string;
 
   @OneToMany((type) => CommentEntity, (comment) => comment.post, {
     cascade: true,
   })
   comments?: Promise<CommentEntity[]>;
 
-  @ManyToOne((type) => UserEntity)
-  @JoinColumn({ name: 'author' })
+  @ManyToOne((type) => UserEntity, { nullable: true })
+  @JoinColumn({ name: 'author_id' })
   author?: UserEntity;
+
+  @CreateDateColumn({ name: 'created_at', type: 'timestamp', nullable: true })
+  createdAt?: Date;
+
+  @UpdateDateColumn({ name: 'updated_at', type: 'timestamp', nullable: true })
+  updatedAt?: Date;
 }

@@ -32,6 +32,7 @@ export class PostsDataInitializer implements OnModuleInit {
       // NOTE: you must perform all database operations using the given manager instance
       // it's a special instance of EntityManager working with this transaction
       // and don't forget to await things here
+
       const commentDel = await mgr.delete(CommentEntity, {});
       console.log('comments deleted: ', commentDel.affected);
 
@@ -44,9 +45,11 @@ export class PostsDataInitializer implements OnModuleInit {
       const user = new UserEntity();
 
       Object.assign(user, {
+        id: 'test@id',
         firstName: 'hantsy',
         lastName: 'bai',
         email: 'hantsy@gmail.com',
+        name: 'hantsy',
       });
 
       await mgr.save(user);
@@ -56,7 +59,8 @@ export class PostsDataInitializer implements OnModuleInit {
           Object.assign(p, d);
           p.author = user;
 
-          const c = CommentEntity.of('test comment at:' + new Date());
+          const c = new CommentEntity();
+          c.content = 'test comment at:' + new Date();
           p.comments = Promise.resolve([c]);
           await mgr.save(p);
         }),

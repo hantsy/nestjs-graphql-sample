@@ -13,14 +13,9 @@ input CommentInput {
   postId: String!
 }
 
-input CreatePostInput {
-  content: String!
-  title: String!
-}
-
 type Mutation {
   addComment(commentInput: CommentInput!): Comment!
-  createPost(createPostInput: CreatePostInput!): Post!
+  createPost(createPostInput: PostInput!): Post!
 }
 
 type Post {
@@ -28,6 +23,13 @@ type Post {
   comments: [Comment!]!
   content: String!
   id: ID!
+  title: String!
+  upvoted: Boolean!
+  upvotedCount: Int!
+}
+
+input PostInput {
+  content: String!
   title: String!
 }
 

@@ -1,11 +1,13 @@
 import {
   Column,
+  CreateDateColumn,
   Entity,
   JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { PostEntity } from './post.entity';
+import { UserEntity } from './user.entity';
 
 @Entity({ name: 'comments' })
 export class CommentEntity {
@@ -19,9 +21,10 @@ export class CommentEntity {
   @JoinColumn({ name: 'post_id' })
   post: PostEntity;
 
-  public static of(comment: string): CommentEntity {
-    const c = new CommentEntity();
-    c.content = comment;
-    return c;
-  }
+  @ManyToOne((type) => UserEntity, { nullable: true })
+  @JoinColumn({ name: 'author_id' })
+  author?: UserEntity;
+
+  @CreateDateColumn({ name: 'created_at', type: 'timestamp' })
+  createdAt: Date;
 }

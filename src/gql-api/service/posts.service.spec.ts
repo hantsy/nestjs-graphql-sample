@@ -136,7 +136,7 @@ describe('PostsService', () => {
     };
     jest.spyOn(posts, 'save').mockResolvedValue(data);
 
-    const result = await service.createPost(data).toPromise();
+    const result = await service.createPost('test', data).toPromise();
     expect(result).toBeDefined();
     expect(result.id).toBe('1');
   });
