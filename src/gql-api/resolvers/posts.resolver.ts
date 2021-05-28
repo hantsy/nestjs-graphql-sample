@@ -1,7 +1,6 @@
 import { ParseUUIDPipe, UseGuards } from '@nestjs/common';
 import {
   Args,
-  Int,
   Mutation,
   Parent,
   Query,
@@ -10,7 +9,7 @@ import {
   Subscription,
 } from '@nestjs/graphql';
 import { PubSub } from 'graphql-subscriptions';
-import { Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
 import { tap, throwIfEmpty } from 'rxjs/operators';
 import { GqlUser } from '../../authz/gql-user.decorator';
 import { HasPermissions } from '../../authz/has-permissions.decorator';
@@ -23,8 +22,8 @@ import { PostInput } from '../dto/post.input';
 import { PostsArgs } from '../dto/posts.arg';
 import { Comment } from '../models/comment.model';
 import { Post } from '../models/post.model';
-import { PostNotFoundError } from './post-not-found.error';
 import { PostsService } from '../service/posts.service';
+import { PostNotFoundError } from './post-not-found.error';
 
 @Resolver((of) => Post)
 export class PostsResolver {
