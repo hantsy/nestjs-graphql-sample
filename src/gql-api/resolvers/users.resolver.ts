@@ -1,18 +1,23 @@
+import { UseGuards } from '@nestjs/common';
 import {
   Args,
   Directive,
-  Int,
+  Mutation,
   Parent,
   Query,
   ResolveField,
   Resolver,
 } from '@nestjs/graphql';
-import { PostsService } from '../service/posts.service';
+import { Observable } from 'rxjs';
+import { map, throwIfEmpty } from 'rxjs/operators';
+import { GqlUser } from '../../authz/gql-user.decorator';
+import { JwtAuthGuard } from '../../authz/jwt-auth.guard';
+import { UserPrincipal } from '../../authz/user-principal.interface';
 import { Post } from '../../gql-api/models/post.model';
 import { User } from '../../gql-api/models/user.model';
+import { UpdateUserResult } from '../models/update-result.model';
+import { PostsService } from '../service/posts.service';
 import { UsersService } from '../service/users.service';
-import { Observable } from 'rxjs';
-import { throwIfEmpty } from 'rxjs/operators';
 import { UserNotFoundError } from './user-not-found.error';
 
 @Resolver((of) => User)
@@ -35,5 +40,17 @@ export class UsersResolver {
   @ResolveField((of) => [Post])
   public posts(@Parent() user: User): Observable<Post[]> {
     return this.postsService.findByAuthor(user.id);
+  }
+
+  @Mutation((returns) => UpdateUserResult)
+  @UseGuards(JwtAuthGuard)
+  updateUser(@GqlUser() user: UserPrincipal): Observable<UpdateUserResult> {
+    console.log('gql user:', user);
+    const { userId, email, name } = user;
+    return this.usersService.update({ id: userId, email, name }).pipe(
+      map((b) => ({
+        success: b,
+      })),
+    );
   }
 }

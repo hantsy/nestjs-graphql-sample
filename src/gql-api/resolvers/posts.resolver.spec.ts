@@ -5,6 +5,7 @@ import { Comment } from '../models/comment.model';
 import { Post } from '../models/post.model';
 import { PostsResolver } from './posts.resolver';
 import { PostsService } from '../service/posts.service';
+import PostsLoaders from '../service/posts.loaders';
 
 describe('PostsResolver', () => {
   let resolver: PostsResolver;
@@ -27,6 +28,10 @@ describe('PostsResolver', () => {
             findByAuthor: jest.fn(),
             findCommentsOfPost: jest.fn(),
           },
+        },
+        {
+          provide: PostsLoaders,
+          useValue: { new: jest.fn(), constructor: jest.fn() },
         },
         {
           provide: PubSub,

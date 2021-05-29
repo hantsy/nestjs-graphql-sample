@@ -30,15 +30,12 @@ export class Post {
   @Field()
   content: string;
 
-  @Field()
-  upvoted?: boolean;
-
-  @Field()
-  upvotedCount?: number;
-
   @Field((type) => [Comment])
   comments?: Comment[];
 
   @Field((type) => User)
   author?: User;
+
+  @Field()
+  authorId?: string;
 }

@@ -16,10 +16,12 @@ input CommentInput {
 type Mutation {
   addComment(commentInput: CommentInput!): Comment!
   createPost(createPostInput: PostInput!): Post!
+  updateUser: UpdateUserResult!
 }
 
 type Post {
   author: User!
+  authorId: String!
   comments: [Comment!]!
   content: String!
   id: ID!
@@ -43,10 +45,14 @@ type Subscription {
   commentAdded: Comment!
 }
 
+type UpdateUserResult {
+  message: String!
+  success: Boolean!
+}
+
 type User {
   email: String!
-  firstName: String!
   id: ID!
-  lastName: String!
+  name: String!
   posts: [Post!]!
 }

@@ -36,7 +36,7 @@ describe('JwtStrategy', () => {
         permissions: ['write:posts'],
       });
       expect(user.email).toEqual('test@example.com');
-      expect(user.permissions).toEqual([PermissionType['write:posts']]);
+      expect(user.permissions).toEqual([<PermissionType>'write:posts']);
     });
   });
 });

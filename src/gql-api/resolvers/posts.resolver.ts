@@ -22,15 +22,35 @@ import { PostInput } from '../dto/post.input';
 import { PostsArgs } from '../dto/posts.arg';
 import { Comment } from '../models/comment.model';
 import { Post } from '../models/post.model';
+import PostsLoaders from '../service/posts.loaders';
 import { PostsService } from '../service/posts.service';
 import { PostNotFoundError } from './post-not-found.error';
+import { User } from '../models/user.model';
 
 @Resolver((of) => Post)
 export class PostsResolver {
   constructor(
     private readonly postsService: PostsService,
+    private readonly postsLoaders: PostsLoaders,
     private readonly pubSub: PubSub,
   ) {}
+
+  // @Query(() => [Post])
+  // async posts(
+  //   @Info() info: GraphQLResolveInfo
+  // ) {
+  //   const parsedInfo = parseResolveInfo(info) as ResolveTree;
+  //   const simplifiedInfo = simplifyParsedResolveInfoFragmentWithType(
+  //     parsedInfo,
+  //     info.returnType
+  //   );
+
+  //   const posts = 'author' in simplifiedInfo.fields
+  //     ? await this.postsService.getPostsWithAuthors()
+  //     : await this.postsService.getPosts();
+
+  //   return posts.items;
+  // }
 
   @Query((returns) => Post)
   getPostById(@Args('postId', ParseUUIDPipe) id: string): Observable<Post> {
@@ -42,6 +62,12 @@ export class PostsResolver {
   @Query((returns) => [Post])
   getAllPosts(@Args() postsArg: PostsArgs): Observable<Post[]> {
     return this.postsService.findAll(postsArg);
+  }
+
+  @ResolveField('author', () => User)
+  async getAuthor(@Parent() post: Post) {
+    const { authorId } = post;
+    return this.postsLoaders.batchAuthors.load(authorId);
   }
 
   @ResolveField((of) => [Comment])

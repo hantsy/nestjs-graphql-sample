@@ -53,7 +53,7 @@ describe('application (e2e)', () => {
         const res = await request(app.getHttpServer())
           .post(gql)
           .send({
-            query: `mutation($createPostInput:CreatePostInput!){
+            query: `mutation($createPostInput:PostInput!){
           createPost(createPostInput:$createPostInput){
              id
              title
@@ -76,18 +76,32 @@ describe('application (e2e)', () => {
     describe('posts operations(with token)', () => {
       const token =
         process.env.TOKEN ||
-        'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IlYzM1lvNzk5cC1XeFI2NHpJZ29QMyJ9.eyJpc3MiOiJodHRwczovL2Rldi1lc2U4MjQxYi51cy5hdXRoMC5jb20vIiwic3ViIjoiSUVYVjJNYkFpdUVrVjBKN3VmSDBCcXEyYTJZSUYzaDFAY2xpZW50cyIsImF1ZCI6Imh0dHBzOi8vaGFudHN5LmdpdGh1Yi5pby9hcGkiLCJpYXQiOjE2MjE2NjI4NjAsImV4cCI6MTYyMTc0OTI2MCwiYXpwIjoiSUVYVjJNYkFpdUVrVjBKN3VmSDBCcXEyYTJZSUYzaDEiLCJzY29wZSI6InJlYWQ6cG9zdHMgd3JpdGU6cG9zdHMgZGVsZXRlOnBvc3RzIiwiZ3R5IjoiY2xpZW50LWNyZWRlbnRpYWxzIiwicGVybWlzc2lvbnMiOlsicmVhZDpwb3N0cyIsIndyaXRlOnBvc3RzIiwiZGVsZXRlOnBvc3RzIl19.VXwxVYKjyJ65F3phGs8D7L8vtZbJKNSKjO40L0yuF_LhA24CUOT29EYub3OedmRmMLPCrM829t3LH5UnQw8u3vpLx3TEOVWewqYVEp1cgcznxmD6jIRZEs4NQElDBeVb2SD2QYNgB4ffkhWLYoaOP1LQQCYo1zMek-ujTN2HLR-386-EzG8J0Cc1pEcIvwIrin8XvzedZMZhe9NKHAZIa4CY9muh4QjCb5KPcj-k5lG3Qrf3syztn_vZSCvtUbDWTIuLk68eAU3fWXRq-QEdG3pyloUpBZ_CQJ4fdj7QfR4W5xJE3UxkBTEtOExqkuS8FTf4OAY5IaXfyRH6zo8KuA';
+        'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IlYzM1lvNzk5cC1XeFI2NHpJZ29QMyJ9.eyJpc3MiOiJodHRwczovL2Rldi1lc2U4MjQxYi51cy5hdXRoMC5jb20vIiwic3ViIjoiSUVYVjJNYkFpdUVrVjBKN3VmSDBCcXEyYTJZSUYzaDFAY2xpZW50cyIsImF1ZCI6Imh0dHBzOi8vaGFudHN5LmdpdGh1Yi5pby9hcGkiLCJpYXQiOjE2MjIyODMxNDEsImV4cCI6MTYyMjM2OTU0MSwiYXpwIjoiSUVYVjJNYkFpdUVrVjBKN3VmSDBCcXEyYTJZSUYzaDEiLCJzY29wZSI6InJlYWQ6cG9zdHMgd3JpdGU6cG9zdHMgZGVsZXRlOnBvc3RzIiwiZ3R5IjoiY2xpZW50LWNyZWRlbnRpYWxzIiwicGVybWlzc2lvbnMiOlsicmVhZDpwb3N0cyIsIndyaXRlOnBvc3RzIiwiZGVsZXRlOnBvc3RzIl19.NRYnpuLQBI8KvZSfrqyy9IKctCdaNoKMZzZ6iIXKZmqfM_IYcR90YKGqW7Xx3R2_EPWkWpH0i8deM0-GV0FTZUFZO0YYs3upWe1M9_GdQouyeADueFUd_XbE9esoR3AWdq7Iu9BmqafA8t66kXdupKh7ADMkuK_mhF5sD7M0FY9HvH1kbWQBvhWLbSlHPWsfQFldJ7wKJKyKY1lSooXnHfVMthrdLi5KlTt06TQ-GOXD1wC9GW9G9wiiV2NJeZrVJ4mNjsK5kCve5ImESHGSI3hZh8e8E0-K4dY5NsFjKttu7mEdtznm30U7iISxFjfFzucClDj3OnjxuzzEIw1kYQ';
 
       beforeAll(() => {
         console.log('token:', token);
       });
 
       it('mutation createPost', async () => {
+        //sync user data to users
+        const updateUserRes = await request(app.getHttpServer())
+          .post(gql)
+          .set('authorization', 'Bearer ' + token)
+          .send({
+            query: `mutation{
+              updateUser{
+                success
+              }
+            }`,
+          });
+        console.log('updateUserRes data:', JSON.stringify(updateUserRes.body));
+        expect(updateUserRes.body.data.success).toBeTruthy();
+
         const res = await request(app.getHttpServer())
           .post(gql)
           .set('authorization', 'Bearer ' + token)
           .send({
-            query: `mutation($createPostInput:CreatePostInput!){
+            query: `mutation($createPostInput:PostInput!){
               createPost(createPostInput:$createPostInput){
                  id
                  title
@@ -101,6 +115,7 @@ describe('application (e2e)', () => {
             },
           });
         console.log('createPost data:', JSON.stringify(res.body.data));
+        console.log('createPost errors:', JSON.stringify(res.body.errors));
         const postId = res.body.data.createPost.id;
         expect(res.status).toBe(200);
         expect(postId).not.toBeNull();

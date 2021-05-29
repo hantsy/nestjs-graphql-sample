@@ -6,6 +6,7 @@ import {
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
+  RelationId,
   UpdateDateColumn,
 } from 'typeorm';
 import { CommentEntity } from './comment.entity';
@@ -30,6 +31,9 @@ export class PostEntity {
   @ManyToOne((type) => UserEntity, { nullable: true })
   @JoinColumn({ name: 'author_id' })
   author?: UserEntity;
+
+  @RelationId((post: PostEntity) => post.author)
+  authorId?: string;
 
   @CreateDateColumn({ name: 'created_at', type: 'timestamp', nullable: true })
   createdAt?: Date;

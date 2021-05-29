@@ -78,6 +78,7 @@ export class PostsService {
       id: e.id,
       title: e.title,
       content: e.content,
+      authorId: e.authorId,
     };
   }
 
@@ -87,6 +88,7 @@ export class PostsService {
         id: e.id,
         title: e.title,
         content: e.content,
+        authorId: e.authorId,
       };
     });
   }

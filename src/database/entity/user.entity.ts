@@ -6,14 +6,8 @@ export class UserEntity {
   @Column({ nullable: false, primary: true })
   id: string;
 
-  @Column({ nullable: true })
-  firstName?: string;
-
-  @Column({ nullable: true })
-  lastName?: string;
-
-  @Column({ unique: true })
-  email: string;
+  @Column({ nullable: true, unique: true })
+  email?: string;
 
   @Column({ nullable: true, unique: true })
   name?: string;

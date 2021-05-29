@@ -46,8 +46,6 @@ export class PostsDataInitializer implements OnModuleInit {
 
       Object.assign(user, {
         id: 'test@id',
-        firstName: 'hantsy',
-        lastName: 'bai',
         email: 'hantsy@gmail.com',
         name: 'hantsy',
       });

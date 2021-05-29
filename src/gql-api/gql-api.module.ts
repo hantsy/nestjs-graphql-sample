@@ -5,6 +5,7 @@ import { DatabaseModule } from '../database/database.module';
 import { PubSub } from 'graphql-subscriptions';
 import { UsersResolver } from './resolvers/users.resolver';
 import { UsersService } from './service/users.service';
+import PostsLoaders from './service/posts.loaders';
 
 @Module({
   imports: [DatabaseModule],
@@ -17,6 +18,7 @@ import { UsersService } from './service/users.service';
     UsersResolver,
     UsersService,
     PostsService,
+    PostsLoaders,
   ],
   exports: [],
 })

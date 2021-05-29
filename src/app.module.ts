@@ -64,7 +64,11 @@ import { GqlApiModule } from './gql-api/gql-api.module';
         //upper: UpperCaseDirective,
       },
       // fieldResolverEnhancers: ['guards'],
-      context: ({ req, res }) => ({ req, res }),
+      context: ({ req, res }) => ({
+        req,
+        res,
+        //batchAuthorsLoader: batchAuthorsLoader(usersService),
+      }),
       formatError: (error: GraphQLError) => {
         //console.log('GraphQLError::', JSON.stringify(error));
         const graphQLFormattedError: GraphQLFormattedError = {

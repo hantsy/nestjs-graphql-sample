@@ -19,11 +19,11 @@ export class HasPermissionsGuard implements CanActivate {
     if (!routePermissions || routePermissions.length == 0) {
       return true;
     }
+    console.log('route requires permissions:', routePermissions);
     const { user } = GqlExecutionContext.create(context).getContext()
       .req as AuthenticatedRequest;
-    return (
-      user.permissions &&
-      user.permissions.some((r) => routePermissions.includes(r))
-    );
+    const { permissions } = user;
+    console.log('has permissions:', permissions);
+    return permissions && permissions.some((r) => routePermissions.includes(r));
   }
 }
