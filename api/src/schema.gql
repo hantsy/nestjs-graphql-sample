@@ -1,0 +1,64 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Comment {
+  content: String!
+  id: ID!
+  post: Post!
+}
+
+input CommentInput {
+  content: String!
+  postId: String!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type Mutation {
+  addComment(commentInput: CommentInput!): Comment!
+  createPost(createPostInput: PostInput!): Post!
+  updateUser: UpdateUserResult!
+}
+
+type Post {
+  author: User!
+  authorId: String
+  comments: [Comment!]
+  content: String
+  createdAt: DateTime
+  id: ID!
+  title: String!
+  updatedAt: DateTime
+}
+
+input PostInput {
+  content: String!
+  id: String
+  title: String!
+}
+
+type Query {
+  author(userId: String!): User!
+  getAllPosts(keyword: String = "", skip: Int = 0, take: Int = 25): [Post!]!
+  getPostById(postId: String!): Post!
+}
+
+type Subscription {
+  commentAdded: Comment!
+}
+
+type UpdateUserResult {
+  message: String!
+  success: Boolean!
+}
+
+type User {
+  email: String
+  id: ID!
+  name: String
+  posts: [Post!]
+}

@@ -1,0 +1,28 @@
+<form id="form" #f="ngForm" name="form" class="form" (ngSubmit)="submit()">
+  <div class="mb-3">
+    <label for="title" class="form-label">title *:</label>
+    <input id="title" name="title" class="form-control" [ngClass]="{'is-invalid': title.dirty&&title.invalid }"
+      #title="ngModel" [(ngModel)]="post.title" required />
+    <div class="invalid-feedback" *ngIf="title.hasError('required')">
+      Post Title is required
+    </div>
+  </div>
+  <div class="mb-3">
+    <label for="content" class="form-label">content *:</label>
+    <textarea name="content" id="content" class="form-control"
+      [ngClass]="{'is-invalid': content.dirty&&content.invalid }" #content="ngModel" [(ngModel)]="post.content" rows="8"
+      required minlength="10">
+    </textarea>
+    <div class="invalid-feedback" *ngIf="content.hasError('required')">
+      Post Content is required
+    </div>
+    <div class="invalid-feedback" *ngIf="content.hasError('minlength')">
+      At least 10 chars
+    </div>
+  </div>
+  <div class="float-start">
+    <button class="btn btn-primary btn-lg" type="submit" [disabled]="f.invalid || f.pending">
+      {{'save'}}</button>
+  </div>
+
+</form>

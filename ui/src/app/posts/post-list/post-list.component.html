@@ -1,0 +1,33 @@
+<div *ngIf="loading">Loading...</div>
+<div *ngIf="!loading">
+  <div class="w-100 mb-2">
+    <!-- <div class="input-group col-sm-12 col-6">
+    <input type="text" class="form-control" #keyword="ngModel" [(ngModel)]="q" placeholder="Type to filter posts"
+      aria-label="Type to filter posts" aria-describedby="basic-addon2">
+    <button id="basic-addon2" class="btn btn-outline-secondary" (click)="search()">@example.com</button>
+  </div> -->
+    <div class="float-end">
+      <a routerLink="/posts/new" class="btn btn-primary"><i class="bi bi-plus-circle"></i> New Post
+      </a>
+    </div>
+  </div>
+
+  <div *ngIf="error">{{error}}</div>
+  <div *ngIf="!error">
+    <div class="card mb-2" *ngFor="let post of posts">
+      <div class="card-body">
+        <div class="card-title">
+          <h2>{{post.title|uppercase}}</h2>
+          <div class="text-muted">{{post.author?.id||'unknown'}} &bull; {{post.createdAt|date:'short'}}
+            <a class="btn btn-sm btn-outline-primary" [routerLink]="['/posts', 'edit', post.id]">
+              <i class="bi bi-pencil"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="card-text m-3">{{post.content}}</div>
+      <div class="me-3 mb-3"><a class="float-end btn btn-outline-secondary"
+          [routerLink]="['/posts', 'view', post.id]">more...</a></div>
+    </div>
+  </div>
+</div>

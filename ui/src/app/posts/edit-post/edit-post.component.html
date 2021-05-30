@@ -1,0 +1,16 @@
+<div class="card w-100 mb-2">
+  <div class="card-body m-0 d-flex flex-column">
+    <div class="card-title">
+      <h2>
+        {{'edit-post'}}
+      </h2>
+      <p class="muted-text">
+        all fields marked with star are required.
+      </p>
+    </div>
+    <app-post-form class="d-flex" [post]="post" (save)="onPostUpdated($event)"></app-post-form>
+    <div>
+      back to <a routerLink="/posts">{{'post-list'}}</a>
+    </div>
+  </div>
+</div>
