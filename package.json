@@ -22,5 +22,8 @@
   "devDependencies": {
     "@commitlint/config-conventional": "^12.1.4",
     "commitlint": "^12.1.4"
+  },
+  "dependencies": {
+    "husky": "^7.0.0"
   }
 }
