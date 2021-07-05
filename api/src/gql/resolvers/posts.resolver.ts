@@ -83,7 +83,7 @@ export class PostsResolver {
     @GqlUser() user: UserPrincipal,
     @Args('createPostInput') data: PostInput,
   ): Observable<Post> {
-    return this.postsService.savePost(user.userId, data);
+    return this.postsService.createPost(user.userId, data);
   }
 
   @Mutation((returns) => Comment)

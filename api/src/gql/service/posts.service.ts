@@ -33,7 +33,7 @@ export class PostsService {
     );
   }
 
-  savePost(authorId: string, data: PostInput): Observable<Post> {
+  createPost(authorId: string, data: PostInput): Observable<Post> {
     return from(
       this.postRepository.save({
         id: data.id,

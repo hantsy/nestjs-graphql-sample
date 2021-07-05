@@ -6,6 +6,7 @@ import { Post } from '../models/post.model';
 import { PostsResolver } from './posts.resolver';
 import { PostsService } from '../service/posts.service';
 import PostsLoaders from '../service/posts.loaders';
+import { PostInput } from '../dto/post.input';
 
 describe('PostsResolver', () => {
   let resolver: PostsResolver;
@@ -87,11 +88,16 @@ describe('PostsResolver', () => {
       id: '1',
       title: 'post 1',
       content: 'content 1',
-    };
+    } as Post;
+    const inputData = {
+      id: '1',
+      title: 'post 1',
+      content: 'content 1',
+    } as PostInput;
     jest.spyOn(posts, 'createPost').mockReturnValue(of(data));
 
     const result = await resolver
-      .createPost({ userId: 'test' }, data)
+      .createPost({ userId: 'test' }, inputData)
       .toPromise();
     expect(result).toBeDefined();
     expect(result.id).toBe('1');
