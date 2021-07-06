@@ -1,8 +1,7 @@
+require('jest-preset-angular/ngcc-jest-processor');
+
+/** @type {import('@jest/types').Config.InitialOptions} */
 module.exports = {
-  globals: {
-    "ts-jest": {
-      allowSyntheticDefaultImports: true,
-    },
-  },
-  projects: [],
+  preset: 'jest-preset-angular',
+  setupFilesAfterEnv: ['<rootDir>/setup-jest.ts'],
 };
