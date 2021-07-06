@@ -6,7 +6,7 @@ on:
       - "docs/**"
     branches:
       - master
-#      - release/*
+  #      - release/*
   pull_request:
     types:
       - opened
@@ -39,7 +39,7 @@ jobs:
       - run: npm run test:cov
       - name: Upload testing reports
         run: |
-          bash <(curl -s https://codecov.io/bash)
+          bash <(curl -s https://codecov.io/bash) -t api
         env:
           CODECOV_TOKEN: ${{secrets.CODECOV_TOKEN}}
   # see: https://www.edwardthomson.com/blog/github_actions_22_automerge_security_updates.html
