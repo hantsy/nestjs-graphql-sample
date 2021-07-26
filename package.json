@@ -20,7 +20,7 @@
   },
   "homepage": "https://github.com/hantsy/nestjs-graphql-sample#readme",
   "devDependencies": {
-    "@commitlint/config-conventional": "^12.1.4",
+    "@commitlint/config-conventional": "^13.1.0",
     "commitlint": "^13.1.0"
   },
   "dependencies": {
