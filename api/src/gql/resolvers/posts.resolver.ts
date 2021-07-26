@@ -20,12 +20,12 @@ import { UserPrincipal } from '../../authz/user-principal.interface';
 import { CommentInput } from '../dto/comment.input';
 import { PostInput } from '../dto/post.input';
 import { PostsArgs } from '../dto/posts.arg';
-import { Comment } from '../models/comment.model';
-import { Post } from '../models/post.model';
+import { Comment } from '../types/comment.model';
+import { Post } from '../types/post.model';
 import PostsLoaders from '../service/posts.loaders';
 import { PostsService } from '../service/posts.service';
 import { PostNotFoundError } from './post-not-found.error';
-import { User } from '../models/user.model';
+import { User } from '../types/user.model';
 
 @Resolver((of) => Post)
 export class PostsResolver {

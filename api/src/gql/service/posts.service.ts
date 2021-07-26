@@ -6,8 +6,8 @@ import { CommentRepository } from '../../database/repository/comment.repository'
 import { PostRepository } from '../../database/repository/post.repository';
 import { PostInput } from '../dto/post.input';
 import { PostsArgs } from '../dto/posts.arg';
-import { Comment } from '../models/comment.model';
-import { Post } from '../models/post.model';
+import { Comment } from '../types/comment.model';
+import { Post } from '../types/post.model';
 
 @Injectable()
 export class PostsService {
