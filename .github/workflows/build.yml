@@ -58,7 +58,7 @@ jobs:
 
       # install dependencies and build the project
       - name: Build
-      - run: |
+        run: |
           cd ./api
           npm install --registry=https://registry.npmjs.org
           npm run test:cov
