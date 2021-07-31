@@ -7,7 +7,7 @@ import { join } from 'path';
 import { AuthzModule } from './authz/authz.module';
 import dbConfig from './config/db.config';
 import { DatabaseModule } from './database/database.module';
-import { GqlApiModule } from './gql-api/gql-api.module';
+import { GqlApiModule } from './gql/gql-api.module';
 
 @Module({
   imports: [

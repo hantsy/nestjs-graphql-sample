@@ -4,7 +4,7 @@ import { map, switchMap, tap } from 'rxjs/operators';
 import { In, InsertResult } from 'typeorm';
 import { UserEntity } from '../../database/entity/user.entity';
 import { UserRepository } from '../../database/repository/user.repository';
-import { User } from '../models/user.model';
+import { User } from '../types/user.model';
 
 @Injectable()
 export class UsersService {
