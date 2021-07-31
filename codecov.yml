@@ -1,1 +1,40 @@
 
+ignore:
+  - "**/*.repository.*"  
+
+# Setting coverage targets per flag
+coverage:
+  status:
+    project:
+#       default:
+#         target: 90% #overall project/ repo coverage
+      ui:
+        target: 60%
+       flags:
+          - ui
+      aip:
+        target: 80%
+        flags:
+          - api
+
+# adding Flags to your `layout` configuration to show up in the PR comment
+comment:
+  layout: "reach, diff, flags, files"
+  behavior: default
+  require_changes: false  
+  require_base: yes
+  require_head: yes       
+  branches: null
+
+# New root YAML section = `flags:`
+# This is where you would define every flag from your
+# uploader, and update when new Flags added
+flags:
+  ui:  
+    paths:
+      - ui/src
+     carryforward: false #default -- false
+  api:
+    paths:
+      - api/src
+     carryforward: true  
