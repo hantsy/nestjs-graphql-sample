@@ -1,6 +1,6 @@
 # NestJS GraphQL Sample
 
-![Compile and build](https://github.com/hantsy/nestjs-graphql-sample/workflows/Build/badge.svg)
+![Compile and build](https://github.com/hantsy/nestjs-graphql-sample/workflows/build/badge.svg)
 ![Run e2e testing](https://github.com/hantsy/nestjs-graphql-sample/workflows/e2e/badge.svg)
 [![codecov](https://codecov.io/gh/hantsy/nestjs-graphql-sample/branch/master/graph/badge.svg)](https://codecov.io/gh/hantsy/nestjs-graphql-sample)
 
