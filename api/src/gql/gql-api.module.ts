@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { PostsResolver } from '../gql-api/resolvers/posts.resolver';
+import { PostsResolver } from './resolvers/posts.resolver';
 import { PostsService } from './service/posts.service';
 import { DatabaseModule } from '../database/database.module';
 import { PubSub } from 'graphql-subscriptions';
