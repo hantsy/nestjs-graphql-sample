@@ -50,7 +50,7 @@
     "@commitlint/cli": "^12.1.4",
     "@commitlint/config-conventional": "^12.1.4",
     "@golevelup/nestjs-testing": "^0.1.2",
-    "@nestjs/cli": "^7.6.0",
+    "@nestjs/cli": "^8.1.0",
     "@nestjs/schematics": "^7.3.1",
     "@nestjs/testing": "^7.6.18",
     "@types/express": "^4.17.12",
