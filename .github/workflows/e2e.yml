@@ -47,9 +47,9 @@ jobs:
           restore-keys: |
             ${{ runner.OS }}-node-
             ${{ runner.OS }}-
-      - run: npm install  --registry=https://registry.npmjs.org
-
-      # install dependencies and build the project
-      - name: Running e2e testing
+      - name: Build and Run E2E tests
         run: |
+          cd ./api
+          npm install --registry=https://registry.npmjs.org
           npm run test:e2e -- --runInBand --forceExit --detectOpenHandles
+
