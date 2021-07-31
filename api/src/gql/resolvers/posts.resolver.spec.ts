@@ -1,8 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { PubSub } from 'graphql-subscriptions';
 import { of } from 'rxjs';
-import { Comment } from '../models/comment.model';
-import { Post } from '../models/post.model';
+import { Comment } from '../types/comment.model';
+import { Post } from '../types/post.model';
 import { PostsResolver } from './posts.resolver';
 import { PostsService } from '../service/posts.service';
 import PostsLoaders from '../service/posts.loaders';

@@ -1,8 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { of } from 'rxjs';
-import { Post } from '../models/post.model';
+import { Post } from '../types/post.model';
 import { PostsService } from '../service/posts.service';
-import { User } from '../models/user.model';
+import { User } from '../types/user.model';
 import { UsersResolver } from './users.resolver';
 import { UsersService } from '../service/users.service';
 
