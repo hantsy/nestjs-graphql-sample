@@ -1,4 +1,4 @@
-name: Build
+name: build
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
       - "docs/**"
     branches:
       - master
-  #      - release/*
+      - release/*
   pull_request:
     types:
       - opened
@@ -14,7 +14,7 @@ on:
       - reopened
 
 jobs:
-  build-ui:
+  ui:
     runs-on: ubuntu-latest
 
     steps:
@@ -36,7 +36,7 @@ jobs:
           npm install
           npm run build:prod
 
-  build-api:
+  api:
     runs-on: ubuntu-latest
 
     steps:
