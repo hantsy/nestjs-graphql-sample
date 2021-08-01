@@ -6,6 +6,5 @@
     "types": []
   },
   "files": ["src/main.ts", "src/polyfills.ts"],
-  "include": ["src/**/*.d.ts"],
-  "exclude": ["jest-global.mocks.ts", "setup-jest.ts"]
+  "include": ["src/**/*.d.ts"]
 }

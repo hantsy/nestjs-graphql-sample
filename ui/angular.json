@@ -90,6 +90,15 @@
             "lintFilePatterns": ["src/**/*.ts", "src/**/*.html"]
           }
         },
+        "test": {
+          "builder": "@angular-builders/jest:run",
+          "options": {
+            "verbose":true,
+            "globalMocks": ["getComputedStyle", "doctype"],
+            "no-cache": true,
+            "reporters": ["jest-junit"]
+          }
+        },
         "e2e": {
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {

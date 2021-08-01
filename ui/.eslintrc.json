@@ -1,3 +1,4 @@
+//https://github.com/angular-eslint/angular-eslint/blob/master/packages/integration-tests/fixtures/v1123-multi-project-manual-config/.eslintrc.json
 {
   "root": true,
   "ignorePatterns": [
@@ -10,10 +11,9 @@
       ],
       "parserOptions": {
         "project": [
-          "tsconfig.json",
-          "e2e/tsconfig.json"
+          "tsconfig.eslint.json"
         ],
-        "createDefaultProgram": true
+        "createDefaultProgram": false
       },
       "extends": [
         "plugin:@angular-eslint/recommended",
