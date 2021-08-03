@@ -61,6 +61,7 @@ jobs:
         run: |
           cd ./api
           npm install --registry=https://registry.npmjs.org
+          npm run build
           npm run test:cov
           # Upload testing reports
           bash <(curl -s https://codecov.io/bash) -F api
