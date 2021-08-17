@@ -1,7 +1,9 @@
-import { Injectable } from '@nestjs/common';
 import { EMPTY, from, Observable, of } from 'rxjs';
 import { map, switchMap, tap } from 'rxjs/operators';
 import { In, InsertResult } from 'typeorm';
+
+import { Injectable } from '@nestjs/common';
+
 import { UserEntity } from '../../database/entity/user.entity';
 import { UserRepository } from '../../database/repository/user.repository';
 import { User } from '../types/user.model';
@@ -11,7 +13,7 @@ export class UsersService {
   constructor(private readonly userRepository: UserRepository) {}
 
   update(user: {
-    id: string;
+    auth0Id: string;
     email: string;
     name: string;
   }): Observable<boolean> {
@@ -24,7 +26,7 @@ export class UsersService {
       .into(UserEntity)
       .values(user)
       //.onConflict(`("email") DO NOTHING`)
-      .orUpdate({ conflict_target: ['id', 'email'] })
+      .orUpdate(['auth0Id', 'name'], ['email'])
       .execute();
 
     return from(result).pipe(

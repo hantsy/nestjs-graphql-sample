@@ -1,6 +1,8 @@
-import { Injectable } from '@nestjs/common';
 import { EMPTY, from, Observable, of } from 'rxjs';
 import { map, switchMap, tap } from 'rxjs/operators';
+
+import { Injectable } from '@nestjs/common';
+
 import { PostEntity } from '../../database/entity/post.entity';
 import { CommentRepository } from '../../database/repository/comment.repository';
 import { PostRepository } from '../../database/repository/post.repository';
@@ -63,13 +65,19 @@ export class PostsService {
   }
 
   addComment(id: string, comment: string): Observable<Comment> {
-    return from(
-      this.commentRepository.save({
-        content: comment,
-        post: { id: id } as PostEntity,
-      }),
-    ).pipe(
-      map((c, idx) => {
+    return from(this.postRepository.findOne(id)).pipe(
+      switchMap((p) =>
+        p
+          ? from(
+              this.commentRepository.save({
+                content: comment,
+                post: p,
+              }),
+            )
+          : EMPTY,
+      ),
+
+      map((c) => {
         return { id: c.id, content: c.content } as Comment;
       }),
     );
@@ -87,7 +95,7 @@ export class PostsService {
   }
 
   private mapAsModelArray(entities: PostEntity[]): Post[] {
-    return entities.map((e) => {
+    return entities.map(e => {
       return {
         id: e.id,
         title: e.title,

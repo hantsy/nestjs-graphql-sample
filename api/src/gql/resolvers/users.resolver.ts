@@ -47,7 +47,7 @@ export class UsersResolver {
   updateUser(@GqlUser() user: UserPrincipal): Observable<UpdateUserResult> {
     console.log('gql user:', user);
     const { userId, email, name } = user;
-    return this.usersService.update({ id: userId, email, name }).pipe(
+    return this.usersService.update({ auth0Id: userId, email, name }).pipe(
       map((b) => ({
         success: b,
       })),
