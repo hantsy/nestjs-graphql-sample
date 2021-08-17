@@ -31,7 +31,7 @@ describe('Database integration test', () => {
   it('smoke tests for repositories', async () => {
     const user = new UserEntity();
     Object.assign(user, {
-      auth0Id: 'e2etest@id',
+      id: 'e2etest@id',
       email: 'e2e@example.com',
     });
 

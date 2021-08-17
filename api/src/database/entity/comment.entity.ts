@@ -25,13 +25,6 @@ export class CommentEntity {
   @RelationId((comment: CommentEntity) => comment.post)
   postId?: string;
 
-  @ManyToOne((type) => UserEntity, { nullable: true })
-  @JoinColumn({ name: 'author_id' })
-  author?: UserEntity;
-
-  @RelationId((comment: CommentEntity) => comment.author)
-  authorId?: string;
-
   @CreateDateColumn({ name: 'created_at', type: 'timestamp' })
   createdAt: Date;
 }

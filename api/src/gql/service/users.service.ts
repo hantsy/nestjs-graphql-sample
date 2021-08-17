@@ -13,7 +13,7 @@ export class UsersService {
   constructor(private readonly userRepository: UserRepository) {}
 
   update(user: {
-    auth0Id: string;
+    id: string;
     email: string;
     name: string;
   }): Observable<boolean> {
@@ -26,7 +26,7 @@ export class UsersService {
       .into(UserEntity)
       .values(user)
       //.onConflict(`("email") DO NOTHING`)
-      .orUpdate(['auth0Id', 'name'], ['email'])
+      .orUpdate(['name'], ['email'])
       .execute();
 
     return from(result).pipe(
