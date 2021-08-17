@@ -54,6 +54,7 @@ jobs:
           --header 'content-type: application/json' \
           --data '{"client_id":"${{ secrets.CLIENT_ID}}","client_secret":"${{secrets.CLIENT_SECRET}}","audience":"https://hantsy.github.io/api","grant_type":"client_credentials"}')
           export TOKEN=$( jq -r ".access_token" <<<"$json" )
+          echo "token: $TOKEN"
           cd ./api
           npm install --registry=https://registry.npmjs.org
           npm run test:e2e -- --runInBand --forceExit --detectOpenHandles
