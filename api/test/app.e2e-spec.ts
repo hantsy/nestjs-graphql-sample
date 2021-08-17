@@ -3,6 +3,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import * as request from 'supertest';
 import { AppModule } from './../src/app.module';
 import { HttpExceptionFilter } from '../src/common/filters/http.exception.filter';
+import { Post } from 'src/gql/types/post.model';
 const gql = '/graphql';
 
 describe('application (e2e)', () => {
@@ -115,7 +116,7 @@ describe('application (e2e)', () => {
           });
         console.log('createPost data:', JSON.stringify(res.body.data));
         console.log('createPost errors:', JSON.stringify(res.body.errors));
-        const postId = res.body.data.createPost.id;
+        const postId = (res.body.data.createPost as Post).id;
         console.log('created post id:', postId);
         expect(res.status).toBe(200);
         expect(postId).not.toBeNull();
