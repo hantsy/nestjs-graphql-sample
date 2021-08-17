@@ -1,4 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
+import { lastValueFrom } from 'rxjs';
 import { CommentEntity } from '../../database/entity/comment.entity';
 import { PostEntity } from '../../database/entity/post.entity';
 import { CommentRepository } from '../../database/repository/comment.repository';
@@ -74,9 +75,9 @@ describe('PostsService', () => {
       .mockImplementationOnce((keyword: any, skip: any, take: any) => {
         return Promise.resolve(entities);
       });
-    const result = await service
-      .findAll({ keyword: 'test', skip: 0, take: 20 })
-      .toPromise();
+    const result = await lastValueFrom(
+      service.findAll({ keyword: 'test', skip: 0, take: 20 }),
+    );
     console.log('result: ' + JSON.stringify(result));
     expect(result).toBeDefined();
     expect(result.length).toBe(2);
@@ -106,7 +107,7 @@ describe('PostsService', () => {
     jest.spyOn(posts, 'findByAuthor').mockImplementationOnce((autor: any) => {
       return Promise.resolve(entities);
     });
-    const result = await service.findByAuthor('test').toPromise();
+    const result = await lastValueFrom(service.findByAuthor('test'));
     console.log('result: ' + JSON.stringify(result));
     expect(result).toBeDefined();
     expect(result.length).toBe(2);
@@ -121,7 +122,7 @@ describe('PostsService', () => {
     };
 
     jest.spyOn(posts, 'findOne').mockResolvedValue(data);
-    const result = await service.findById('1').toPromise();
+    const result = await lastValueFrom(service.findById('1'));
     console.log('result:', JSON.stringify(result));
 
     expect(result).toBeDefined();
@@ -136,7 +137,7 @@ describe('PostsService', () => {
     };
     jest.spyOn(posts, 'save').mockResolvedValue(data);
 
-    const result = await service.createPost('test', data).toPromise();
+    const result = await lastValueFrom(service.createPost('test', data));
     expect(result).toBeDefined();
     expect(result.id).toBe('1');
   });
@@ -151,7 +152,7 @@ describe('PostsService', () => {
     };
     jest.spyOn(comments, 'save').mockResolvedValue(data as CommentEntity);
 
-    const result = await service.addComment('1', 'test comment').toPromise();
+    const result = await lastValueFrom(service.addComment('1', 'test comment'));
     expect(result).toBeDefined();
     expect(result.id).toBe('1');
   });
@@ -177,7 +178,7 @@ describe('PostsService', () => {
     jest.spyOn(comments, 'findByPostId').mockImplementationOnce((id: any) => {
       return Promise.resolve(data as CommentEntity[]);
     });
-    const result = await service.findCommentsOfPost('1').toPromise();
+    const result = await lastValueFrom(service.findCommentsOfPost('1'));
     console.log('result: ' + JSON.stringify(result));
     expect(result).toBeDefined();
     expect(result.length).toBe(2);

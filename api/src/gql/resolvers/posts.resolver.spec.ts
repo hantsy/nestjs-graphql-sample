@@ -7,6 +7,7 @@ import { PostsResolver } from './posts.resolver';
 import { PostsService } from '../service/posts.service';
 import PostsLoaders from '../service/posts.loaders';
 import { PostInput } from '../dto/post.input';
+import { lastValueFrom } from 'rxjs';
 
 describe('PostsResolver', () => {
   let resolver: PostsResolver;
@@ -69,9 +70,9 @@ describe('PostsResolver', () => {
     ];
 
     jest.spyOn(posts, 'findAll').mockReturnValue(of(data));
-    const result = await resolver
-      .getAllPosts({ keyword: 'test', skip: 0, take: 20 })
-      .toPromise();
+    const result = await lastValueFrom(
+      resolver.getAllPosts({ keyword: 'test', skip: 0, take: 20 }),
+    );
     console.log('result: ' + JSON.stringify(result));
     expect(result).toBeDefined();
     expect(result.length).toBe(2);
@@ -96,9 +97,9 @@ describe('PostsResolver', () => {
     } as PostInput;
     jest.spyOn(posts, 'createPost').mockReturnValue(of(data));
 
-    const result = await resolver
-      .createPost({ userId: 'test' }, inputData)
-      .toPromise();
+    const result = await lastValueFrom(
+      resolver.createPost({ userId: 'test' }, inputData),
+    );
     expect(result).toBeDefined();
     expect(result.id).toBe('1');
   });
@@ -116,9 +117,9 @@ describe('PostsResolver', () => {
       .mockReturnValue(of(data));
     const pubSubPublishSpy = jest.spyOn(pubSub, 'publish');
 
-    const result = await resolver
-      .addComment({ postId: '1', content: 'test comment' })
-      .toPromise();
+    const result = await lastValueFrom(
+      resolver.addComment({ postId: '1', content: 'test comment' }),
+    );
     expect(result).toBeDefined();
     expect(result.id).toBe('1');
     expect(postsAddCommentSpy).toBeCalled();
@@ -153,7 +154,7 @@ describe('PostsResolver', () => {
     const findCommentsOfPostSpy = jest
       .spyOn(posts, 'findCommentsOfPost')
       .mockReturnValue(of(data));
-    const result = await resolver.comments({ id: '1' } as Post).toPromise();
+    const result = await lastValueFrom(resolver.comments({ id: '1' } as Post));
     console.log('result: ' + JSON.stringify(result));
     expect(result).toBeDefined();
     expect(result.length).toBe(2);

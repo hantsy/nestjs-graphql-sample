@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { of } from 'rxjs';
+import { lastValueFrom, of } from 'rxjs';
 import { Post } from '../types/post.model';
 import { PostsService } from '../service/posts.service';
 import { User } from '../types/user.model';
@@ -54,7 +54,7 @@ describe('UsersResolver', () => {
     };
 
     jest.spyOn(users, 'findById').mockReturnValue(of(data));
-    const result = await resolver.getUserById('1').toPromise();
+    const result = await lastValueFrom(resolver.getUserById('1'));
     console.log('result:', JSON.stringify(result));
 
     expect(result).toBeDefined();
@@ -76,7 +76,7 @@ describe('UsersResolver', () => {
     ];
 
     jest.spyOn(posts, 'findByAuthor').mockReturnValue(of(data as Post[]));
-    const result = await resolver.posts({ id: '1' } as User).toPromise();
+    const result = await lastValueFrom(resolver.posts({ id: '1' } as User));
     console.log('result: ' + JSON.stringify(result));
     expect(result).toBeDefined();
     expect(result.length).toBe(2);

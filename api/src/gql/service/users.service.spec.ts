@@ -1,4 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
+import { lastValueFrom } from 'rxjs';
 import { UserRepository } from '../../database/repository/user.repository';
 import { UsersService } from './users.service';
 
@@ -42,7 +43,7 @@ describe('UsersService', () => {
     };
 
     jest.spyOn(users, 'findOne').mockResolvedValue(data);
-    const result = await service.findById('1').toPromise();
+    const result = await lastValueFrom(service.findById('1'));
     console.log('result:', JSON.stringify(result));
 
     expect(result).toBeDefined();

@@ -65,18 +65,11 @@ export class PostsService {
   }
 
   addComment(id: string, comment: string): Observable<Comment> {
-    return from(this.postRepository.findOne(id)).pipe(
-      switchMap((p) =>
-        p
-          ? from(
-              this.commentRepository.save({
-                content: comment,
-                post: p,
-              }),
-            )
-          : EMPTY,
-      ),
-
+    const data = {
+      content: comment,
+      postId: id,
+    };
+    return from(this.commentRepository.save(data)).pipe(
       map((c) => {
         return { id: c.id, content: c.content } as Comment;
       }),
@@ -95,7 +88,7 @@ export class PostsService {
   }
 
   private mapAsModelArray(entities: PostEntity[]): Post[] {
-    return entities.map(e => {
+    return entities.map((e) => {
       return {
         id: e.id,
         title: e.title,
