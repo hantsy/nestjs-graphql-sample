@@ -6,7 +6,7 @@ import { ApolloError } from 'apollo-server-errors';
 export class HttpExceptionFilter implements GqlExceptionFilter {
   catch(exception: HttpException, host: ArgumentsHost) {
     const gqlHost = GqlArgumentsHost.create(host);
-    console.log('gqlHost:', gqlHost);
+    //console.log('gqlHost:', gqlHost);
     return exception;
   }
 }

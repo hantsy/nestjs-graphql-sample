@@ -1,8 +1,10 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, PrimaryColumn } from 'typeorm';
 
 @Entity({ name: 'users' })
 export class UserEntity {
-  @Column({ name: 'id', generated: false, nullable: false, primary: true })
+  @PrimaryColumn('varchar', {
+    name: 'id',
+  })
   id: string;
 
   @Column({ nullable: true, unique: true, default: 'admin@example.com' })

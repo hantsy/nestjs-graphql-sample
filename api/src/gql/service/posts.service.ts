@@ -10,6 +10,7 @@ import { PostInput } from '../dto/post.input';
 import { PostsArgs } from '../dto/posts.arg';
 import { Comment } from '../types/comment.model';
 import { Post } from '../types/post.model';
+import { CommentEntity } from '../../database/entity/comment.entity';
 
 @Injectable()
 export class PostsService {
@@ -65,11 +66,12 @@ export class PostsService {
   }
 
   addComment(id: string, comment: string): Observable<Comment> {
-    const data = {
+    const entity = new CommentEntity();
+    Object.assign(entity, {
       content: comment,
       postId: id,
-    };
-    return from(this.commentRepository.save(data)).pipe(
+    });
+    return from(this.commentRepository.save(entity)).pipe(
       map((c) => {
         return { id: c.id, content: c.content } as Comment;
       }),
