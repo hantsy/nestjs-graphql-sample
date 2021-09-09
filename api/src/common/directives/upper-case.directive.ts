@@ -1,4 +1,3 @@
-
 import { SchemaDirectiveVisitor } from '@graphql-tools/utils';
 import { defaultFieldResolver, GraphQLField } from 'graphql';
 
