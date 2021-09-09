@@ -71,6 +71,7 @@ describe('PostRepository', () => {
 
       const foundPosts = await postRepository.findAll(keyword, 0, 10);
       expect(foundPosts).toEqual(posts);
+      expect(whereSpy).toHaveBeenCalledWith('p.title like :q or p.content like :q');
       expect(setParameterSpy).toHaveBeenCalledWith('q', '%' + keyword + '%');
       expect(skipSpy).toHaveBeenCalledWith(0);
       expect(takeSpy).toHaveBeenCalledWith(10);

@@ -22,7 +22,7 @@ import { PostInput } from '../dto/post.input';
 import { PostsArgs } from '../dto/posts.arg';
 import { Comment } from '../types/comment.model';
 import { Post } from '../types/post.model';
-import PostsLoaders from '../service/posts.loaders';
+import PostsLoaders from '../dataloaders/posts.loaders';
 import { PostsService } from '../service/posts.service';
 import { PostNotFoundError } from './post-not-found.error';
 import { User } from '../types/user.model';

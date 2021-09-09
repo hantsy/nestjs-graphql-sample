@@ -1,5 +1,5 @@
 import { Injectable, Scope } from '@nestjs/common';
-import { UsersService } from './users.service';
+import { UsersService } from '../service/users.service';
 import * as DataLoader from 'dataloader';
 import { map } from 'rxjs/operators';
 import { lastValueFrom } from 'rxjs';
