@@ -6,6 +6,8 @@ import { PubSub } from 'graphql-subscriptions';
 import { UsersResolver } from './resolvers/users.resolver';
 import { UsersService } from './service/users.service';
 import PostsLoaders from './dataloaders/posts.loaders';
+import { DateScalar } from './scalars/date.scalar';
+import { LoggingPlugin } from './plugins/logging.plugin';
 
 @Module({
   imports: [DatabaseModule],
@@ -19,6 +21,7 @@ import PostsLoaders from './dataloaders/posts.loaders';
     UsersService,
     PostsService,
     PostsLoaders,
+   // DateScalar, LoggingPlugin
   ],
   exports: [],
 })

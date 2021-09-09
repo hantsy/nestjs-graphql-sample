@@ -5,7 +5,6 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { GraphQLError, GraphQLFormattedError } from 'graphql';
 import { join } from 'path';
 import { AuthzModule } from './authz/authz.module';
-import { CommonModule } from './common/common.module';
 import dbConfig from './config/db.config';
 import { DatabaseModule } from './database/database.module';
 import { GqlApiModule } from './gql/gql-api.module';
@@ -13,7 +12,6 @@ import { GqlApiModule } from './gql/gql-api.module';
 @Module({
   imports: [
     ConfigModule.forRoot({ ignoreEnvFile: true }),
-    CommonModule,
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule.forFeature(dbConfig)],
       useFactory: async (cfg: ConfigType<typeof dbConfig>) =>
