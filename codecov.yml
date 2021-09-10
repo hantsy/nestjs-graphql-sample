@@ -1,41 +1,40 @@
-
 ignore:
-  - "**/*.module.*"  
-  - "**/*initializer.*"  
+  - '**/*.module.*'
+  - '**/*initializer.*'
 
 # Setting coverage targets per flag
 coverage:
   status:
     project:
-#       default:
-#         target: 90% #overall project/ repo coverage
+      #       default:
+      #         target: 90% #overall project/ repo coverage
       ui:
         target: 60%
-       flags:
+        flags:
           - ui
-      aip:
+      api:
         target: 80%
         flags:
           - api
 
 # adding Flags to your `layout` configuration to show up in the PR comment
 comment:
-  layout: "reach, diff, flags, files"
+  layout: 'reach, diff, flags, files'
   behavior: default
-  require_changes: false  
+  require_changes: false
   require_base: yes
-  require_head: yes       
+  require_head: yes
   branches: null
 
 # New root YAML section = `flags:`
 # This is where you would define every flag from your
 # uploader, and update when new Flags added
 flags:
-  ui:  
+  ui:
     paths:
       - ui/src
-     carryforward: false #default -- false
+    carryforward: false #default -- false
   api:
     paths:
       - api/src
-     carryforward: true  
+    carryforward: true
