@@ -1,6 +1,7 @@
 
 ignore:
-  - "**/*.repository.*"  
+  - "**/*.module.*"  
+  - "**/*initializer.*"  
 
 # Setting coverage targets per flag
 coverage:

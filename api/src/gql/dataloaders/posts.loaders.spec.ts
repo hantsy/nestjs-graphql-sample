@@ -35,6 +35,8 @@ describe('PostsLoaders', () => {
       ],
     }).compile();
 
+
+    // resovle a REQUEST scoped component
     loaders = await module.resolve<PostsLoaders>(PostsLoaders);
     posts = module.get<PostsService>(PostsService);
     users = module.get<UsersService>(UsersService);

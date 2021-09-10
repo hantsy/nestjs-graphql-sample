@@ -13,4 +13,3 @@ export class UpperCaseDirective extends SchemaDirectiveVisitor {
     };
   }
 }
-
