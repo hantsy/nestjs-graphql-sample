@@ -10,6 +10,7 @@ import { PostInput } from '../dto/post.input';
 import { UsersService } from '../service/users.service';
 import { any, mock } from 'jest-mock-extended';
 import DataLoader from 'dataloader';
+import { User } from '../types/user.model';
 
 describe('PostsResolver', () => {
   let resolver: PostsResolver;
@@ -149,6 +150,21 @@ describe('PostsResolver', () => {
     expect(pubSubPublishSpy).toBeCalled();
   });
 
+  it('should resolve author by post id', async () => {
+    const data = { id: '1', email: 'user@example.com' } as User;
+    
+    Object.defineProperty(loaders, 'loadAuthors', {
+      value: { load: jest.fn().mockResolvedValue(data) },
+    });
+
+    Object.defineProperty(resolver, 'postsLoaders', {
+      value: loaders,
+    });
+
+    const result = await resolver.getAuthor({ id: '2' } as Post);
+    console.log('result: ' + JSON.stringify(result));
+    expect(result).toEqual(data);
+  });
   it('should resolve all comments by post id', async () => {
     const data = [
       {
