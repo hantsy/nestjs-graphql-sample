@@ -178,7 +178,7 @@ describe('PostsService', () => {
     jest.spyOn(comments, 'findByPostId').mockImplementationOnce((id: any) => {
       return Promise.resolve(data as CommentEntity[]);
     });
-    const result = await lastValueFrom(service.findCommentsOfPost('1'));
+    const result = await lastValueFrom(service.findCommentsByPostId('1'));
     console.log('result: ' + JSON.stringify(result));
     expect(result).toBeDefined();
     expect(result.length).toBe(2);

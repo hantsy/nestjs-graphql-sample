@@ -1,6 +1,6 @@
 import { EMPTY, from, Observable, of } from 'rxjs';
 import { map, switchMap, tap } from 'rxjs/operators';
-
+import { In } from 'typeorm';
 import { Injectable } from '@nestjs/common';
 
 import { PostEntity } from '../../database/entity/post.entity';
@@ -55,11 +55,25 @@ export class PostsService {
     );
   }
 
-  findCommentsOfPost(id: string): Observable<Comment[]> {
+  findCommentsByPostId(id: string): Observable<Comment[]> {
     return from(this.commentRepository.findByPostId(id)).pipe(
       map((e, idx) =>
         e.map((c) => {
           return { id: c.id, content: c.content } as Comment;
+        }),
+      ),
+    );
+  }
+
+  findCommentsByPostIds(ids: string[]): Observable<Comment[]> {
+    return from(
+      this.commentRepository.find({
+        where: { postId: In(ids) },
+      }),
+    ).pipe(
+      map((e, idx) =>
+        e.map((c) => {
+          return { id: c.id, postId: c.postId,  content: c.content } as Comment;
         }),
       ),
     );

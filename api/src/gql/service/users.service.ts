@@ -48,7 +48,7 @@ export class UsersService {
     );
   }
 
-  getByIds(ids: string[]): Observable<User[]> {
+  findByIds(ids: string[]): Observable<User[]> {
     return from(
       this.userRepository.find({
         where: { id: In(ids) },

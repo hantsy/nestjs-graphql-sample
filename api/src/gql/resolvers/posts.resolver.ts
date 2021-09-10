@@ -68,12 +68,17 @@ export class PostsResolver {
   async getAuthor(@Parent() post: Post): Promise<User> {
     const { authorId } = post;
     console.log('resovle author field:', authorId);
-    return await this.postsLoaders.batchAuthors.load(authorId);
+    return await this.postsLoaders.loadAuthors.load(authorId);
   }
 
+  // @ResolveField((of) => [Comment])
+  // public comments(@Parent() post: Post): Observable<Comment[]> {
+  //   return this.postsService.findCommentsOfPost(post.id);
+  // }
+
   @ResolveField((of) => [Comment])
-  public comments(@Parent() post: Post): Observable<Comment[]> {
-    return this.postsService.findCommentsOfPost(post.id);
+  async comments(@Parent() post: Post): Promise<Comment[]> {
+    return await this.postsLoaders.loadComments.load(post.id);
   }
 
   @Mutation((returns) => Post)

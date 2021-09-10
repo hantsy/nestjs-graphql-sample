@@ -7,9 +7,13 @@ import { PostsResolver } from './posts.resolver';
 import { PostsService } from '../service/posts.service';
 import PostsLoaders from '../dataloaders/posts.loaders';
 import { PostInput } from '../dto/post.input';
+import { UsersService } from '../service/users.service';
+import { any, mock } from 'jest-mock-extended';
+import DataLoader from 'dataloader';
 
 describe('PostsResolver', () => {
   let resolver: PostsResolver;
+  let loaders: PostsLoaders;
   let posts: PostsService;
   let pubSub: PubSub;
 
@@ -27,12 +31,24 @@ describe('PostsResolver', () => {
             addComment: jest.fn(),
             findAll: jest.fn(),
             findByAuthor: jest.fn(),
-            findCommentsOfPost: jest.fn(),
+            findCommentsByPostIds: jest.fn(),
+          },
+        },
+        {
+          provide: UsersService,
+          useValue: {
+            new: jest.fn(),
+            constructor: jest.fn(),
+            findOne: jest.fn(),
           },
         },
         {
           provide: PostsLoaders,
-          useValue: { new: jest.fn(), constructor: jest.fn() },
+          useValue: {
+            new: jest.fn(),
+            constructor: jest.fn(),
+            loadComments: jest.fn(),
+          },
         },
         {
           provide: PubSub,
@@ -45,6 +61,7 @@ describe('PostsResolver', () => {
     }).compile();
 
     resolver = module.get<PostsResolver>(PostsResolver);
+    loaders = await module.resolve<PostsLoaders>(PostsLoaders);
     posts = module.get<PostsService>(PostsService);
     pubSub = module.get<PubSub>(PubSub);
   });
@@ -110,7 +127,7 @@ describe('PostsResolver', () => {
       post: {
         id: '1',
       } as Post,
-    };
+    } as Comment;
     const postsAddCommentSpy = jest
       .spyOn(posts, 'addComment')
       .mockReturnValue(of(data));
@@ -132,32 +149,38 @@ describe('PostsResolver', () => {
     expect(pubSubPublishSpy).toBeCalled();
   });
 
-  it('should resolve all comments of post', async () => {
+  it('should resolve all comments by post id', async () => {
     const data = [
       {
         id: '1',
         content: 'test comment',
-        post: {
-          id: '1',
-        } as Post,
+        postId: '2',
       },
       {
         id: '2',
         content: 'test comment',
-        post: {
-          id: '2',
-        } as Post,
+        postId: '2',
       },
     ] as Comment[];
 
-    const findCommentsOfPostSpy = jest
-      .spyOn(posts, 'findCommentsOfPost')
-      .mockReturnValue(of(data));
-    const result = await lastValueFrom(resolver.comments({ id: '1' } as Post));
+    // const findCommentsOfPostSpy = jest
+    //   .spyOn(posts, 'findCommentsByPostIds')
+    //   .mockReturnValue(of(data));
+
+    // const findCommentsOfPostSpy = jest
+    //   .spyOn(loaders, 'loadComments')
+    //   .mockResolvedValue({ load: jest.fn().mockResolvedValue(data) });
+
+    Object.defineProperty(loaders, 'loadComments', {
+      value: { load: jest.fn().mockResolvedValue(data) },
+    });
+
+    Object.defineProperty(resolver, 'postsLoaders', {
+      value: loaders,
+    });
+
+    const result = await resolver.comments({ id: '2' } as Post);
     console.log('result: ' + JSON.stringify(result));
-    expect(result).toBeDefined();
-    expect(result.length).toBe(2);
-    expect(findCommentsOfPostSpy).toHaveBeenCalledTimes(1);
-    expect(findCommentsOfPostSpy).toBeCalledWith('1');
+    expect(result).toEqual(data);
   });
 });

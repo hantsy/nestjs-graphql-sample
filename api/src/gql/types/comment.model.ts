@@ -9,6 +9,9 @@ export class Comment {
   @Field()
   content: string;
 
+  @Field()
+  postId: string;
+
   @Field((type) => Post)
   post: Post;
 }
