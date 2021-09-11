@@ -8,7 +8,7 @@ A NestJS GraphQL sample project, including:
 
 * Code first Nestjs/GraphQl development
 * TypeORM with Postgres 
-* Passport/Jwt authenticaiton with auth0.net IDP service
+* Passport/Jwt authentication with auth0.net IDP service
 * Fully testing codes with Jest, jest-mock-extended, ts-mockit, etc.
 * Github actions for continuous testing, code coverage report, docker image building, etc.
 
