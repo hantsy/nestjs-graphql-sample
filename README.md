@@ -4,7 +4,13 @@
 ![backend](https://github.com/hantsy/nestjs-graphql-sample/workflows/backend/badge.svg)
 [![codecov](https://codecov.io/gh/hantsy/nestjs-graphql-sample/branch/master/graph/badge.svg)](https://codecov.io/gh/hantsy/nestjs-graphql-sample)
 
-A NestJS GraphQL sample project.
+A NestJS GraphQL sample project, including:
+
+* Code first Nestjs/GraphQl development
+* TypeORM with Postgres 
+* Passport/Jwt authentication with auth0.net IDP service
+* Fully testing codes with Jest, jest-mock-extended, ts-mockito, etc.
+* Github actions for continuous testing, code coverage report, docker image building, etc.
 
 ## Docs
 
