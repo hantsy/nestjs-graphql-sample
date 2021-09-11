@@ -1,20 +1,22 @@
-name: build
+name: frontend
 
 on:
   push:
-    paths-ignore:
-      - "docs/**"
+    paths:
+      - "ui/**"
     branches:
       - master
       - release/*
   pull_request:
+    paths:
+      - "ui/**"
     types:
       - opened
       - synchronize
       - reopened
 
 jobs:
-  ui:
+  build:
     runs-on: ubuntu-latest
 
     steps:
@@ -35,10 +37,25 @@ jobs:
           cd ./ui
           npm install
           npm run build:prod
-
-  api:
+  e2e:
+    needs:
+      - build
     runs-on: ubuntu-latest
-
+    services:
+       db:
+         image: postgres
+         env:
+           POSTGRES_PASSWORD: password
+           POSTGRES_DB: blogdb
+           POSTGRES_USER: user
+         ports:
+          - 5432:5432
+         # Set health checks to wait until postgres has started
+         options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5  
     steps:
       - uses: actions/checkout@v2
       - name: Setup NodeJS
@@ -55,16 +72,14 @@ jobs:
           restore-keys: |
             ${{ runner.OS }}-node-
             ${{ runner.OS }}-
-
-      # install dependencies and build the project
-      - name: Build
+      - name: Build and Run E2E tests
         run: |
+          json=$(curl --request POST \
+          --url https://dev-ese8241b.us.auth0.com/oauth/token \
+          --header 'content-type: application/json' \
+          --data '{"client_id":"${{ secrets.CLIENT_ID}}","client_secret":"${{secrets.CLIENT_SECRET}}","audience":"https://hantsy.github.io/api","grant_type":"client_credentials"}')
+          export TOKEN=$( jq -r ".access_token" <<<"$json" )
+          echo "token: $TOKEN"
           cd ./api
           npm install --registry=https://registry.npmjs.org
-          npm run build
-          npm run test:cov
-          # Upload testing reports
-          bash <(curl -s https://codecov.io/bash) -F api
-        env:
-          CODECOV_TOKEN: ${{secrets.CODECOV_TOKEN}}
- 
+          npm run test:e2e -- --runInBand --forceExit --detectOpenHandles
