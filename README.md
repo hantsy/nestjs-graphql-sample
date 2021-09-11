@@ -1,7 +1,7 @@
 # NestJS GraphQL Sample
 
-![Compile and build](https://github.com/hantsy/nestjs-graphql-sample/workflows/build/badge.svg)
-![Run e2e testing](https://github.com/hantsy/nestjs-graphql-sample/workflows/e2e/badge.svg)
+![frontend](https://github.com/hantsy/nestjs-graphql-sample/workflows/frontend/badge.svg)
+![backend](https://github.com/hantsy/nestjs-graphql-sample/workflows/backend/badge.svg)
 [![codecov](https://codecov.io/gh/hantsy/nestjs-graphql-sample/branch/master/graph/badge.svg)](https://codecov.io/gh/hantsy/nestjs-graphql-sample)
 
 A NestJS GraphQL sample project.
