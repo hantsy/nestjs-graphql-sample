@@ -4,7 +4,11 @@
 ![Run e2e testing](https://github.com/hantsy/nestjs-graphql-sample/workflows/e2e/badge.svg)
 [![codecov](https://codecov.io/gh/hantsy/nestjs-graphql-sample/branch/master/graph/badge.svg)](https://codecov.io/gh/hantsy/nestjs-graphql-sample)
 
-A NestJS GraphQL sample project.
+A NestJS GraphQL sample project, including:
+
+* Code first Nestjs/GraphQl development
+* TypeORM with Postgres 
+* Passport/Jwt authenticaiton with auth0.net IDP service
 
 ## Docs
 
