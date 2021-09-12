@@ -1,6 +1,7 @@
 ignore:
   - '**/*.module.*'
   - '**/*initializer.*'
+  - '**/*main.*'
 
 # Setting coverage targets per flag
 coverage:
