@@ -7,6 +7,8 @@
     "build": "ng build",
     "build:prod": "ng build --prod",
     "test": "ng test",
+    "test:watch": "jest --watch",
+    "test:ci": "jest --runInBand",
     "lint": "ng lint",
     "e2e": "ng e2e",
     "cypress:open": "cypress open",
@@ -25,6 +27,7 @@
     "@angular/router": "~12.2.12",
     "@apollo/client": "^3.4.11",
     "@auth0/auth0-angular": "^1.6.1",
+    "@briebug/jest-schematic": "^3.1.0",
     "apollo-angular": "^2.6.0",
     "bootstrap": "^5.1.1",
     "bootstrap-icons": "^1.5.0",
@@ -34,7 +37,7 @@
     "zone.js": "~0.11.4"
   },
   "devDependencies": {
-    "@angular-builders/jest": "^12.1.2",
+    "@angular-builders/jest": "latest",
     "@angular-devkit/build-angular": "~12.2.12",
     "@angular-eslint/builder": "~12.6.1",
     "@angular-eslint/eslint-plugin": "~12.4.1",
@@ -45,20 +48,21 @@
     "@angular/compiler-cli": "~12.2.12",
     "@cypress/schematic": "^1.5.3",
     "@types/jasmine": "~3.9.0",
-    "@types/jest": "^27.0.1",
+    "@types/jest": "^27.0.2",
     "@types/node": "^16.9.1",
     "@typescript-eslint/eslint-plugin": "^4.31.0",
     "@typescript-eslint/parser": "^4.31.0",
+    "cypress": "latest",
     "eslint": "^7.32.0",
     "jasmine-core": "^3.9.0",
     "jasmine-spec-reporter": "~7.0.0",
-    "jest": "^27.1.1",
-    "jest-junit": "^12.2.0",
+    "jest": "^27.3.1",
+    "jest-junit": "^13.0.0",
+    "jest-preset-angular": "^10.1.0",
     "karma-coverage": "~2.0.3",
     "protractor": "~7.0.0",
     "ts-jest": "27.0.5",
     "ts-node": "~10.2.1",
-    "typescript": "~4.3.2",
-    "cypress": "latest"
+    "typescript": "~4.3.2"
   }
 }
