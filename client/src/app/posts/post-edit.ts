@@ -2,12 +2,13 @@ import { Component, inject, OnInit, signal, DestroyRef } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
+import { MatIconModule } from '@angular/material/icon';
 import { PostService, Post } from './post.service';
 import { PostFormComponent } from './post-form';
 
 @Component({
   selector: 'app-post-edit',
-  imports: [MatCardModule, PostFormComponent],
+  imports: [MatCardModule, MatIconModule, PostFormComponent],
   templateUrl: './post-edit.html',
 })
 export class PostEditComponent implements OnInit {

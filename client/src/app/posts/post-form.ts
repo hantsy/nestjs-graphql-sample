@@ -4,10 +4,11 @@ import { FormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-post-form',
-  imports: [FormsModule, RouterLink, MatInputModule, MatButtonModule, MatFormFieldModule],
+  imports: [FormsModule, RouterLink, MatInputModule, MatButtonModule, MatFormFieldModule, MatIconModule],
   templateUrl: './post-form.html',
 })
 export class PostFormComponent implements OnInit {

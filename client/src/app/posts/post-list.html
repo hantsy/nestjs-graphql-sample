@@ -1,39 +1,56 @@
 <mat-card>
   <mat-card-header>
-    <mat-card-title>Posts</mat-card-title>
+    <mat-card-title>
+      <mat-icon>article</mat-icon> Posts
+    </mat-card-title>
   </mat-card-header>
   <mat-card-content>
-    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
-      <mat-form-field appearance="outline" style="flex: 1; max-width: 400px;">
+    <div class="list-toolbar">
+      <mat-form-field appearance="outline" class="search-field">
         <mat-label>Search posts</mat-label>
         <input matInput [(ngModel)]="keyword" (input)="onSearch()" placeholder="Search by title..." />
         <mat-icon matPrefix>search</mat-icon>
       </mat-form-field>
-      <a mat-raised-button color="primary" routerLink="/posts/new">New Post</a>
+      <a mat-raised-button color="accent" routerLink="/posts/new" class="btn-lg">
+        <mat-icon>add</mat-icon> New Post
+      </a>
     </div>
 
     @if (loading()) {
-      <p>Loading posts...</p>
+      <div class="loading-state">
+        <mat-icon class="spin">sync</mat-icon>
+        <p>Loading posts...</p>
+      </div>
     } @else if (posts().length === 0) {
-      <p>No posts found.</p>
+      <div class="empty-state">
+        <mat-icon class="empty-icon">post_add</mat-icon>
+        <p>No posts found. Create your first post!</p>
+      </div>
     } @else {
       @for (post of posts(); track post.id) {
-        <mat-card appearance="outlined" style="margin-bottom: 8px;">
+        <mat-card appearance="outlined" class="post-card">
           <mat-card-header>
             <mat-card-title>
               <a [routerLink]="['/posts', post.id]">{{ post.title }}</a>
             </mat-card-title>
             <mat-card-subtitle>
+              <mat-icon class="meta-icon">calendar_today</mat-icon>
               {{ post.createdAt | date:'medium' }}
             </mat-card-subtitle>
           </mat-card-header>
           <mat-card-content>
             <p>{{ post.content | slice:0:200 }}{{ post.content.length > 200 ? '...' : '' }}</p>
           </mat-card-content>
-          <mat-card-actions>
-            <a mat-button [routerLink]="['/posts', post.id]">Read</a>
-            <a mat-button [routerLink]="['/posts', post.id, 'edit']">Edit</a>
-            <button mat-button color="warn" (click)="deletePost(post.id)">Delete</button>
+          <mat-card-actions class="post-actions">
+            <a mat-stroked-button color="primary" [routerLink]="['/posts', post.id]">
+              <mat-icon>visibility</mat-icon> Read
+            </a>
+            <a mat-stroked-button color="accent" [routerLink]="['/posts', post.id, 'edit']">
+              <mat-icon>edit</mat-icon> Edit
+            </a>
+            <button mat-flat-button color="warn" (click)="deletePost(post.id)">
+              <mat-icon>delete</mat-icon> Delete
+            </button>
           </mat-card-actions>
         </mat-card>
       }

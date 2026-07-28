@@ -1,6 +1,9 @@
-<mat-card>
+<mat-card class="hero-card">
   <mat-card-header>
-    <mat-card-title>Welcome to NestJS GraphQL Blog</mat-card-title>
+    <mat-card-title>
+      <mat-icon class="hero-icon">auto_stories</mat-icon>
+      Welcome to NestJS GraphQL Blog
+    </mat-card-title>
     <mat-card-subtitle>
       A modern blog platform built with NestJS, GraphQL, and MongoDB
     </mat-card-subtitle>
@@ -18,12 +21,12 @@
       GraphQL communication.
     </p>
   </mat-card-content>
-  <mat-card-actions>
-    <a mat-raised-button color="primary" routerLink="/posts">
-      Browse Posts
+  <mat-card-actions class="hero-actions">
+    <a mat-raised-button color="primary" routerLink="/posts" class="btn-lg">
+      <mat-icon>list</mat-icon> Browse Posts
     </a>
-    <a mat-stroked-button routerLink="/posts/new">
-      Create a Post
+    <a mat-raised-button color="accent" routerLink="/posts/new" class="btn-lg">
+      <mat-icon>add</mat-icon> Create a Post
     </a>
   </mat-card-actions>
 </mat-card>

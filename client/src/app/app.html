@@ -1,10 +1,15 @@
 <mat-toolbar color="primary">
-  <a mat-button routerLink="/" style="font-size: 1.2rem; font-weight: bold;">
+  <a mat-button routerLink="/" class="toolbar-brand">
+    <mat-icon>article</mat-icon>
     {{ title }}
   </a>
   <span class="spacer"></span>
-  <a mat-button routerLink="/posts">Posts</a>
-  <a mat-button routerLink="/posts/new" color="accent">New Post</a>
+  <a mat-raised-button routerLink="/posts" class="toolbar-btn">
+    <mat-icon>list</mat-icon> Posts
+  </a>
+  <a mat-raised-button routerLink="/posts/new" color="accent" class="toolbar-btn">
+    <mat-icon>add</mat-icon> New Post
+  </a>
 </mat-toolbar>
 
 <main class="container">

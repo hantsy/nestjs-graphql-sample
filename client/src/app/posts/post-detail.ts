@@ -83,6 +83,17 @@ export class PostDetailComponent implements OnInit {
       });
   }
 
+  avatarColor(id: string): string {
+    const colors = ['#e91e63','#9c27b0','#673ab7','#3f51b5','#2196f3','#009688','#4caf50','#ff9800','#795548','#607d8b'];
+    let hash = 0;
+    for (let i = 0; i < id.length; i++) { hash = id.charCodeAt(i) + ((hash << 5) - hash); }
+    return colors[Math.abs(hash) % colors.length];
+  }
+
+  avatarLetter(content: string): string {
+    return content.trim().charAt(0).toUpperCase();
+  }
+
   onDelete() {
     if (this.post() && confirm('Are you sure you want to delete this post?')) {
       this.postService
