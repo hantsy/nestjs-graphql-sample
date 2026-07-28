@@ -13,9 +13,6 @@
     "skipLibCheck": true,
     "sourceMap": true,
     "outDir": "./dist",
-    "paths": {
-      "*": ["./src/*"]
-    },
     "incremental": true
   }
 }

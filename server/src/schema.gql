@@ -1,0 +1,52 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Comment {
+  content: String!
+  createdAt: DateTime!
+  id: ID!
+  postId: String!
+}
+
+input CreateCommentInput {
+  content: String!
+  postId: String!
+}
+
+input CreatePostInput {
+  content: String!
+  title: String!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type Mutation {
+  addComment(input: CreateCommentInput!): Comment!
+  createPost(input: CreatePostInput!): Post!
+  deletePost(id: String!): Boolean!
+  updatePost(id: String!, input: UpdatePostInput!): Post!
+}
+
+type Post {
+  comments: [Comment]!
+  content: String!
+  createdAt: DateTime!
+  id: ID!
+  title: String!
+  updatedAt: DateTime!
+}
+
+type Query {
+  post(id: String!): Post!
+  postCount(keyword: String = "", skip: Int = 0, take: Int = 25): Int!
+  posts(keyword: String = "", skip: Int = 0, take: Int = 25): [Post!]!
+}
+
+input UpdatePostInput {
+  content: String
+  title: String
+}
