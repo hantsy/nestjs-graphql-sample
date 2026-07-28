@@ -1,0 +1,53 @@
+name: e2e
+
+on:
+  push:
+    paths-ignore:
+      - 'docs/**'
+    branches:
+      - master
+      - release/*
+  pull_request:
+    types:
+      - opened
+      - synchronize
+      - reopened
+    paths-ignore:
+      - 'docs/**'
+
+concurrency:
+  group: e2e-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  e2e:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: server
+
+    steps:
+      - uses: actions/checkout@v7
+      - name: Setup NodeJS
+        uses: actions/setup-node@v7
+        with:
+          node-version: '24'
+
+      - name: Cache Node.js modules
+        uses: actions/cache@v6
+        with:
+          path: ~/.npm
+          key: ${{ runner.OS }}-node-${{ hashFiles('server/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.OS }}-node-
+            ${{ runner.OS }}-
+
+      - run: npm ci
+
+      - name: Start MongoDB service
+        run: |
+          docker compose up -d mongodb
+          docker ps -a
+
+      - name: Run e2e tests
+        run: npm run test:e2e -- --runInBand --forceExit --testTimeout 30000

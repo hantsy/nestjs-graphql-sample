@@ -1,57 +1,85 @@
-# NestJS GraphQL Sample
+# NestJS GraphQL Blog Sample
 
-![frontend](https://github.com/hantsy/nestjs-graphql-sample/workflows/frontend/badge.svg)
-![backend](https://github.com/hantsy/nestjs-graphql-sample/workflows/backend/badge.svg)
-[![codecov](https://codecov.io/gh/hantsy/nestjs-graphql-sample/branch/master/graph/badge.svg)](https://codecov.io/gh/hantsy/nestjs-graphql-sample)
+A modern blog application built with **NestJS 11**, **GraphQL** (code-first), and **MongoDB** on the backend, and **Angular 22** with **Apollo Angular**, **Angular Material**, and **signals** on the frontend.
 
-A NestJS GraphQL sample project, including:
+## Project Structure
 
-* Code first Nestjs/GraphQl development
-* TypeORM with Postgres 
-* Passport/Jwt authentication with auth0.net IDP service
-* Fully testing codes with Jest, jest-mock-extended, ts-mockito, etc.
-* Github actions for continuous testing, code coverage report, docker image building, etc.
-
-## Docs
-
-
-
-
-## Build
-### Install dependencies
-
-```bash
-$ npm install
+```
+nestjs-graphql-sample/
+├── server/              # NestJS 11 GraphQL API
+│   ├── src/
+│   │   ├── post/        # Posts + Comments module
+│   │   ├── common/      # Scalars, filters
+│   │   └── config/      # Configuration
+│   ├── Dockerfile
+│   └── package.json
+├── client/              # Angular 22 frontend
+│   ├── src/app/
+│   │   ├── home/        # Home page
+│   │   ├── posts/       # Post components
+│   │   └── graphql/     # Apollo setup
+│   ├── Dockerfile
+│   └── package.json
+├── docker-compose.yml   # MongoDB 8
+├── docs/                # MkDocs documentation
+├── .github/workflows/   # CI/CD pipelines
+└── mkdocs.yml
 ```
 
-### Running the app
+## Quick Start
 
 ```bash
-# development
-$ npm run start
+# Start MongoDB
+docker compose up -d
 
-# watch mode
-$ npm run start:dev
+# Start the GraphQL server
+cd server
+npm install
+npm run start:dev
 
-# production mode
-$ npm run start:prod
+# Start the Angular client (new terminal)
+cd client
+npm install --legacy-peer-deps
+npm start
 ```
 
-### Test
+- **GraphQL Playground**: http://localhost:3000/graphql
+- **Angular App**: http://localhost:4200
 
-```bash
-# unit tests
-$ npm run test
+## Tech Stack
 
-# e2e tests
-$ npm run test:e2e
+| Layer | Technology |
+|-------|-----------|
+| Backend framework | NestJS 11 |
+| API protocol | GraphQL (code-first) |
+| Database | MongoDB via `@nestjs/mongoose` |
+| GraphQL server | Apollo Server 5 |
+| Frontend framework | Angular 22 |
+| UI library | Angular Material |
+| GraphQL client | Apollo Angular |
+| State management | Angular Signals |
+| CI/CD | GitHub Actions (6 workflows) |
+| Documentation | MkDocs Material |
 
-# test coverage
-$ npm run test:cov
-```
+## GraphQL API
 
-## Resources
-* [NestJS GraphQL chapter](https://docs.nestjs.com/graphql/quick-start)
-* [The Anatomy of a GraphQL Query](https://www.apollographql.com/blog/the-anatomy-of-a-graphql-query-6dffa9e9e747/)
-* [Developing a Secure API with NestJS: Managing Identity](https://auth0.com/blog/developing-a-secure-api-with-nestjs-adding-authorization/)
-* [Developing a Secure API with NestJS: Managing Roles](https://auth0.com/blog/developing-a-secure-api-with-nestjs-adding-role-based-access-control/)
+### Queries
+
+| Query | Arguments | Returns |
+|-------|-----------|---------|
+| `posts` | `keyword`, `skip`, `take` | `[Post!]!` |
+| `post` | `id: ID!` | `Post` |
+| `postCount` | `keyword` | `Int!` |
+
+### Mutations
+
+| Mutation | Input | Returns |
+|----------|-------|---------|
+| `createPost` | `CreatePostInput!` | `Post!` |
+| `updatePost` | `id: String!, UpdatePostInput!` | `Post!` |
+| `deletePost` | `id: String!` | `Boolean!` |
+| `addComment` | `CreateCommentInput!` | `Comment!` |
+
+## License
+
+[GPLv3](LICENSE)

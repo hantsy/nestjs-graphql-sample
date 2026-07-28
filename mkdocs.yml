@@ -1,0 +1,10 @@
+site_name: Building GraphQL APIs with NestJS
+site_url: https://hantsy.github.io/nestjs-graphql-sample/
+repo_url: https://github.com/hantsy/nestjs-graphql-sample
+theme:
+  name: material
+
+nav:
+  - Home: index.md
+  - Getting Started: getting-started.md
+  - Blog: blog/2026-07-28-reimplementing-nestjs-graphql.md

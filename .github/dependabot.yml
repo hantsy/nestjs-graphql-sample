@@ -5,20 +5,20 @@ updates:
     schedule:
       interval: "weekly"
   - package-ecosystem: npm
-    directory: "/api"
+    directory: "/server"
     schedule:
       interval: "weekly"
-    #schedule:
-    #  interval: "daily"
-    #  time: "21:00"
     open-pull-requests-limit: 10
-    # Increase the version requirements
-    # only when required
     versioning-strategy: increase-if-necessary
-    reviewers:
-      - "hantsy"
-    assignees:
-      - "hantsy"
+    labels:
+      - "dependencies"
+      - "npm"
+  - package-ecosystem: npm
+    directory: "/client"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 10
+    versioning-strategy: increase-if-necessary
     labels:
       - "dependencies"
       - "npm"

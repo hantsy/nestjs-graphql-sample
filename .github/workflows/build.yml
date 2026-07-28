@@ -1,0 +1,69 @@
+name: build
+
+on:
+  push:
+    paths-ignore:
+      - 'docs/**'
+    branches:
+      - master
+  pull_request:
+    types:
+      - opened
+      - synchronize
+      - reopened
+
+jobs:
+  server-build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: server
+
+    steps:
+      - uses: actions/checkout@v7
+      - name: Setup NodeJS
+        uses: actions/setup-node@v7
+        with:
+          node-version: '24'
+
+      - name: Cache Node.js modules
+        uses: actions/cache@v6
+        with:
+          path: ~/.npm
+          key: ${{ runner.OS }}-node-${{ hashFiles('server/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.OS }}-node-
+            ${{ runner.OS }}-
+
+      - run: npm ci
+      - run: npm run test:cov
+      - name: Upload coverage to Codecov
+        run: |
+          bash <(curl -s https://codecov.io/bash)
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+
+  client-build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: client
+
+    steps:
+      - uses: actions/checkout@v7
+      - name: Setup NodeJS
+        uses: actions/setup-node@v7
+        with:
+          node-version: '24'
+
+      - name: Cache Node.js modules
+        uses: actions/cache@v6
+        with:
+          path: ~/.npm
+          key: ${{ runner.OS }}-node-${{ hashFiles('client/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.OS }}-node-
+            ${{ runner.OS }}-
+
+      - run: npm ci --legacy-peer-deps
+      - run: npm run build

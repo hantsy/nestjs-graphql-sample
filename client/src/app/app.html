@@ -1,0 +1,12 @@
+<mat-toolbar color="primary">
+  <a mat-button routerLink="/" style="font-size: 1.2rem; font-weight: bold;">
+    {{ title }}
+  </a>
+  <span class="spacer"></span>
+  <a mat-button routerLink="/posts">Posts</a>
+  <a mat-button routerLink="/posts/new" color="accent">New Post</a>
+</mat-toolbar>
+
+<main class="container">
+  <router-outlet />
+</main>
