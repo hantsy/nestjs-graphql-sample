@@ -22,7 +22,7 @@
     "@angular/router": "^22.0.0",
     "@apollo/client": "^4.0.0",
     "apollo-angular": "^14.0.0",
-    "graphql": "^16.0.0",
+    "graphql": "^17.0.2",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0"
   },
