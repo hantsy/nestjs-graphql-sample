@@ -34,7 +34,7 @@
     "@graphql-codegen/cli": "^5.0.0",
     "@graphql-codegen/typed-document-node": "^5.0.0",
     "@graphql-codegen/typescript": "^4.0.0",
-    "@graphql-codegen/typescript-operations": "^4.0.0",
+    "@graphql-codegen/typescript-operations": "^6.1.2",
     "jsdom": "^28.0.0",
     "prettier": "^3.8.1",
     "typescript": "~6.0.2",
