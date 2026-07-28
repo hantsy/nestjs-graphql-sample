@@ -111,8 +111,10 @@ export class PostListComponent implements OnInit {
     this.postService
       .getPosts(this.keyword, this.pageIndex() * this.pageSize(), this.pageSize())
       .subscribe(({ data }) => {
-        this.posts.set(data.posts);
-        this.totalCount.set(data.postCount);
+        if (data) {
+          this.posts.set(data.posts);
+          this.totalCount.set(data.postCount);
+        }
         this.loading.set(false);
       });
   }

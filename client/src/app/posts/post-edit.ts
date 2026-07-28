@@ -39,7 +39,7 @@ export class PostEditComponent implements OnInit {
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
       this.postService.getPost(id).subscribe(({ data }) => {
-        this.post.set(data.post);
+        if (data) this.post.set(data.post);
       });
     }
   }

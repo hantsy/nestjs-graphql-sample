@@ -105,7 +105,7 @@ export class PostDetailComponent implements OnInit {
   loadPost(id: string) {
     this.loading.set(true);
     this.postService.getPost(id).subscribe(({ data }) => {
-      this.post.set(data.post);
+      if (data) this.post.set(data.post);
       this.loading.set(false);
     });
   }
