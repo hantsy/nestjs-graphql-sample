@@ -1,0 +1,24 @@
+@if (loading()) {
+  <p>Loading post...</p>
+} @else if (post()) {
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>Edit Post</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      @if (error()) {
+        <p style="color: red; margin-bottom: 16px;">{{ error() }}</p>
+      }
+      <app-post-form
+        submitLabel="Update Post"
+        cancelLink="/posts"
+        [initialTitle]="post()!.title"
+        [initialContent]="post()!.content"
+        [submitting]="submitting()"
+        (submitted)="onSubmit($event)"
+      />
+    </mat-card-content>
+  </mat-card>
+} @else {
+  <p>Post not found.</p>
+}

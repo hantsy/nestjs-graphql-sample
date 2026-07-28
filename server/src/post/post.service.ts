@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import { Post, PostDocument } from './post.schema';
 import { Comment, CommentDocument } from './comment.schema';
 import { CreatePostInput, UpdatePostInput, CreateCommentInput } from './dto/post.input';
@@ -65,7 +65,7 @@ export class PostService {
       throw new NotFoundException(`Post with id "${id}" not found`);
     }
     // also delete associated comments
-    await this.commentModel.deleteMany({ post: id }).exec();
+    await this.commentModel.deleteMany({ post: new Types.ObjectId(id) }).exec();
     return true;
   }
 
@@ -83,7 +83,7 @@ export class PostService {
 
   async commentsOf(postId: string): Promise<CommentDocument[]> {
     return this.commentModel
-      .find({ post: postId })
+      .find({ post: new Types.ObjectId(postId) })
       .sort({ createdAt: -1 })
       .exec();
   }

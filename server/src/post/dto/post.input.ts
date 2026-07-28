@@ -1,5 +1,5 @@
 import { InputType, Field } from '@nestjs/graphql';
-import { IsNotEmpty, MinLength } from 'class-validator';
+import { IsNotEmpty, IsOptional, IsString, MinLength } from 'class-validator';
 
 @InputType()
 export class CreatePostInput {
@@ -16,9 +16,13 @@ export class CreatePostInput {
 @InputType()
 export class UpdatePostInput {
   @Field({ nullable: true })
+  @IsOptional()
+  @IsString()
   title?: string;
 
   @Field({ nullable: true })
+  @IsOptional()
+  @IsString()
   @MinLength(10)
   content?: string;
 }

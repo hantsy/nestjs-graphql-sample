@@ -1,4 +1,5 @@
-import { Component, signal, inject, OnInit } from '@angular/core';
+import { Component, signal, inject, OnInit, DestroyRef } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, RouterLink, Router } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
@@ -25,74 +26,17 @@ import { PostService, Post } from './post.service';
     FormsModule,
     DatePipe,
   ],
-  template: `
-    @if (loading()) {
-      <p>Loading post...</p>
-    } @else if (post()) {
-      <mat-card>
-        <mat-card-header>
-          <mat-card-title>{{ post()!.title }}</mat-card-title>
-          <mat-card-subtitle>
-            Created {{ post()!.createdAt | date:'medium' }}
-            @if (post()!.updatedAt !== post()!.createdAt) {
-              · Updated {{ post()!.updatedAt | date:'medium' }}
-            }
-          </mat-card-subtitle>
-        </mat-card-header>
-        <mat-card-content>
-          <p style="white-space: pre-wrap;">{{ post()!.content }}</p>
-        </mat-card-content>
-        <mat-card-actions>
-          <a mat-button [routerLink]="['/posts', post()!.id, 'edit']">
-            <mat-icon>edit</mat-icon> Edit
-          </a>
-          <button mat-button color="warn" (click)="onDelete()">
-            <mat-icon>delete</mat-icon> Delete
-          </button>
-          <a mat-button routerLink="/posts">Back to Posts</a>
-        </mat-card-actions>
-      </mat-card>
-
-      <mat-card style="margin-top: 16px;">
-        <mat-card-header>
-          <mat-card-title>Comments</mat-card-title>
-        </mat-card-header>
-        <mat-card-content>
-          @if (post()!.comments && post()!.comments!.length > 0) {
-            <mat-list>
-              @for (comment of post()!.comments; track comment.id) {
-                <mat-list-item>
-                  <span matListItemTitle>{{ comment.content }}</span>
-                  <span matListItemLine>{{ comment.createdAt | date:'medium' }}</span>
-                </mat-list-item>
-                <mat-divider />
-              }
-            </mat-list>
-          } @else {
-            <p>No comments yet. Be the first to comment!</p>
-          }
-
-          <div style="margin-top: 16px; display: flex; gap: 8px; align-items: baseline;">
-            <mat-form-field class="full-width" appearance="outline">
-              <mat-label>Add a comment</mat-label>
-              <textarea matInput [(ngModel)]="newComment" rows="2" placeholder="Write your comment..."></textarea>
-            </mat-form-field>
-            <button mat-raised-button color="primary" (click)="addComment()" [disabled]="!newComment.trim()">
-              Post
-            </button>
-          </div>
-        </mat-card-content>
-      </mat-card>
-    }
-  `,
+  templateUrl: './post-detail.html',
 })
 export class PostDetailComponent implements OnInit {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private postService = inject(PostService);
+  private destroyRef = inject(DestroyRef);
 
   post = signal<Post | null>(null);
   loading = signal(true);
+  commentSubmitting = signal(false);
   newComment = '';
 
   ngOnInit() {
@@ -104,26 +48,50 @@ export class PostDetailComponent implements OnInit {
 
   loadPost(id: string) {
     this.loading.set(true);
-    this.postService.getPost(id).subscribe(({ data }) => {
-      if (data) this.post.set(data.post);
-      this.loading.set(false);
-    });
+    this.postService
+      .getPost(id)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: ({ data }) => {
+          if (data) this.post.set(data.post);
+          this.loading.set(false);
+        },
+        error: (err) => {
+          console.error('getPost error:', err);
+          this.loading.set(false);
+        },
+      });
   }
 
   addComment() {
     if (!this.newComment.trim() || !this.post()) return;
     const content = this.newComment.trim();
-    this.postService.addComment(this.post()!.id, content).subscribe(() => {
-      this.newComment = '';
-      this.loadPost(this.post()!.id);
-    });
+    this.commentSubmitting.set(true);
+    this.postService
+      .addComment(this.post()!.id, content)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: () => {
+          this.newComment = '';
+          this.commentSubmitting.set(false);
+          this.loadPost(this.post()!.id);
+        },
+        error: (err) => {
+          console.error('addComment error:', err);
+          this.commentSubmitting.set(false);
+        },
+      });
   }
 
   onDelete() {
     if (this.post() && confirm('Are you sure you want to delete this post?')) {
-      this.postService.deletePost(this.post()!.id).subscribe(() => {
-        this.router.navigate(['/posts']);
-      });
+      this.postService
+        .deletePost(this.post()!.id)
+        .pipe(takeUntilDestroyed(this.destroyRef))
+        .subscribe({
+          next: () => this.router.navigate(['/posts']),
+          error: (err) => console.error('deletePost error:', err),
+        });
     }
   }
 }

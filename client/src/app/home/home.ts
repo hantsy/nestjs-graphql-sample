@@ -6,36 +6,6 @@ import { MatCardModule } from '@angular/material/card';
 @Component({
   selector: 'app-home',
   imports: [RouterLink, MatButtonModule, MatCardModule],
-  template: `
-    <mat-card>
-      <mat-card-header>
-        <mat-card-title>Welcome to NestJS GraphQL Blog</mat-card-title>
-        <mat-card-subtitle>
-          A modern blog platform built with NestJS, GraphQL, and MongoDB
-        </mat-card-subtitle>
-      </mat-card-header>
-      <mat-card-content>
-        <p>
-          This is a sample blog application demonstrating how to build a
-          GraphQL API with NestJS using the code-first approach, connected
-          to MongoDB via the built-in
-          <code>&#64;nestjs/mongoose</code> module.
-        </p>
-        <p>
-          The frontend is built with Angular, featuring standalone
-          components, signals, lazy-loaded routes, and Apollo Angular for
-          GraphQL communication.
-        </p>
-      </mat-card-content>
-      <mat-card-actions>
-        <a mat-raised-button color="primary" routerLink="/posts">
-          Browse Posts
-        </a>
-        <a mat-stroked-button routerLink="/posts/new">
-          Create a Post
-        </a>
-      </mat-card-actions>
-    </mat-card>
-  `,
+  templateUrl: './home.html',
 })
 export class HomeComponent {}

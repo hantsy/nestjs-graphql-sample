@@ -1,0 +1,50 @@
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>Posts</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+      <mat-form-field appearance="outline" style="flex: 1; max-width: 400px;">
+        <mat-label>Search posts</mat-label>
+        <input matInput [(ngModel)]="keyword" (input)="onSearch()" placeholder="Search by title..." />
+        <mat-icon matPrefix>search</mat-icon>
+      </mat-form-field>
+      <a mat-raised-button color="primary" routerLink="/posts/new">New Post</a>
+    </div>
+
+    @if (loading()) {
+      <p>Loading posts...</p>
+    } @else if (posts().length === 0) {
+      <p>No posts found.</p>
+    } @else {
+      @for (post of posts(); track post.id) {
+        <mat-card appearance="outlined" style="margin-bottom: 8px;">
+          <mat-card-header>
+            <mat-card-title>
+              <a [routerLink]="['/posts', post.id]">{{ post.title }}</a>
+            </mat-card-title>
+            <mat-card-subtitle>
+              {{ post.createdAt | date:'medium' }}
+            </mat-card-subtitle>
+          </mat-card-header>
+          <mat-card-content>
+            <p>{{ post.content | slice:0:200 }}{{ post.content.length > 200 ? '...' : '' }}</p>
+          </mat-card-content>
+          <mat-card-actions>
+            <a mat-button [routerLink]="['/posts', post.id]">Read</a>
+            <a mat-button [routerLink]="['/posts', post.id, 'edit']">Edit</a>
+            <button mat-button color="warn" (click)="deletePost(post.id)">Delete</button>
+          </mat-card-actions>
+        </mat-card>
+      }
+
+      <mat-paginator
+        [length]="totalCount()"
+        [pageSize]="pageSize()"
+        [pageIndex]="pageIndex()"
+        [pageSizeOptions]="[5, 10, 25, 50]"
+        (page)="onPageChange($event)"
+      />
+    }
+  </mat-card-content>
+</mat-card>

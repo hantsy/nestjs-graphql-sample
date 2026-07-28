@@ -1,0 +1,23 @@
+<mat-form-field class="full-width" appearance="outline">
+  <mat-label>Title</mat-label>
+  <input matInput [(ngModel)]="title" required [disabled]="submitting()" />
+</mat-form-field>
+
+<mat-form-field class="full-width" appearance="outline">
+  <mat-label>Content</mat-label>
+  <textarea matInput [(ngModel)]="content" rows="10" required [disabled]="submitting()"></textarea>
+</mat-form-field>
+
+<div style="display: flex; align-items: center; gap: 8px;">
+  <button
+    mat-raised-button
+    color="primary"
+    [disabled]="!title.trim() || !content.trim() || content.trim().length < 10 || submitting()"
+    (click)="onSubmit()"
+  >
+    {{ submitting() ? 'Saving...' : submitLabel() }}
+  </button>
+  <button mat-button [routerLink]="cancelLink()" [disabled]="submitting()">
+    Cancel
+  </button>
+</div>

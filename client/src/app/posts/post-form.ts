@@ -1,4 +1,4 @@
-import { Component, input, output, effect } from '@angular/core';
+import { Component, input, output, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
@@ -8,31 +8,9 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 @Component({
   selector: 'app-post-form',
   imports: [FormsModule, RouterLink, MatInputModule, MatButtonModule, MatFormFieldModule],
-  template: `
-    <mat-form-field class="full-width" appearance="outline">
-      <mat-label>Title</mat-label>
-      <input matInput [(ngModel)]="title" required />
-    </mat-form-field>
-
-    <mat-form-field class="full-width" appearance="outline">
-      <mat-label>Content</mat-label>
-      <textarea matInput [(ngModel)]="content" rows="10" required></textarea>
-    </mat-form-field>
-
-    <button
-      mat-raised-button
-      color="primary"
-      [disabled]="!title.trim() || !content.trim() || content.trim().length < 10"
-      (click)="onSubmit()"
-    >
-      {{ submitLabel() }}
-    </button>
-    <button mat-button [routerLink]="cancelLink()" style="margin-left: 8px;">
-      Cancel
-    </button>
-  `,
+  templateUrl: './post-form.html',
 })
-export class PostFormComponent {
+export class PostFormComponent implements OnInit {
   title = '';
   content = '';
 
@@ -40,17 +18,12 @@ export class PostFormComponent {
   cancelLink = input<string>('/posts');
   initialTitle = input<string>('');
   initialContent = input<string>('');
+  submitting = input<boolean>(false);
   submitted = output<{ title: string; content: string }>();
 
-  constructor() {
-    effect(() => {
-      const t = this.initialTitle();
-      if (t) this.title = t;
-    });
-    effect(() => {
-      const c = this.initialContent();
-      if (c) this.content = c;
-    });
+  ngOnInit() {
+    if (this.initialTitle()) this.title = this.initialTitle();
+    if (this.initialContent()) this.content = this.initialContent();
   }
 
   onSubmit() {
@@ -59,6 +32,8 @@ export class PostFormComponent {
         title: this.title.trim(),
         content: this.content.trim(),
       });
+      this.title = '';
+      this.content = '';
     }
   }
 }

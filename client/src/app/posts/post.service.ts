@@ -1,6 +1,5 @@
 import { Injectable, inject } from '@angular/core';
 import { Apollo, gql } from 'apollo-angular';
-import { Observable, map } from 'rxjs';
 
 export interface Post {
   id: string;
@@ -31,7 +30,7 @@ const GET_POSTS = gql`
 `;
 
 const GET_POST = gql`
-  query GetPost($id: ID!) {
+  query GetPost($id: String!) {
     post(id: $id) {
       id
       title
@@ -95,6 +94,7 @@ export class PostService {
     return this.apollo.query<{ posts: Post[]; postCount: number }>({
       query: GET_POSTS,
       variables: { keyword, skip, take },
+      fetchPolicy: 'network-only',
     });
   }
 
@@ -102,6 +102,7 @@ export class PostService {
     return this.apollo.query<{ post: Post }>({
       query: GET_POST,
       variables: { id },
+      fetchPolicy: 'network-only',
     });
   }
 
@@ -123,6 +124,7 @@ export class PostService {
     return this.apollo.mutate<{ deletePost: boolean }>({
       mutation: DELETE_POST,
       variables: { id },
+      refetchQueries: ['GetPosts'],
     });
   }
 
