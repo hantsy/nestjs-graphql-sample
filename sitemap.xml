@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+    <url>
+         <loc>https://hantsy.github.io/nestjs-graphql-sample/</loc>
+         <lastmod>2026-07-28</lastmod>
+    </url>
+    <url>
+         <loc>https://hantsy.github.io/nestjs-graphql-sample/getting-started/</loc>
+         <lastmod>2026-07-28</lastmod>
+    </url>
+    <url>
+         <loc>https://hantsy.github.io/nestjs-graphql-sample/blog/2026-07-28-reimplementing-nestjs-graphql/</loc>
+         <lastmod>2026-07-28</lastmod>
+    </url>
+</urlset>
