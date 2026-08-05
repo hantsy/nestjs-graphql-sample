@@ -14,18 +14,21 @@ git clone https://github.com/hantsy/nestjs-graphql-sample.git
 cd nestjs-graphql-sample
 ```
 
-### 2. Start MongoDB
+### 2. Install dependencies
+
+This is an Nx monorepo with npm workspaces — all dependencies are installed from the root:
+
+```bash
+npm install
+```
+
+### 3. Start MongoDB
 
 ```bash
 docker compose up -d
 ```
 
-### 3. Set up the server
-
-```bash
-cd server
-npm install
-```
+### 4. Set up the server
 
 Configure environment (optional — defaults work out of the box):
 
@@ -38,27 +41,51 @@ Configure environment (optional — defaults work out of the box):
 Start the development server:
 
 ```bash
-npm run start:dev
+npx nx serve nestjs-graphql-server
 ```
 
 Visit `http://localhost:3000/graphql` to open Apollo Sandbox.
 
-### 4. Set up the client
+### 5. Set up the client
+
+In a new terminal:
 
 ```bash
-cd ../client
-npm install --legacy-peer-deps
-npm start
+npx nx serve client
 ```
 
 Visit `http://localhost:4200` to view the Angular application.
 
-### 5. Seed sample data (optional)
+### 6. Seed sample data (optional)
 
 Stop the server, then restart with:
 
 ```bash
-SEED_DATABASE=true npm run start:dev
+SEED_DATABASE=true npx nx serve nestjs-graphql-server
 ```
 
 This creates 3 sample posts with comments.
+
+## Nx Commands
+
+| Command | Description |
+|---------|-------------|
+| `nx build client` | Production build (Angular) |
+| `nx build nestjs-graphql-server` | Production build (NestJS) |
+| `nx test client` | Run Vitest unit tests |
+| `nx test nestjs-graphql-server` | Run Jest unit tests |
+| `nx run-many -t build` | Build both projects in parallel |
+| `nx affected -t test` | Test only projects changed since master |
+| `nx graph` | Show project dependency graph |
+
+## Running with Docker
+
+The server and client each have their own Dockerfile. Build from the repository root:
+
+```bash
+# Server
+docker build -f apps/server/Dockerfile -t blog-server .
+
+# Client
+docker build -f apps/client/Dockerfile -t blog-client .
+```
