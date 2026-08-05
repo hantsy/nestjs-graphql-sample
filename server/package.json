@@ -34,7 +34,7 @@
     "class-transformer": "^0.5.1",
     "class-validator": "^0.15.1",
     "compression": "^1.8.1",
-    "graphql": "^16.11.0",
+    "graphql": "^17.0.2",
     "helmet": "^8.3.0",
     "joi": "^18.2.3",
     "mongoose": "^9.2.2",
