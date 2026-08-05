@@ -1,16 +1,63 @@
 {
   "$schema": "./node_modules/nx/schemas/nx-schema.json",
+  "namedInputs": {
+    "default": ["{projectRoot}/**/*", "sharedGlobals"],
+    "production": [
+      "default",
+      "!{projectRoot}/**/*.spec.ts",
+      "!{projectRoot}/**/*.stub.ts",
+      "!{projectRoot}/tsconfig.spec.json",
+      "!{projectRoot}/jest.config.ts",
+      "!{projectRoot}/src/test-setup.ts",
+      "!{projectRoot}/eslint.config.js",
+      "!{projectRoot}/eslint.config.mjs",
+      "!{projectRoot}/eslint.config.cjs"
+    ],
+    "sharedGlobals": []
+  },
+  "plugins": [
+    {
+      "plugin": "@nx/angular",
+      "options": {
+        "buildTargetName": "build",
+        "serveTargetName": "serve",
+        "testTargetName": "test",
+        "lintTargetName": "lint"
+      }
+    },
+    {
+      "plugin": "@nx/nest"
+    }
+  ],
+  "generators": {
+    "@nx/angular:component": {
+      "style": "css"
+    }
+  },
   "targetDefaults": {
     "build": {
+      "cache": true,
+      "dependsOn": ["^build"],
+      "inputs": ["production", "^production"]
+    },
+    "serve": {
       "cache": true,
       "dependsOn": ["^build"]
     },
     "test": {
       "cache": true,
-      "dependsOn": ["build"]
+      "dependsOn": ["build"],
+      "inputs": ["default", "^production"]
     },
     "lint": {
-      "cache": true
+      "cache": true,
+      "inputs": [
+        "default",
+        "{workspaceRoot}/eslint.config.mjs",
+        "{projectRoot}/eslint.config.js",
+        "{projectRoot}/eslint.config.mjs",
+        "{projectRoot}/eslint.config.cjs"
+      ]
     }
   },
   "defaultBase": "master"
