@@ -1,31 +1,30 @@
 <mat-card class="hero-card">
   <mat-card-header>
-    <mat-card-title>
-      <mat-icon class="hero-icon">auto_stories</mat-icon>
-      Welcome to NestJS GraphQL Blog
-    </mat-card-title>
-    <mat-card-subtitle>
-      A modern blog platform built with NestJS, GraphQL, and MongoDB
-    </mat-card-subtitle>
+    <mat-icon class="hero-icon">auto_stories</mat-icon>
+    <div>
+      <div class="hero-title">NestJS GraphQL Blog</div>
+      <div class="hero-subtitle">
+        A modern blog platform built with NestJS, GraphQL, and MongoDB
+      </div>
+    </div>
   </mat-card-header>
   <mat-card-content>
-    <p>
+    <p class="hero-description">
       This is a sample blog application demonstrating how to build a
       GraphQL API with NestJS using the code-first approach, connected
-      to MongoDB via the built-in
-      <code>&#64;nestjs/mongoose</code> module.
+      to MongoDB via the built-in <code>&#64;nestjs/mongoose</code> module.
     </p>
-    <p>
+    <p class="hero-description">
       The frontend is built with Angular, featuring standalone
       components, signals, lazy-loaded routes, and Apollo Angular for
       GraphQL communication.
     </p>
   </mat-card-content>
   <mat-card-actions class="hero-actions">
-    <a mat-raised-button color="primary" routerLink="/posts" class="btn-lg">
+    <a mat-stroked-button routerLink="/posts">
       <mat-icon>list</mat-icon> Browse Posts
     </a>
-    <a mat-raised-button color="accent" routerLink="/posts/new" class="btn-lg">
+    <a mat-flat-button color="accent" routerLink="/posts/new">
       <mat-icon>add</mat-icon> Create a Post
     </a>
   </mat-card-actions>

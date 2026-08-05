@@ -84,7 +84,7 @@ export class PostDetailComponent implements OnInit {
   }
 
   avatarColor(id: string): string {
-    const colors = ['#e91e63','#9c27b0','#673ab7','#3f51b5','#2196f3','#009688','#4caf50','#ff9800','#795548','#607d8b'];
+    const colors = ['#6366f1','#8b5cf6','#ec4899','#f59e0b','#10b981','#06b6d4','#ef4444','#3b82f6'];
     let hash = 0;
     for (let i = 0; i < id.length; i++) { hash = id.charCodeAt(i) + ((hash << 5) - hash); }
     return colors[Math.abs(hash) % colors.length];

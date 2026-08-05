@@ -1,0 +1,470 @@
+// Custom Material theme — "Codex"
+@use 'theme' as *;
+@use 'tokens';
+
+// Apply Material theme globally
+@include apply-theme();
+
+// ── Base ──────────────────────────────────────────────────
+html, body {
+  height: 100%;
+  margin: 0;
+  font-family: Roboto, 'Helvetica Neue', sans-serif;
+  background-color: var(--color-background);
+  color: var(--color-text-primary);
+}
+
+// ── Layout ────────────────────────────────────────────────
+.container {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 24px 16px;
+}
+
+.spacer {
+  flex: 1 1 auto;
+}
+
+.full-width {
+  width: 100%;
+}
+
+// ── Toolbar ───────────────────────────────────────────────
+mat-toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  box-shadow: var(--shadow-toolbar);
+}
+
+.toolbar-brand {
+  font-size: 1.3rem;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+}
+
+.toolbar-btn {
+  margin-left: 8px;
+}
+
+// Active nav indicator
+.nav-link {
+  position: relative;
+  opacity: 0.85;
+  transition: opacity 0.2s;
+
+  &:hover {
+    opacity: 1;
+  }
+
+  &.active {
+    opacity: 1;
+
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 8px;
+      right: 8px;
+      height: 2px;
+      background: var(--color-accent);
+    }
+  }
+}
+
+// ── Cards ─────────────────────────────────────────────────
+mat-card {
+  margin-bottom: 20px;
+  box-shadow: var(--shadow-card);
+}
+
+mat-card-header {
+  padding: 24px 24px 0;
+}
+
+mat-card-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 1.25rem !important;
+  font-weight: 600 !important;
+  color: var(--color-text-primary);
+}
+
+mat-card-content {
+  padding: 24px;
+
+  p {
+    color: var(--color-text-secondary);
+    line-height: 1.6;
+  }
+}
+
+mat-card-actions {
+  padding: 0 24px 24px;
+  gap: 8px;
+}
+
+// ── Hero / Home ───────────────────────────────────────────
+.hero-card {
+  border-radius: 8px;
+  box-shadow: var(--shadow-card);
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    display: block;
+    height: 3px;
+    background: var(--gradient-accent);
+  }
+}
+
+.hero-icon {
+  font-size: 40px;
+  width: 40px;
+  height: 40px;
+  color: var(--color-accent);
+}
+
+.hero-title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  margin-bottom: 4px;
+}
+
+.hero-subtitle {
+  font-size: 0.875rem;
+  font-weight: 400;
+  font-style: italic;
+  color: var(--color-text-secondary);
+  margin-bottom: 16px;
+}
+
+.hero-description {
+  font-size: 1rem;
+  line-height: 1.7;
+  color: var(--color-text-secondary);
+  max-width: 65ch;
+  margin-bottom: 20px;
+}
+
+.hero-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+// ── Buttons ───────────────────────────────────────────────
+.btn-lg {
+  padding: 12px 32px !important;
+  font-size: 1.05rem !important;
+  min-height: 48px;
+  border-radius: 6px !important;
+
+  mat-icon {
+    margin-right: 6px;
+  }
+}
+
+mat-card-actions button,
+mat-card-actions a {
+  min-height: 40px;
+  font-size: 0.9rem !important;
+}
+
+mat-card-actions mat-icon {
+  margin-right: 4px;
+  font-size: 18px;
+  width: 18px;
+  height: 18px;
+  vertical-align: middle;
+}
+
+// ── Post List ─────────────────────────────────────────────
+.list-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.search-field {
+  flex: 1;
+  min-width: 200px;
+  max-width: 400px;
+}
+
+.post-card {
+  margin-bottom: 16px;
+  border-radius: 8px;
+  box-shadow: var(--shadow-card);
+  transition: box-shadow 0.2s ease;
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 3px;
+    background: var(--color-accent);
+  }
+
+  &:hover {
+    box-shadow: var(--shadow-card-hover);
+  }
+}
+
+.post-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+
+  a {
+    color: var(--color-text-primary);
+    text-decoration: none;
+    transition: color 0.15s;
+
+    &:hover {
+      color: var(--color-accent-dark);
+    }
+  }
+}
+
+.post-meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 0.875rem;
+  color: var(--color-text-secondary);
+  margin-top: 4px;
+  margin-bottom: 8px;
+}
+
+.post-preview {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--color-text-secondary);
+  max-height: 4.5em;
+  overflow: hidden;
+  position: relative;
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 2em;
+    background: linear-gradient(transparent, #ffffff);
+  }
+}
+
+.post-actions {
+  display: flex;
+  gap: 8px;
+  padding: 0 24px 16px;
+
+  button:last-child {
+    margin-left: auto;
+  }
+}
+
+// ── Post Detail ───────────────────────────────────────────
+.post-content {
+  white-space: pre-wrap;
+  font-size: 1rem;
+  line-height: 1.7;
+  color: var(--color-text-secondary);
+}
+
+.comments-card {
+  margin-top: 20px;
+  border-radius: 8px;
+}
+
+.comment-form {
+  margin-top: 20px;
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+
+  .comment-input {
+    flex: 1;
+  }
+}
+
+// ── Meta Icons ────────────────────────────────────────────
+.meta-icon {
+  font-size: 14px !important;
+  width: 14px !important;
+  height: 14px !important;
+  vertical-align: text-bottom;
+  opacity: 0.6;
+}
+
+// ── Loading ───────────────────────────────────────────────
+.loading-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 48px 0;
+  color: var(--color-text-muted);
+
+  mat-icon {
+    font-size: 28px;
+    width: 28px;
+    height: 28px;
+  }
+}
+
+.spin {
+  animation: spin 1.2s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+// Skeleton loading cards
+.skeleton-card {
+  background: #ffffff;
+  border-radius: 8px;
+  padding: 24px;
+  margin-bottom: 16px;
+  box-shadow: var(--shadow-card);
+}
+
+// ── Empty State ───────────────────────────────────────────
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 24px;
+  color: var(--color-text-muted);
+  text-align: center;
+  gap: 12px;
+
+  p {
+    font-size: 1.05rem;
+    margin: 0;
+  }
+}
+
+.empty-icon {
+  font-size: 56px !important;
+  width: 56px !important;
+  height: 56px !important;
+  opacity: 0.35;
+}
+
+// ── Form ──────────────────────────────────────────────────
+.form-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 8px;
+
+  button[type='submit'] {
+    margin-left: auto;
+  }
+}
+
+.char-count {
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+  text-align: right;
+  margin-top: 4px;
+}
+
+// ── Avatar ────────────────────────────────────────────────
+.avatar {
+  width: 40px !important;
+  height: 40px !important;
+  border-radius: 50% !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-weight: 600;
+  font-size: 1.1rem;
+  text-transform: uppercase;
+  flex-shrink: 0;
+}
+
+// ── Error ─────────────────────────────────────────────────
+.error-msg {
+  color: var(--color-warn);
+  background: var(--color-warn-light);
+  padding: 12px 16px;
+  border-radius: 8px;
+  margin-bottom: 16px;
+  font-weight: 500;
+  font-size: 0.9rem;
+}
+
+// ── Comment Item ──────────────────────────────────────────
+.comment-meta {
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+  margin-top: 2px;
+}
+
+// ── Responsive ────────────────────────────────────────────
+@media (max-width: 600px) {
+  .container {
+    padding: 16px 12px;
+  }
+
+  .hero-actions {
+    flex-direction: column;
+    justify-content: stretch;
+
+    button {
+      width: 100%;
+    }
+  }
+
+  .comment-form {
+    flex-direction: column;
+  }
+
+  .post-actions {
+    flex-wrap: wrap;
+    gap: 6px;
+
+    button:last-child {
+      margin-left: 0;
+    }
+  }
+
+  .list-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .search-field {
+    max-width: 100%;
+  }
+
+  mat-card-header {
+    padding: 16px 16px 0;
+  }
+
+  mat-card-content {
+    padding: 16px;
+  }
+
+  mat-card-actions {
+    padding: 0 16px 16px;
+  }
+}

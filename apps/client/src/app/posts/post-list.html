@@ -11,46 +11,50 @@
         <input matInput [(ngModel)]="keyword" (input)="onSearch()" placeholder="Search by title..." />
         <mat-icon matPrefix>search</mat-icon>
       </mat-form-field>
-      <a mat-raised-button color="accent" routerLink="/posts/new" class="btn-lg">
+      <a mat-flat-button color="accent" routerLink="/posts/new">
         <mat-icon>add</mat-icon> New Post
       </a>
     </div>
 
     @if (loading()) {
-      <div class="loading-state">
-        <mat-icon class="spin">sync</mat-icon>
-        <p>Loading posts...</p>
-      </div>
+      <div class="skeleton-card"><div class="skeleton skeleton-title"></div><div class="skeleton skeleton-line-sm"></div><div class="skeleton skeleton-line"></div><div class="skeleton skeleton-line"></div></div>
+      <div class="skeleton-card"><div class="skeleton skeleton-title"></div><div class="skeleton skeleton-line-sm"></div><div class="skeleton skeleton-line"></div><div class="skeleton skeleton-line"></div></div>
+      <div class="skeleton-card"><div class="skeleton skeleton-title"></div><div class="skeleton skeleton-line-sm"></div><div class="skeleton skeleton-line"></div><div class="skeleton skeleton-line"></div></div>
     } @else if (posts().length === 0) {
       <div class="empty-state">
         <mat-icon class="empty-icon">post_add</mat-icon>
-        <p>No posts found. Create your first post!</p>
+        <p>No posts yet. Create your first post to get started!</p>
+        <a mat-flat-button color="accent" routerLink="/posts/new">
+          <mat-icon>add</mat-icon> Create a Post
+        </a>
       </div>
     } @else {
       @for (post of posts(); track post.id) {
-        <mat-card appearance="outlined" class="post-card">
+        <mat-card class="post-card">
           <mat-card-header>
-            <mat-card-title>
+            <mat-card-title class="post-title">
               <a [routerLink]="['/posts', post.id]">{{ post.title }}</a>
             </mat-card-title>
             <mat-card-subtitle>
-              <mat-icon class="meta-icon">calendar_today</mat-icon>
-              {{ post.createdAt | date:'medium' }}
+              <div class="post-meta">
+                <mat-icon class="meta-icon">calendar_today</mat-icon>
+                <span>{{ post.createdAt | date:'medium' }}</span>
+              </div>
             </mat-card-subtitle>
           </mat-card-header>
           <mat-card-content>
-            <p>{{ post.content | slice:0:200 }}{{ post.content.length > 200 ? '...' : '' }}</p>
+            <p class="post-preview">{{ post.content | slice:0:200 }}{{ post.content.length > 200 ? '...' : '' }}</p>
           </mat-card-content>
           <mat-card-actions class="post-actions">
+            <button mat-stroked-button color="warn" (click)="deletePost(post.id)">
+              <mat-icon>delete</mat-icon> Delete
+            </button>
+            <a mat-stroked-button [routerLink]="['/posts', post.id, 'edit']">
+              <mat-icon>edit</mat-icon> Edit
+            </a>
             <a mat-stroked-button color="primary" [routerLink]="['/posts', post.id]">
               <mat-icon>visibility</mat-icon> Read
             </a>
-            <a mat-stroked-button color="accent" [routerLink]="['/posts', post.id, 'edit']">
-              <mat-icon>edit</mat-icon> Edit
-            </a>
-            <button mat-flat-button color="warn" (click)="deletePost(post.id)">
-              <mat-icon>delete</mat-icon> Delete
-            </button>
           </mat-card-actions>
         </mat-card>
       }

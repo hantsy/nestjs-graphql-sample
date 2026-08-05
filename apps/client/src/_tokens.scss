@@ -1,0 +1,98 @@
+// Design tokens — CSS custom properties
+
+:root {
+  // Core colors
+  --color-primary: #1e293b;
+  --color-primary-light: #334155;
+  --color-accent: #f59e0b;
+  --color-accent-dark: #d97706;
+  --color-surface: #ffffff;
+  --color-background: #f8fafc;
+  --color-warn: #ef4444;
+  --color-warn-light: #fef2f2;
+  --color-success: #10b981;
+
+  // Text
+  --color-text-primary: #1e293b;
+  --color-text-secondary: #64748b;
+  --color-text-muted: #94a3b8;
+
+  // Borders
+  --color-border: #e2e8f0;
+
+  // Gradients
+  --gradient-accent: linear-gradient(90deg, #f59e0b, #334155);
+  --gradient-accent-vertical: linear-gradient(180deg, #f59e0b, #334155);
+
+  // Shadows
+  --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-card-hover: 0 4px 12px rgba(0, 0, 0, 0.08), 0 2px 4px rgba(0, 0, 0, 0.04);
+  --shadow-toolbar: 0 1px 3px rgba(0, 0, 0, 0.12);
+}
+
+// Skeleton shimmer animation
+@keyframes skeleton-shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.skeleton {
+  background: linear-gradient(90deg, #e2e8f0 25%, #f1f5f9 50%, #e2e8f0 75%);
+  background-size: 200% 100%;
+  animation: skeleton-shimmer 1.5s ease-in-out infinite;
+  border-radius: 4px;
+}
+
+.skeleton-line {
+  height: 1rem;
+  margin-bottom: 0.75rem;
+}
+
+.skeleton-line-sm {
+  height: 0.75rem;
+  width: 60%;
+  margin-bottom: 0.75rem;
+}
+
+.skeleton-title {
+  height: 1.5rem;
+  width: 70%;
+  margin-bottom: 1rem;
+}
+
+.skeleton-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+
+// Accent bar — used on hero card top / post card left
+.accent-bar {
+  position: relative;
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: var(--gradient-accent);
+  }
+}
+
+.accent-bar-left {
+  position: relative;
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 3px;
+    background: var(--gradient-accent-vertical);
+  }
+}

@@ -1,7 +1,6 @@
 import { Component, signal, inject, OnInit, DestroyRef } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { RouterLink } from '@angular/router';
-import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
@@ -16,7 +15,6 @@ import { Subject, debounceTime, distinctUntilChanged } from 'rxjs';
   selector: 'app-post-list',
   imports: [
     RouterLink,
-    MatTableModule,
     MatPaginatorModule,
     MatInputModule,
     MatButtonModule,

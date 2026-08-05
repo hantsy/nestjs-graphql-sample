@@ -4,10 +4,10 @@
     {{ title }}
   </a>
   <span class="spacer"></span>
-  <a mat-raised-button routerLink="/posts" class="toolbar-btn">
+  <a mat-button routerLink="/posts" routerLinkActive="active" class="toolbar-btn nav-link">
     <mat-icon>list</mat-icon> Posts
   </a>
-  <a mat-raised-button routerLink="/posts/new" color="accent" class="toolbar-btn">
+  <a mat-flat-button routerLink="/posts/new" color="accent" class="toolbar-btn" routerLinkActive="active">
     <mat-icon>add</mat-icon> New Post
   </a>
 </mat-toolbar>
