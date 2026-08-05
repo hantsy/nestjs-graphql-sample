@@ -290,6 +290,26 @@ mat-card-actions mat-icon {
   }
 }
 
+// ── Dark mode card overrides ──────────────────────────────
+[data-theme='dark'] {
+  mat-card-subtitle,
+  .post-meta {
+    color: var(--color-text-muted);
+  }
+
+  .post-preview::after {
+    background: linear-gradient(transparent, var(--color-surface));
+  }
+
+  .skeleton-card {
+    background: var(--color-surface);
+  }
+
+  .post-card:hover {
+    box-shadow: 0 4px 12px rgba(129, 140, 248, 0.25), 0 2px 4px rgba(0, 0, 0, 0.4);
+  }
+}
+
 // ── Post Detail ───────────────────────────────────────────
 .post-content {
   white-space: pre-wrap;
