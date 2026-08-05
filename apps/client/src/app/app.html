@@ -10,6 +10,9 @@
   <a mat-flat-button routerLink="/posts/new" color="accent" class="toolbar-btn" routerLinkActive="active">
     <mat-icon>add</mat-icon> New Post
   </a>
+  <button mat-icon-button class="theme-toggle" (click)="toggleTheme()" [attr.aria-label]="themeLabel()">
+    <mat-icon>{{ themeIcon() }}</mat-icon>
+  </button>
 </mat-toolbar>
 
 <main class="container">

@@ -47,6 +47,21 @@ mat-toolbar {
   margin-left: 8px;
 }
 
+.theme-toggle {
+  margin-left: 12px;
+  opacity: 0.85;
+  transition: opacity 0.2s, transform 0.3s ease;
+
+  &:hover {
+    opacity: 1;
+    transform: rotate(15deg);
+  }
+
+  mat-icon {
+    transition: transform 0.4s ease;
+  }
+}
+
 // Active nav indicator
 .nav-link {
   position: relative;
@@ -261,7 +276,7 @@ mat-card-actions mat-icon {
     left: 0;
     right: 0;
     height: 2em;
-    background: linear-gradient(transparent, #ffffff);
+    background: linear-gradient(transparent, var(--color-surface));
   }
 }
 
@@ -336,7 +351,7 @@ mat-card-actions mat-icon {
 
 // Skeleton loading cards
 .skeleton-card {
-  background: #ffffff;
+  background: var(--color-surface);
   border-radius: 8px;
   padding: 24px;
   margin-bottom: 16px;
