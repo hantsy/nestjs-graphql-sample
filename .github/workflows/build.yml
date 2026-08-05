@@ -38,7 +38,7 @@ jobs:
         run: npm ci
 
       - name: Lint
-        run: npx nx affected -t lint --base=origin/master --head=HEAD
+        run: npx nx run nestjs-graphql-server:lint
 
       - name: Build
         run: npx nx affected -t build --base=origin/master --head=HEAD
