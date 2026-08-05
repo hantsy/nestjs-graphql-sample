@@ -25,30 +25,13 @@
         "lintTargetName": "lint"
       }
     },
-    {
-      "plugin": "@nx/nest"
-    }
+    { "plugin": "@nx/nest" }
   ],
-  "generators": {
-    "@nx/angular:component": {
-      "style": "css"
-    }
-  },
+  "generators": { "@nx/angular:component": { "style": "css" } },
   "targetDefaults": {
-    "build": {
-      "cache": true,
-      "dependsOn": ["^build"],
-      "inputs": ["production", "^production"]
-    },
-    "serve": {
-      "cache": true,
-      "dependsOn": ["^build"]
-    },
-    "test": {
-      "cache": true,
-      "dependsOn": ["build"],
-      "inputs": ["default", "^production"]
-    },
+    "build": { "cache": true, "dependsOn": ["^build"], "inputs": ["production", "^production"] },
+    "serve": { "cache": true, "dependsOn": ["^build"] },
+    "test": { "cache": true, "dependsOn": ["build"], "inputs": ["default", "^production"] },
     "lint": {
       "cache": true,
       "inputs": [
@@ -60,5 +43,6 @@
       ]
     }
   },
-  "defaultBase": "master"
+  "defaultBase": "master",
+  "nxCloudId": "6a7330f69a78f8b21b654932"
 }
