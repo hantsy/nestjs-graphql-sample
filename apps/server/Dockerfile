@@ -2,18 +2,22 @@ FROM node:24-alpine AS build
 
 WORKDIR /app
 
-COPY package*.json ./
+# Copy root workspace files
+COPY package.json package-lock.json ./
+COPY apps/server/package*.json ./apps/server/
+
 RUN npm ci --ignore-scripts
 
-COPY . .
-RUN npm run build
+COPY apps/server/ ./apps/server/
+
+RUN npm run build --workspace=apps/server
 
 FROM node:24-alpine AS production
 
 WORKDIR /app
 
-COPY --from=build /app/dist ./dist
-COPY package*.json ./
+COPY --from=build /app/apps/server/dist ./dist
+COPY apps/server/package*.json ./
 RUN npm ci --omit=dev --ignore-scripts
 
 USER node

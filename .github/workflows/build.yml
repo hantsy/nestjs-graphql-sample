@@ -13,14 +13,14 @@ on:
       - reopened
 
 jobs:
-  server-build:
+  build-and-test:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: server
 
     steps:
       - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
       - name: Setup NodeJS
         uses: actions/setup-node@v7
         with:
@@ -30,40 +30,27 @@ jobs:
         uses: actions/cache@v6
         with:
           path: ~/.npm
-          key: ${{ runner.OS }}-node-${{ hashFiles('server/package-lock.json') }}
+          key: ${{ runner.OS }}-node-${{ hashFiles('package-lock.json') }}
           restore-keys: |
             ${{ runner.OS }}-node-
-            ${{ runner.OS }}-
 
-      - run: npm ci
-      - run: npm run test:cov
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint
+        run: npx nx affected -t lint --base=origin/master --head=HEAD
+
+      - name: Build
+        run: npx nx affected -t build --base=origin/master --head=HEAD
+
+      - name: Test
+        run: npx nx affected -t test --base=origin/master --head=HEAD
+
+      - name: Server test coverage
+        run: npm run test:cov --workspace=apps/server
+
       - name: Upload coverage to Codecov
         run: |
           bash <(curl -s https://codecov.io/bash)
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
-
-  client-build:
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: client
-
-    steps:
-      - uses: actions/checkout@v7
-      - name: Setup NodeJS
-        uses: actions/setup-node@v7
-        with:
-          node-version: '24'
-
-      - name: Cache Node.js modules
-        uses: actions/cache@v6
-        with:
-          path: ~/.npm
-          key: ${{ runner.OS }}-node-${{ hashFiles('client/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.OS }}-node-
-            ${{ runner.OS }}-
-
-      - run: npm ci --legacy-peer-deps
-      - run: npm run build

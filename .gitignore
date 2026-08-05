@@ -37,3 +37,9 @@ lerna-debug.log*
 .env
 .metals
 tsconfig.build.tsbuildinfo
+
+
+
+.nx/cache
+.nx/workspace-data
+.nx/migrate-runs

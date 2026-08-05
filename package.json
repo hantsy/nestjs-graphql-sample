@@ -1,0 +1,32 @@
+{
+  "name": "nestjs-graphql-sample",
+  "private": true,
+  "packageManager": "npm@12.0.1",
+  "workspaces": [
+    "apps/*",
+    "libs/*"
+  ],
+  "scripts": {
+    "start": "nx serve client",
+    "build": "nx run-many -t build",
+    "build:client": "nx build client",
+    "build:server": "nx build server",
+    "test": "nx run-many -t test",
+    "test:client": "nx test client",
+    "test:server": "nx test server",
+    "dev:client": "nx serve client",
+    "dev:server": "nx serve server",
+    "dev": "nx run-many -t serve",
+    "lint": "nx run-many -t lint",
+    "nx": "nx",
+    "affected:build": "nx affected -t build",
+    "affected:test": "nx affected -t test",
+    "graph": "nx graph"
+  },
+  "devDependencies": {
+    "@nx/angular": "^23.1.1",
+    "@nx/js": "^23.1.1",
+    "@nx/nest": "^23.1.1",
+    "nx": "23.1.1"
+  }
+}

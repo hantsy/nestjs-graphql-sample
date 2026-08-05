@@ -22,9 +22,6 @@ concurrency:
 jobs:
   e2e:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: server
 
     steps:
       - uses: actions/checkout@v7
@@ -37,12 +34,12 @@ jobs:
         uses: actions/cache@v6
         with:
           path: ~/.npm
-          key: ${{ runner.OS }}-node-${{ hashFiles('server/package-lock.json') }}
+          key: ${{ runner.OS }}-node-${{ hashFiles('package-lock.json') }}
           restore-keys: |
             ${{ runner.OS }}-node-
-            ${{ runner.OS }}-
 
-      - run: npm ci
+      - name: Install dependencies
+        run: npm ci
 
       - name: Start MongoDB service
         run: |
@@ -50,4 +47,4 @@ jobs:
           docker ps -a
 
       - name: Run e2e tests
-        run: npm run test:e2e -- --runInBand --forceExit --testTimeout 30000
+        run: npm run test:e2e --workspace=apps/server -- --runInBand --forceExit --testTimeout 30000
