@@ -7,7 +7,6 @@
     "removeComments": true,
     "strictPropertyInitialization": false,
     "target": "es2025",
-    "outDir": "./dist",
-    "incremental": true
+    "outDir": "./dist"
   }
 }

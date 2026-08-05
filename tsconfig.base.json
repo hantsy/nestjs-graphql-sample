@@ -1,7 +1,6 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
-    "rootDir": ".",
     "skipLibCheck": true,
     "sourceMap": true,
     "experimentalDecorators": true,
